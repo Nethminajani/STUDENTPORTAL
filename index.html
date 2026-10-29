@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Student Portal | Chemistry by Krishan Jayarathna</title>
-    <!-- Load Tailwind CSS for modern, responsive styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Chart.js for rendering the canvas graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
@@ -18,12 +16,15 @@
         ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 999px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Hide scrollbar for mobile swipeable elements */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body id="bodyRoot" class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-slate-100 font-sans min-h-screen flex items-center justify-center p-3 sm:p-6 transition-colors duration-500">
+<body id="bodyRoot" class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-slate-100 font-sans min-h-screen flex items-center justify-center p-0 sm:p-6 transition-colors duration-500">
 
     <!-- LOGIN SCREEN -->
-    <div id="loginView" class="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-7 sm:p-9 text-slate-800 transform transition-all duration-300 border border-white/20">
+    <div id="loginView" class="w-full max-w-md bg-white/95 backdrop-blur-xl sm:rounded-3xl shadow-2xl p-6 sm:p-9 text-slate-800 transform transition-all duration-300 border-0 sm:border border-white/20 min-h-screen sm:min-h-0 flex flex-col justify-center">
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-lg shadow-blue-500/30 mb-3 text-2xl font-bold">
                 ⚗️
@@ -64,7 +65,7 @@
             </div>
 
             <button id="loginBtn" onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.99] text-white font-semibold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/25 flex justify-center items-center text-sm tracking-wide">
-                <span>Access Student Dashboard</span>
+                <span>Access Dashboard</span>
                 <svg id="loadingSpinner" class="hidden animate-spin ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -74,91 +75,95 @@
     </div>
 
     <!-- DASHBOARD SCREEN -->
-    <div id="dashboardView" class="hidden w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 border border-slate-100 text-slate-800">
+    <div id="dashboardView" class="hidden w-full max-w-5xl bg-white rounded-none sm:rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 border-0 sm:border border-slate-100 text-slate-800 min-h-screen sm:min-h-0">
         <!-- Dashboard Header -->
-        <div id="dashHeader" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 px-6 sm:px-8 py-6 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all duration-500 relative overflow-hidden">
-            <div class="relative z-10">
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="displayYear" class="text-xs uppercase tracking-widest text-slate-300 font-semibold">2028 A/L</span>
+        <div id="dashHeader" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden">
+            <div class="relative z-10 w-full flex justify-between items-start sm:items-center">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="displayYear" class="text-[10px] sm:text-xs uppercase tracking-widest text-slate-300 font-semibold">2028 A/L</span>
+                    </div>
+                    <h2 class="text-lg sm:text-2xl font-bold tracking-tight">Welcome, <span id="displayName" class="text-white drop-shadow-sm">Student</span></h2>
+                    <p class="text-slate-300 text-[11px] sm:text-sm mt-0.5 font-medium">Index: <span id="displayId" class="font-mono text-cyan-300 bg-white/10 px-2 py-0.5 rounded-md ml-1 font-semibold"></span></p>
                 </div>
-                <h2 class="text-xl sm:text-2xl font-bold tracking-tight">Welcome, <span id="displayName" class="text-white drop-shadow-sm">Student</span></h2>
-                <p class="text-slate-300 text-xs sm:text-sm mt-0.5 font-medium">Index: <span id="displayId" class="font-mono text-cyan-300 bg-white/10 px-2 py-0.5 rounded-md ml-1 font-semibold"></span></p>
+                <button onclick="logout()" class="sm:hidden px-3 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-lg text-xs font-semibold transition-all">
+                    Log Out
+                </button>
             </div>
-            <div class="flex items-center gap-2.5 relative z-10 w-full sm:w-auto justify-between sm:justify-end">
-                <span id="tierBadge" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-sm">Analyzing...</span>
-                <button onclick="logout()" class="px-3.5 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-xs sm:text-sm font-semibold transition-all">
+            <div class="flex items-center gap-2.5 relative z-10 w-full sm:w-auto justify-between sm:justify-end mt-2 sm:mt-0">
+                <span id="tierBadge" class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-sm w-full sm:w-auto text-center">Analyzing...</span>
+                <button onclick="logout()" class="hidden sm:block px-3.5 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-sm font-semibold transition-all">
                     Log Out
                 </button>
             </div>
         </div>
 
         <!-- Dashboard Content -->
-        <div class="p-5 sm:p-8 space-y-6">
+        <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
             
             <!-- Dynamic Feedback Alert Box -->
-            <div id="alertBox" class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 shadow-sm">
-                <div id="alertIcon" class="text-2xl sm:text-3xl mt-0.5 flex-shrink-0"></div>
-                <div class="flex-1">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-1">
-                        <h4 id="alertTitle" class="font-bold text-sm sm:text-base"></h4>
-                        <button onclick="showOverallAnalytics()" id="resetOverallBtn" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/80 hover:bg-white border transition-colors shadow-xs w-fit">
-                            ← Return to Overall
+            <div id="alertBox" class="p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm">
+                <div id="alertIcon" class="text-xl sm:text-3xl mt-0.5 flex-shrink-0"></div>
+                <div class="flex-1 w-full overflow-hidden">
+                    <div class="flex flex-row items-center justify-between gap-1.5 mb-1 w-full">
+                        <h4 id="alertTitle" class="font-bold text-xs sm:text-base truncate"></h4>
+                        <button onclick="showOverallAnalytics()" id="resetOverallBtn" class="flex-shrink-0 text-[10px] sm:text-[11px] font-semibold px-2 py-1 sm:px-2.5 rounded-lg bg-white/80 hover:bg-white border transition-colors shadow-xs">
+                            ← Overall
                         </button>
                     </div>
-                    <p id="alertBody" class="text-xs sm:text-sm leading-relaxed"></p>
+                    <p id="alertBody" class="text-[11px] sm:text-sm leading-relaxed text-slate-700"></p>
                 </div>
             </div>
 
             <!-- Dynamic Stats Summary Grid -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <div class="p-4 rounded-2xl border transition-all duration-300" id="cardRankBox">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel1">Batch Rank</span>
-                    <p class="text-xl sm:text-2xl font-black mt-1 text-slate-800" id="statRank">--</p>
-                    <p class="text-[11px] text-slate-400 mt-1" id="cardSub1">Class standing</p>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardRankBox">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel1">Batch Rank</span>
+                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statRank">--</p>
+                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub1">Class standing</p>
                 </div>
-                <div class="p-4 rounded-2xl border transition-all duration-300" id="cardScoreBox">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel2">Personal Average</span>
-                    <p class="text-xl sm:text-2xl font-black mt-1 text-slate-800" id="statAvg">--</p>
-                    <p class="text-[11px] text-slate-400 mt-1" id="cardSub2">Across completed tests</p>
+                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardScoreBox">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel2">Personal Avg</span>
+                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statAvg">--</p>
+                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub2">Across papers</p>
                 </div>
-                <div class="p-4 rounded-2xl border transition-all duration-300" id="cardAvgBox">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel3">Paper Attendance</span>
-                    <p class="text-xl sm:text-2xl font-black mt-1 text-slate-800" id="statAttendance">--</p>
-                    <p class="text-[11px] text-slate-400 mt-1" id="cardSub3">Attendance rate</p>
+                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardAvgBox">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel3">Attendance</span>
+                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statAttendance">--</p>
+                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub3">Sessions written</p>
                 </div>
-                <div class="p-4 rounded-2xl border transition-all duration-300" id="cardTopBox">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel4">Highest Mark</span>
-                    <p class="text-xl sm:text-2xl font-black mt-1 text-slate-800" id="statHighest">--</p>
-                    <p class="text-[11px] text-slate-400 mt-1" id="cardSub4">Personal best</p>
+                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardTopBox">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel4">Highest Mark</span>
+                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statHighest">--</p>
+                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub4">Personal best</p>
                 </div>
             </div>
 
-            <!-- Tabs Navigation -->
-            <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
-                <button onclick="switchTab('chempulse')" id="tabBtn-chempulse" class="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm bg-blue-600 text-white shadow-blue-500/20">
+            <!-- Swipeable Tabs Navigation -->
+            <div class="flex flex-nowrap overflow-x-auto gap-2 border-b border-slate-200 pb-3 no-scrollbar snap-x">
+                <button onclick="switchTab('chempulse')" id="tabBtn-chempulse" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm bg-blue-600 text-white shadow-blue-500/20">
                     Chempulse Progress
                 </button>
-                <button onclick="switchTab('exams')" id="tabBtn-exams" class="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hidden">
+                <button onclick="switchTab('exams')" id="tabBtn-exams" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hidden">
                     Monthly Exams
                 </button>
-                <button onclick="switchTab('table')" id="tabBtn-table" class="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                <button onclick="switchTab('table')" id="tabBtn-table" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
                     Detailed Analytics Table
                 </button>
             </div>
 
             <!-- Chempulse Canvas Container -->
             <div id="tab-chempulse" class="tab-content active animate-fade">
-                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/50 to-white shadow-inner">
-                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2 text-xs">
-                        <div class="flex items-center gap-3">
-                            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-emerald-200"></span> Top Mark (≥75)</span>
-                            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-500 ring-2 ring-blue-200"></span> Solid (40-74)</span>
-                            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-500 ring-2 ring-rose-200"></span> Review (&lt;40)</span>
+                <div class="p-3 sm:p-5 rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/50 to-white shadow-inner">
+                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2 text-[10px] sm:text-xs">
+                        <div class="flex items-center gap-2 sm:gap-3">
+                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-200"></span> Top (≥75)</span>
+                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 ring-2 ring-blue-200"></span> Solid (40-74)</span>
+                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-rose-200"></span> Review (&lt;40)</span>
                         </div>
-                        <span class="text-slate-400 font-medium">Click any point to inspect</span>
                     </div>
-                    <div class="relative w-full h-[320px] sm:h-[400px]">
+                    <div class="relative w-full h-[250px] sm:h-[400px]">
                         <canvas id="chempulseCanvas"></canvas>
                     </div>
                 </div>
@@ -166,16 +171,15 @@
 
             <!-- Exams Canvas Container -->
             <div id="tab-exams" class="tab-content animate-fade">
-                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/50 to-white shadow-inner">
-                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2 text-xs">
-                        <div class="flex items-center gap-3">
-                            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-emerald-200"></span> Top Mark (≥75)</span>
-                            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-500 ring-2 ring-blue-200"></span> Solid (40-74)</span>
-                            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-500 ring-2 ring-rose-200"></span> Review (&lt;40)</span>
+                <div class="p-3 sm:p-5 rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/50 to-white shadow-inner">
+                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2 text-[10px] sm:text-xs">
+                        <div class="flex items-center gap-2 sm:gap-3">
+                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-200"></span> Top (≥75)</span>
+                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 ring-2 ring-blue-200"></span> Solid (40-74)</span>
+                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-rose-200"></span> Review (&lt;40)</span>
                         </div>
-                        <span class="text-slate-400 font-medium">Click any point to inspect</span>
                     </div>
-                    <div class="relative w-full h-[320px] sm:h-[400px]">
+                    <div class="relative w-full h-[250px] sm:h-[400px]">
                         <canvas id="examCanvas"></canvas>
                     </div>
                 </div>
@@ -183,16 +187,16 @@
 
             <!-- Marks & Benchmarks Table Container -->
             <div id="tab-table" class="tab-content animate-fade">
-                <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
-                        <thead class="bg-slate-50/90 text-slate-500 font-bold uppercase text-[10px] sm:text-xs tracking-wider border-b border-slate-200">
+                <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm no-scrollbar">
+                    <table class="w-full text-left border-collapse text-[11px] sm:text-sm min-w-[500px]">
+                        <thead class="bg-slate-50/90 text-slate-500 font-bold uppercase text-[9px] sm:text-xs tracking-wider border-b border-slate-200">
                             <tr>
-                                <th class="py-3.5 px-4">Type</th>
-                                <th class="py-3.5 px-4">Paper Title</th>
-                                <th class="py-3.5 px-4 text-center">Your Score</th>
-                                <th class="py-3.5 px-4 text-center">Batch Avg</th>
-                                <th class="py-3.5 px-4 text-center">Batch Top</th>
-                                <th class="py-3.5 px-4 text-right">Performance & Guidance</th>
+                                <th class="py-2.5 px-3">Type</th>
+                                <th class="py-2.5 px-3">Paper Title</th>
+                                <th class="py-2.5 px-3 text-center">Score</th>
+                                <th class="py-2.5 px-3 text-center">Avg</th>
+                                <th class="py-2.5 px-3 text-center">Top</th>
+                                <th class="py-2.5 px-3 text-right">Guidance</th>
                             </tr>
                         </thead>
                         <tbody id="marksTableBody" class="divide-y divide-slate-100 bg-white">
@@ -200,7 +204,7 @@
                         </tbody>
                     </table>
                 </div>
-                <p class="text-xs text-slate-400 mt-2.5 text-center font-medium">💡 Click on any row above to inspect that specific paper and adapt dashboard alerts.</p>
+                <p class="text-[10px] sm:text-xs text-slate-400 mt-2.5 text-center font-medium">💡 Click on any row above to inspect that specific paper.</p>
             </div>
         </div>
     </div>
@@ -211,221 +215,191 @@
         let currentStudentSummary = null;
         let currentAllRecords = [];
         let activeRecordIndex = -1;
+        let currentThemeColor = 'blue';
 
-        // Class Databases Config
-        const classDatabases = {
-            "2028": {
-                chempulse: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4zXL7M9u7lRcLNWze91wU_W1L6PWLxpjpvFXI5wjHEu__BoHfj2QWCL_4KpdrR-V1puyMfByyFqj6/pub?gid=2083058040&single=true&output=csv",
-                exams: "" // Replace when monthly exam link is published
+        // Immersive Theme Engine Configurations
+        const themeClasses = {
+            blue: {
+                body: ['from-slate-900', 'via-slate-800', 'to-indigo-950'],
+                dash: ['border-slate-100', 'shadow-2xl'],
+                tabActive: ['bg-blue-600', 'text-white', 'shadow-blue-500/20'],
+                chartGradient: ['rgba(59, 130, 246, 0.28)', 'rgba(59, 130, 246, 0.04)', 'rgba(59, 130, 246, 0.00)']
             },
+            emerald: {
+                body: ['from-emerald-950', 'via-teal-950', 'to-emerald-950'],
+                dash: ['border-emerald-500/50', 'shadow-emerald-900/30', 'shadow-2xl'],
+                tabActive: ['bg-emerald-600', 'text-white', 'shadow-emerald-500/20'],
+                chartGradient: ['rgba(16, 185, 129, 0.28)', 'rgba(16, 185, 129, 0.04)', 'rgba(16, 185, 129, 0.00)']
+            },
+            rose: {
+                body: ['from-rose-950', 'via-red-950', 'to-rose-950'],
+                dash: ['border-rose-500/60', 'shadow-rose-900/40', 'shadow-2xl'],
+                tabActive: ['bg-rose-600', 'text-white', 'shadow-rose-500/20'],
+                chartGradient: ['rgba(244, 63, 94, 0.28)', 'rgba(244, 63, 94, 0.04)', 'rgba(244, 63, 94, 0.00)']
+            },
+            amber: {
+                body: ['from-amber-950', 'via-orange-950', 'to-amber-950'],
+                dash: ['border-amber-500/50', 'shadow-amber-900/30', 'shadow-2xl'],
+                tabActive: ['bg-amber-600', 'text-white', 'shadow-amber-500/20'],
+                chartGradient: ['rgba(245, 158, 11, 0.28)', 'rgba(245, 158, 11, 0.04)', 'rgba(245, 158, 11, 0.00)']
+            },
+            slate: {
+                body: ['from-slate-900', 'via-slate-800', 'to-slate-900'],
+                dash: ['border-slate-500/50', 'shadow-slate-900/30', 'shadow-2xl'],
+                tabActive: ['bg-slate-600', 'text-white', 'shadow-slate-500/20'],
+                chartGradient: ['rgba(100, 116, 139, 0.28)', 'rgba(100, 116, 139, 0.04)', 'rgba(100, 116, 139, 0.00)']
+            }
+        };
+
+        const allBodyClasses = Object.values(themeClasses).flatMap(t => t.body);
+        const allDashClasses = Object.values(themeClasses).flatMap(t => t.dash);
+        const allTabClasses = Object.values(themeClasses).flatMap(t => t.tabActive);
+
+        function updateGlobalTheme(themeName) {
+            currentThemeColor = themeName;
+            const body = document.getElementById('bodyRoot');
+            body.classList.remove(...allBodyClasses);
+            body.classList.add(...themeClasses[themeName].body);
+
+            const dash = document.getElementById('dashboardView');
+            dash.classList.remove(...allDashClasses);
+            dash.classList.add(...themeClasses[themeName].dash);
+
+            const activeTabMatch = document.querySelector('.tab-content.active');
+            if (activeTabMatch) switchTab(activeTabMatch.id.replace('tab-', ''));
+
+            const colors = themeClasses[themeName].chartGradient;
+            [chempulseChart, examChart].forEach(chart => {
+                if (chart && chart.data.datasets.length > 0) {
+                    const ctx = chart.canvas.getContext('2d');
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 360);
+                    gradient.addColorStop(0, colors[0]);
+                    gradient.addColorStop(0.7, colors[1]);
+                    gradient.addColorStop(1, colors[2]);
+                    chart.data.datasets[0].backgroundColor = gradient;
+                    chart.update();
+                }
+            });
+        }
+
+        const classDatabases = {
+            "2028": { chempulse: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4zXL7M9u7lRcLNWze91wU_W1L6PWLxpjpvFXI5wjHEu__BoHfj2QWCL_4KpdrR-V1puyMfByyFqj6/pub?gid=2083058040&single=true&output=csv", exams: "" },
             "2027": { chempulse: "", exams: "" },
             "2026": { chempulse: "", exams: "" },
             "2025": { chempulse: "", exams: "" }
         };
 
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') attemptLogin();
-        }
+        function handleKeyPress(event) { if (event.key === 'Enter') attemptLogin(); }
+        function showError(message) { document.getElementById('errorText').innerText = message; document.getElementById('errorMessage').classList.remove('hidden'); }
+        function hideError() { document.getElementById('errorMessage').classList.add('hidden'); }
 
-        function showError(message) {
-            const errorBox = document.getElementById('errorMessage');
-            document.getElementById('errorText').innerText = message;
-            errorBox.classList.remove('hidden');
-        }
-
-        function hideError() {
-            document.getElementById('errorMessage').classList.add('hidden');
-        }
-
-        // Color helper to determine tier colors
         function getScoreTierColor(score, batchMax) {
-            if (score === null || isNaN(score)) return '#94a3b8'; // Absent / Unknown
-            const val = parseFloat(score);
-            const diff = batchMax ? (batchMax - val) : 0;
-            if (val >= 75) return '#10b981'; // Emerald Green
-            if (val < 40 || diff >= 40) return '#ef4444'; // Crimson Red
-            return '#3b82f6'; // Electric Blue
+            if (score === null || isNaN(score)) return '#94a3b8';
+            const val = parseFloat(score), diff = batchMax ? (batchMax - val) : 0;
+            if (val >= 75) return '#10b981';
+            if (val < 40 || diff >= 40) return '#ef4444';
+            return '#3b82f6';
         }
 
-        // Fetch CSV and calculate batch statistics and rankings
         async function fetchSheetAnalytics(url, searchId, prefix) {
             if (!url || !url.startsWith('http')) return null;
-
             try {
                 let text = null;
-                // Multiple fetch proxies to prevent CORS blocks on any host
-                const fetchUrls = [
-                    url, // Direct attempt first
-                    'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
-                    'https://corsproxy.io/?' + encodeURIComponent(url)
-                ];
-
+                const fetchUrls = [url, 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url), 'https://corsproxy.io/?' + encodeURIComponent(url)];
                 for (const fetchUrl of fetchUrls) {
-                    try {
-                        const res = await fetch(fetchUrl);
-                        if (res.ok) {
-                            text = await res.text();
-                            break; // Stop trying once we have the data
-                        }
-                    } catch (e) {
-                        console.warn("Fetch fallback triggered for:", fetchUrl);
-                    }
+                    try { const res = await fetch(fetchUrl); if (res.ok) { text = await res.text(); break; } } catch (e) {}
                 }
-
                 if (!text) return null;
 
-                // Smart CSV parsing to handle commas inside names/quotes (fixes ID shifts)
-                const rows = [];
-                let row = [], col = "", inQ = false;
+                const rows = []; let row = [], col = "", inQ = false;
                 for (let c of text) {
                     if (c === '"') inQ = !inQ;
                     else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
                     else if (c === '\n' && !inQ) { row.push(col.trim()); if(row.join('')) rows.push(row); row = []; col = ""; }
                     else if (c !== '\r') col += c;
                 }
-                row.push(col.trim());
-                if(row.join('')) rows.push(row);
-
+                row.push(col.trim()); if(row.join('')) rows.push(row);
                 if (rows.length < 2) return null;
 
-                // Identify Header Row
                 let headerIdx = rows.findIndex(r => r.some(c => c.toLowerCase().includes('name') || c.toLowerCase().includes('index')));
                 if (headerIdx === -1) headerIdx = 0;
                 const headers = rows[headerIdx].map(h => h.trim().replace(/(^"|"$)/g, ''));
 
-                // Detect ID and Name column index
-                let idCol = 1;
-                let nameCol = 0;
-                if (headers[0].toLowerCase().includes('index') || headers[0].toLowerCase().includes('id')) {
-                    idCol = 0;
-                    nameCol = 1;
-                }
-
+                let idCol = 1, nameCol = 0;
+                if (headers[0].toLowerCase().includes('index') || headers[0].toLowerCase().includes('id')) { idCol = 0; nameCol = 1; }
                 const dataRows = rows.slice(headerIdx + 1).filter(r => r[idCol] && r[idCol].trim() !== '');
 
-                // Calculate Benchmarks for each test column
                 const paperMeta = [];
                 for (let c = 2; c < headers.length; c++) {
                     const rawTitle = headers[c] ? headers[c].trim() : `${prefix} ${c - 1}`;
                     const scores = [];
-
                     dataRows.forEach(r => {
                         const val = r[c] ? r[c].trim().replace(/(^"|"$)/g, '') : '';
-                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
-                            scores.push(parseFloat(val));
-                        }
+                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) scores.push(parseFloat(val));
                     });
-
-                    // If NO students in the batch have written this paper yet, mark as not conducted
                     const isConducted = scores.length > 0;
-
                     paperMeta.push({
                         colIndex: c,
                         title: rawTitle.toLowerCase().includes(prefix.toLowerCase()) ? rawTitle : `${prefix} ${rawTitle}`,
                         max: isConducted ? Math.max(...scores) : 0,
                         avg: isConducted ? parseFloat((scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1)) : 0,
-                        validCount: scores.length,
-                        isConducted: isConducted
+                        validCount: scores.length, isConducted: isConducted
                     });
                 }
 
-                // Rank all students based on conducted papers only
                 const conductedMetas = paperMeta.filter(m => m.isConducted);
                 const studentRankings = dataRows.map(r => {
                     let total = 0, count = 0;
                     conductedMetas.forEach(meta => {
                         const val = r[meta.colIndex] ? r[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
-                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
-                            total += parseFloat(val);
-                            count++;
-                        }
+                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) { total += parseFloat(val); count++; }
                     });
-                    const cleanId = r[idCol].trim().replace(/(^"|"$)/g, '').toUpperCase();
-                    const cleanName = r[nameCol].trim().replace(/(^"|"$)/g, '');
                     return {
-                        id: cleanId,
-                        name: cleanName || "Student",
-                        avg: count > 0 ? total / count : 0,
-                        rawRow: r
+                        id: r[idCol].trim().replace(/(^"|"$)/g, '').toUpperCase(),
+                        name: r[nameCol].trim().replace(/(^"|"$)/g, '') || "Student",
+                        avg: count > 0 ? total / count : 0, rawRow: r
                     };
                 }).sort((a, b) => b.avg - a.avg);
 
-                // Find target student
                 const studentRankIndex = studentRankings.findIndex(s => s.id === searchId);
                 if (studentRankIndex === -1) return null;
 
                 const targetStudent = studentRankings[studentRankIndex];
-                const studentRow = targetStudent.rawRow;
-
-                // Build individual records
-                const paperRecords = [];
-                let attendedCount = 0;
+                const paperRecords = []; let attendedCount = 0;
 
                 paperMeta.forEach(meta => {
                     if (!meta.isConducted) {
-                        paperRecords.push({
-                            title: meta.title,
-                            score: null,
-                            isAbsent: false,
-                            isNotGiven: true,
-                            batchAvg: "-",
-                            batchMax: "-",
-                            type: prefix.toLowerCase()
-                        });
+                        paperRecords.push({ title: meta.title, score: null, isAbsent: false, isNotGiven: true, batchAvg: "-", batchMax: "-", type: prefix.toLowerCase() });
                         return;
                     }
-
-                    const rawVal = studentRow[meta.colIndex] ? studentRow[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
+                    const rawVal = targetStudent.rawRow[meta.colIndex] ? targetStudent.rawRow[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
                     const isAbsent = rawVal === '' || rawVal.toUpperCase() === 'AB' || isNaN(rawVal);
-                    const numericScore = isAbsent ? null : parseFloat(rawVal);
-
                     if (!isAbsent) attendedCount++;
-
                     paperRecords.push({
-                        title: meta.title,
-                        score: numericScore,
-                        isAbsent: isAbsent,
-                        isNotGiven: false,
-                        batchAvg: meta.avg,
-                        batchMax: meta.max,
-                        type: prefix.toLowerCase()
+                        title: meta.title, score: isAbsent ? null : parseFloat(rawVal),
+                        isAbsent: isAbsent, isNotGiven: false, batchAvg: meta.avg, batchMax: meta.max, type: prefix.toLowerCase()
                     });
                 });
 
                 return {
-                    name: targetStudent.name,
-                    rank: `${studentRankIndex + 1} / ${studentRankings.length}`,
-                    overallAvg: targetStudent.avg.toFixed(1),
-                    totalPapers: conductedMetas.length,
-                    attendedPapers: attendedCount,
-                    records: paperRecords
+                    name: targetStudent.name, rank: `${studentRankIndex + 1} / ${studentRankings.length}`,
+                    overallAvg: targetStudent.avg.toFixed(1), totalPapers: conductedMetas.length,
+                    attendedPapers: attendedCount, records: paperRecords
                 };
-            } catch (err) {
-                console.error("Error loading analytics:", err);
-                return null;
-            }
+            } catch (err) { return null; }
         }
 
         async function attemptLogin() {
             hideError();
             const studentIdInput = document.getElementById('studentId').value.trim().toUpperCase();
             const yearInput = document.getElementById('batchYear').value;
-
-            if (!studentIdInput) {
-                showError("Please enter your Student ID.");
-                return;
-            }
-
+            if (!studentIdInput) { showError("Please enter your Student ID."); return; }
             const dbLinks = classDatabases[yearInput];
-            if (!dbLinks || (!dbLinks.chempulse && !dbLinks.exams)) {
-                showError("Database links not configured for " + yearInput);
-                return;
-            }
+            if (!dbLinks) { showError("Database links not configured for " + yearInput); return; }
 
             const loginBtn = document.getElementById('loginBtn');
             const spinner = document.getElementById('loadingSpinner');
-            loginBtn.disabled = true;
-            spinner.classList.remove('hidden');
+            loginBtn.disabled = true; spinner.classList.remove('hidden');
 
             try {
                 const [chempulseData, examData] = await Promise.all([
@@ -433,342 +407,146 @@
                     fetchSheetAnalytics(dbLinks.exams, studentIdInput, 'Exam')
                 ]);
 
-                if (!chempulseData && !examData) {
-                    showError(`Student ID '${studentIdInput}' not found in the sheet.`);
-                    return;
-                }
+                if (!chempulseData && !examData) { showError(`Student ID '${studentIdInput}' not found in the sheet.`); return; }
 
                 const primaryData = chempulseData || examData;
-                currentAllRecords = [
-                    ...(chempulseData ? chempulseData.records : []),
-                    ...(examData ? examData.records : [])
-                ];
-
+                currentAllRecords = [...(chempulseData ? chempulseData.records : []), ...(examData ? examData.records : [])];
                 const validScores = currentAllRecords.filter(r => !r.isAbsent && !r.isNotGiven).map(r => r.score);
-                const highestScore = validScores.length > 0 ? Math.max(...validScores) : 0;
 
                 currentStudentSummary = {
-                    name: primaryData.name,
-                    id: studentIdInput,
-                    year: yearInput,
-                    rank: primaryData.rank,
-                    overallAvg: primaryData.overallAvg,
-                    attendance: `${primaryData.attendedPapers} / ${primaryData.totalPapers}`,
-                    highestScore: highestScore
+                    name: primaryData.name, id: studentIdInput, year: yearInput, rank: primaryData.rank,
+                    overallAvg: primaryData.overallAvg, attendance: `${primaryData.attendedPapers} / ${primaryData.totalPapers}`,
+                    highestScore: validScores.length > 0 ? Math.max(...validScores) : 0
                 };
 
-                // Set Student Details
                 document.getElementById('displayName').innerText = primaryData.name;
                 document.getElementById('displayId').innerText = studentIdInput;
                 document.getElementById('displayYear').innerText = `${yearInput} A/L`;
 
-                // Set Default Overall Dashboard View
                 showOverallAnalytics();
-
-                // Populate Combined Table
                 populateMarksTable(currentAllRecords);
 
-                // Render Charts
-                if (chempulseData) {
-                    renderEnhancedChart('chempulseCanvas', chempulseData.records, 'Chempulse');
-                }
+                if (chempulseData) renderEnhancedChart('chempulseCanvas', chempulseData.records, 'Chempulse');
                 if (examData) {
                     renderEnhancedChart('examCanvas', examData.records, 'Monthly Exam');
                     document.getElementById('tabBtn-exams').classList.remove('hidden');
-                } else {
-                    document.getElementById('tabBtn-exams').classList.add('hidden');
-                }
+                } else { document.getElementById('tabBtn-exams').classList.add('hidden'); }
 
-                // Show Dashboard
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('dashboardView').classList.remove('hidden');
 
-            } catch (err) {
-                console.error(err);
-                showError("An error occurred loading your data. Please check connection.");
-            } finally {
-                loginBtn.disabled = false;
-                spinner.classList.add('hidden');
-            }
+            } catch (err) { showError("An error occurred loading your data."); } 
+            finally { loginBtn.disabled = false; spinner.classList.add('hidden'); }
         }
 
-        // Show overall student standing
         function showOverallAnalytics() {
             activeRecordIndex = -1;
+            if (!currentStudentSummary) return;
             const summary = currentStudentSummary;
-            if (!summary) return;
-
-            document.getElementById('cardLabel1').innerText = "Batch Rank";
-            document.getElementById('statRank').innerText = summary.rank;
-            document.getElementById('cardSub1').innerText = "Overall Batch Position";
-
-            document.getElementById('cardLabel2').innerText = "Personal Average";
-            document.getElementById('statAvg').innerText = `${summary.overallAvg}%`;
-            document.getElementById('cardSub2').innerText = "Across completed papers";
-
-            document.getElementById('cardLabel3').innerText = "Paper Attendance";
-            document.getElementById('statAttendance').innerText = summary.attendance;
-            document.getElementById('cardSub3').innerText = "Sessions written";
-
-            document.getElementById('cardLabel4').innerText = "Highest Mark";
-            document.getElementById('statHighest').innerText = summary.highestScore;
-            document.getElementById('cardSub4').innerText = "Personal best mark";
-
+            document.getElementById('cardLabel1').innerText = "Batch Rank"; document.getElementById('statRank').innerText = summary.rank; document.getElementById('cardSub1').innerText = "Overall Batch Position";
+            document.getElementById('cardLabel2').innerText = "Personal Average"; document.getElementById('statAvg').innerText = `${summary.overallAvg}%`; document.getElementById('cardSub2').innerText = "Across completed papers";
+            document.getElementById('cardLabel3').innerText = "Paper Attendance"; document.getElementById('statAttendance').innerText = summary.attendance; document.getElementById('cardSub3').innerText = "Sessions written";
+            document.getElementById('cardLabel4').innerText = "Highest Mark"; document.getElementById('statHighest').innerText = summary.highestScore; document.getElementById('cardSub4').innerText = "Personal best mark";
             applyTierTheme(parseFloat(summary.overallAvg), null);
             highlightSelectedRow(-1);
-
-            // Re-render chart to clear active selected dot highlight
             if (chempulseChart) chempulseChart.update();
             if (examChart) examChart.update();
         }
 
-        // Inspect and adapt dashboard for an individual paper
         function inspectPaper(record, index) {
-            activeRecordIndex = index;
-            highlightSelectedRow(index);
-
+            activeRecordIndex = index; highlightSelectedRow(index);
             if (record.isNotGiven) {
-                document.getElementById('cardLabel1').innerText = "Paper Status";
-                document.getElementById('statRank').innerText = "Pending";
-                document.getElementById('cardSub1').innerText = "Not yet conducted";
-
-                document.getElementById('cardLabel2').innerText = "Your Score";
-                document.getElementById('statAvg').innerText = "N/A";
-                document.getElementById('cardSub2').innerText = "No marks recorded";
-
-                document.getElementById('cardLabel3').innerText = "Batch Avg";
-                document.getElementById('statAttendance').innerText = "-";
-                document.getElementById('cardSub3').innerText = "Awaiting upload";
-
-                document.getElementById('cardLabel4').innerText = "Batch Top";
-                document.getElementById('statHighest').innerText = "-";
-                document.getElementById('cardSub4').innerText = "Awaiting upload";
-
-                applyTierTheme(null, record);
-                return;
+                document.getElementById('cardLabel1').innerText = "Paper Status"; document.getElementById('statRank').innerText = "Pending"; document.getElementById('cardSub1').innerText = "Not yet conducted";
+                document.getElementById('cardLabel2').innerText = "Your Score"; document.getElementById('statAvg').innerText = "N/A"; document.getElementById('cardSub2').innerText = "No marks recorded";
+                document.getElementById('cardLabel3').innerText = "Batch Avg"; document.getElementById('statAttendance').innerText = "-"; document.getElementById('cardSub3').innerText = "Awaiting upload";
+                document.getElementById('cardLabel4').innerText = "Batch Top"; document.getElementById('statHighest').innerText = "-"; document.getElementById('cardSub4').innerText = "Awaiting upload";
+                applyTierTheme(null, record); return;
             }
-
-            document.getElementById('cardLabel1').innerText = "Session Status";
-            document.getElementById('statRank').innerText = record.isAbsent ? "Absent" : "Completed";
-            document.getElementById('cardSub1').innerText = record.isAbsent ? "Did not sit" : "Verified mark";
-
-            document.getElementById('cardLabel2').innerText = "Your Mark";
-            document.getElementById('statAvg').innerText = record.isAbsent ? "AB" : record.score;
-            document.getElementById('cardSub2').innerText = record.isAbsent ? "Missed paper" : `Out of 100`;
-
-            document.getElementById('cardLabel3').innerText = "Batch Average";
-            document.getElementById('statAttendance').innerText = record.batchAvg;
-            document.getElementById('cardSub3').innerText = "Class benchmark";
-
-            document.getElementById('cardLabel4').innerText = "Batch Highest";
-            document.getElementById('statHighest').innerText = record.batchMax;
-            document.getElementById('cardSub4').innerText = "Top mark in class";
-
+            document.getElementById('cardLabel1').innerText = "Session Status"; document.getElementById('statRank').innerText = record.isAbsent ? "Absent" : "Completed"; document.getElementById('cardSub1').innerText = record.isAbsent ? "Did not sit" : "Verified mark";
+            document.getElementById('cardLabel2').innerText = "Your Mark"; document.getElementById('statAvg').innerText = record.isAbsent ? "AB" : record.score; document.getElementById('cardSub2').innerText = record.isAbsent ? "Missed paper" : `Out of 100`;
+            document.getElementById('cardLabel3').innerText = "Batch Average"; document.getElementById('statAttendance').innerText = record.batchAvg; document.getElementById('cardSub3').innerText = "Class benchmark";
+            document.getElementById('cardLabel4').innerText = "Batch Highest"; document.getElementById('statHighest').innerText = record.batchMax; document.getElementById('cardSub4').innerText = "Top mark in class";
             applyTierTheme(record.score, record);
-
-            // Update chart highlight
             if (chempulseChart) chempulseChart.update();
             if (examChart) examChart.update();
         }
 
         function highlightSelectedRow(index) {
             document.querySelectorAll('#marksTableBody tr').forEach((tr, i) => {
-                if (i === index) {
-                    tr.className = "bg-blue-50/90 border-l-4 border-l-blue-600 transition-all font-semibold cursor-pointer";
-                } else {
-                    tr.className = "hover:bg-slate-50/70 transition-all cursor-pointer";
-                }
+                tr.className = i === index ? "bg-blue-50/90 border-l-4 border-l-blue-600 transition-all font-semibold cursor-pointer" : "hover:bg-slate-50/70 transition-all cursor-pointer";
             });
         }
 
         function applyTierTheme(scoreOrAvg, record) {
-            const badge = document.getElementById('tierBadge');
-            const alertBox = document.getElementById('alertBox');
-            const alertTitle = document.getElementById('alertTitle');
-            const alertBody = document.getElementById('alertBody');
-            const alertIcon = document.getElementById('alertIcon');
-            const dashHeader = document.getElementById('dashHeader');
-            const cardBoxes = ['cardRankBox', 'cardScoreBox', 'cardAvgBox', 'cardTopBox'];
+            const badge = document.getElementById('tierBadge'), alertBox = document.getElementById('alertBox'), alertTitle = document.getElementById('alertTitle'), alertBody = document.getElementById('alertBody'), alertIcon = document.getElementById('alertIcon'), dashHeader = document.getElementById('dashHeader');
+            const setCardBorders = (borderColor, bgColor) => { ['cardRankBox', 'cardScoreBox', 'cardAvgBox', 'cardTopBox'].forEach(id => { document.getElementById(id).className = `p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 ${borderColor} ${bgColor}`; }); };
 
-            // Style Card helpers
-            const setCardBorders = (borderColor, bgColor) => {
-                cardBoxes.forEach(id => {
-                    const el = document.getElementById(id);
-                    el.className = `p-4 rounded-2xl border transition-all duration-300 ${borderColor} ${bgColor}`;
-                });
-            };
-
-            // 1. PAPER NOT YET GIVEN
             if (record && record.isNotGiven) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-500/80 text-white border border-slate-400";
-                badge.innerText = "Upcoming Paper";
-                dashHeader.className = "bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 px-6 sm:px-8 py-6 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all duration-500";
-
-                alertBox.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 shadow-sm bg-slate-50 border-slate-200 text-slate-800";
-                alertIcon.innerText = "⏳";
-                alertTitle.innerText = `${record.title} - Not Yet Conducted`;
-                alertBody.innerText = "This paper has not yet been administered or marks have not been uploaded by Krishan Jayarathna's team.";
-                setCardBorders("border-slate-200", "bg-slate-50/50");
-                return;
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-500/80 text-white border border-slate-400 w-full sm:w-auto text-center"; badge.innerText = "Upcoming Paper";
+                dashHeader.className = "bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
+                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-slate-50 border-slate-200 text-slate-800"; alertIcon.innerText = "⏳"; alertTitle.innerText = `${record.title} - Not Yet Conducted`; alertBody.innerText = "This paper has not yet been administered or marks have not been uploaded by Krishan Jayarathna's team."; setCardBorders("border-slate-200", "bg-slate-50/50"); 
+                updateGlobalTheme('slate'); return;
             }
-
-            // 2. ABSENT FOR PAPER
             if (record && record.isAbsent) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500 text-white border border-amber-400 shadow-md shadow-amber-500/20";
-                badge.innerText = "Session Missed";
-                dashHeader.className = "bg-gradient-to-r from-amber-950 via-amber-900 to-slate-900 px-6 sm:px-8 py-6 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all duration-500";
-
-                alertBox.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 shadow-sm bg-amber-50 border-amber-200 text-amber-950";
-                alertIcon.innerText = "⚠️";
-                alertTitle.innerText = `Absent for ${record.title}`;
-                alertBody.innerText = `You did not sit for this exam. The class average was ${record.batchAvg} and the highest score was ${record.batchMax}. Make sure to collect the paper and watch the video discussion immediately!`;
-                setCardBorders("border-amber-200", "bg-amber-50/40");
-                return;
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-500 text-white border border-amber-400 shadow-md shadow-amber-500/20 w-full sm:w-auto text-center"; badge.innerText = "Session Missed";
+                dashHeader.className = "bg-gradient-to-r from-amber-950 via-amber-900 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
+                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-amber-50 border-amber-200 text-amber-950"; alertIcon.innerText = "⚠️"; alertTitle.innerText = `Absent for ${record.title}`; alertBody.innerText = `You did not sit for this exam. The class average was ${record.batchAvg} and the highest score was ${record.batchMax}. Make sure to collect the paper and watch the video discussion immediately!`; setCardBorders("border-amber-200", "bg-amber-50/40"); 
+                updateGlobalTheme('amber'); return;
             }
-
-            const val = parseFloat(scoreOrAvg || 0);
-            const isSinglePaper = !!record;
-            const diff = isSinglePaper ? (record.batchMax - val) : 0;
-
-            // 3. RED TIER (Urgent Attention)
+            const val = parseFloat(scoreOrAvg || 0), isSinglePaper = !!record, diff = isSinglePaper ? (record.batchMax - val) : 0;
             if (val < 40 || (isSinglePaper && diff >= 40)) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500 text-white border border-rose-400 shadow-lg shadow-rose-500/25 animate-pulse";
-                badge.innerText = isSinglePaper ? "Needs Review / Watch Discussion" : "Immediate Action Needed";
-                dashHeader.className = "bg-gradient-to-r from-rose-950 via-rose-900 to-slate-950 px-6 sm:px-8 py-6 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all duration-500";
-
-                alertBox.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 shadow-sm bg-rose-50/90 border-rose-200 text-rose-950";
-                alertIcon.innerText = "🚨";
-                alertTitle.innerText = isSinglePaper ? `Score Alert on ${record.title} (${val} Marks)` : "Critical Performance Gap Detected";
-                alertBody.innerText = isSinglePaper 
-                    ? `You scored ${val} (Batch Top: ${record.batchMax}, Avg: ${record.batchAvg}). You are lagging behind the target standard for this paper. Definitely watch the paper discussion video and rewrite your corrections.`
-                    : `Your current overall average is ${val}%. Make sure to watch every discussion recording, clarify calculation steps, and consult with Krishan Jayarathna.`;
-
-                setCardBorders("border-rose-200", "bg-rose-50/30");
-
-            // 4. BLUE TIER (Good / Steady)
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-rose-500 text-white border border-rose-400 shadow-lg shadow-rose-500/25 animate-pulse w-full sm:w-auto text-center"; badge.innerText = isSinglePaper ? "Needs Review / Watch Discussion" : "Immediate Action Needed";
+                dashHeader.className = "bg-gradient-to-r from-rose-950 via-rose-900 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
+                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-rose-50/90 border-rose-200 text-rose-950"; alertIcon.innerText = "🚨"; alertTitle.innerText = isSinglePaper ? `Score Alert on ${record.title} (${val} Marks)` : "Critical Performance Gap Detected"; alertBody.innerText = isSinglePaper ? `You scored ${val} (Batch Top: ${record.batchMax}, Avg: ${record.batchAvg}). You are lagging behind the target standard for this paper. Definitely watch the paper discussion video and rewrite your corrections.` : `Your current overall average is ${val}%. Make sure to watch every discussion recording, clarify calculation steps, and consult with Krishan Jayarathna.`; setCardBorders("border-rose-200", "bg-rose-50/30");
+                updateGlobalTheme('rose');
             } else if (val < 75) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500 text-white border border-blue-400 shadow-md shadow-blue-500/20";
-                badge.innerText = isSinglePaper ? "Standard Performance" : "Steady Progress";
-                dashHeader.className = "bg-gradient-to-r from-blue-950 via-indigo-950 to-slate-950 px-6 sm:px-8 py-6 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all duration-500";
-
-                alertBox.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 shadow-sm bg-blue-50/90 border-blue-200 text-blue-950";
-                alertIcon.innerText = "📈";
-                alertTitle.innerText = isSinglePaper ? `${record.title} - Score: ${val} Marks` : "Consistent Foundation";
-                alertBody.innerText = isSinglePaper
-                    ? `Solid mark of ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Review the marking scheme to convert this B/C standard into an A standard.`
-                    : `Your overall average is ${val}%. You are maintaining solid progress. Tighten your speed and chemical calculation accuracy to push into the top bracket!`;
-
-                setCardBorders("border-blue-200", "bg-blue-50/30");
-
-            // 5. GREEN TIER (Elite Top Marks)
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-blue-500 text-white border border-blue-400 shadow-md shadow-blue-500/20 w-full sm:w-auto text-center"; badge.innerText = isSinglePaper ? "Standard Performance" : "Steady Progress";
+                dashHeader.className = "bg-gradient-to-r from-blue-950 via-indigo-950 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
+                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-blue-50/90 border-blue-200 text-blue-950"; alertIcon.innerText = "📈"; alertTitle.innerText = isSinglePaper ? `${record.title} - Score: ${val} Marks` : "Consistent Foundation"; alertBody.innerText = isSinglePaper ? `Solid mark of ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Review the marking scheme to convert this B/C standard into an A standard.` : `Your overall average is ${val}%. You are maintaining solid progress. Tighten your speed and chemical calculation accuracy to push into the top bracket!`; setCardBorders("border-blue-200", "bg-blue-50/30");
+                updateGlobalTheme('blue');
             } else {
-                badge.className = "px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white border border-emerald-400 shadow-lg shadow-emerald-500/25";
-                badge.innerText = isSinglePaper ? "Elite Top Score" : "Top Tier / Consistent";
-                dashHeader.className = "bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 px-6 sm:px-8 py-6 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all duration-500";
-
-                alertBox.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3.5 sm:gap-4 shadow-sm bg-emerald-50/90 border-emerald-200 text-emerald-950";
-                alertIcon.innerText = "🎯";
-                alertTitle.innerText = isSinglePaper ? `Outstanding Mark on ${record.title}!` : "Excellent Consistency!";
-                alertBody.innerText = isSinglePaper
-                    ? `Outstanding score of ${val}! (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). You are performing in the elite tier for this paper.`
-                    : `Your overall average is ${val}%. You are leading the batch. Maintain this disciplined exam temperament!`;
-
-                setCardBorders("border-emerald-200", "bg-emerald-50/30");
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white border border-emerald-400 shadow-lg shadow-emerald-500/25 w-full sm:w-auto text-center"; badge.innerText = isSinglePaper ? "Elite Top Score" : "Top Tier / Consistent";
+                dashHeader.className = "bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
+                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-emerald-50/90 border-emerald-200 text-emerald-950"; alertIcon.innerText = "🎯"; alertTitle.innerText = isSinglePaper ? `Outstanding Mark on ${record.title}!` : "Excellent Consistency!"; alertBody.innerText = isSinglePaper ? `Outstanding score of ${val}! (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). You are performing in the elite tier for this paper.` : `Your overall average is ${val}%. You are leading the batch. Maintain this disciplined exam temperament!`; setCardBorders("border-emerald-200", "bg-emerald-50/30");
+                updateGlobalTheme('emerald');
             }
         }
 
         function populateMarksTable(records) {
-            const tbody = document.getElementById('marksTableBody');
-            tbody.innerHTML = '';
-
+            const tbody = document.getElementById('marksTableBody'); tbody.innerHTML = '';
             records.forEach((r, index) => {
-                let scoreDisplay = '';
-                let statusBadge = '';
-
-                if (r.isNotGiven) {
-                    scoreDisplay = `<span class="text-slate-400 font-semibold italic text-xs">Not Given</span>`;
-                    statusBadge = `<span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">Pending</span>`;
-                } else if (r.isAbsent) {
-                    scoreDisplay = `<span class="text-amber-600 font-bold text-xs bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200">Absent</span>`;
-                    statusBadge = `<span class="text-[11px] px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-semibold">Missed Paper</span>`;
-                } else {
+                let scoreDisplay = '', statusBadge = '';
+                if (r.isNotGiven) { scoreDisplay = `<span class="text-slate-400 font-semibold italic text-[10px] sm:text-xs">Not Given</span>`; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 font-medium">Pending</span>`; }
+                else if (r.isAbsent) { scoreDisplay = `<span class="text-amber-600 font-bold text-[10px] sm:text-xs bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Absent</span>`; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold">Missed</span>`; }
+                else {
                     const diff = r.batchMax - r.score;
-                    let colorClass = 'text-blue-600 font-bold';
-                    let dotColor = 'bg-blue-500';
-
-                    if (r.score >= 75) {
-                        colorClass = 'text-emerald-600 font-bold';
-                        dotColor = 'bg-emerald-500';
-                        statusBadge = `<span class="text-[11px] px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>Strong Hold</span>`;
-                    } else if (r.score < 40 || diff >= 40) {
-                        colorClass = 'text-rose-600 font-bold';
-                        dotColor = 'bg-rose-500';
-                        statusBadge = `<span class="text-[11px] px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 font-bold inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>Watch Discussion</span>`;
-                    } else {
-                        statusBadge = `<span class="text-[11px] px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-bold inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>Standard</span>`;
-                    }
-
-                    scoreDisplay = `<span class="${colorClass} text-sm font-black flex items-center justify-center gap-1.5"><span class="w-2 h-2 rounded-full ${dotColor}"></span>${r.score}</span>`;
+                    let colorClass = 'text-blue-600 font-bold', dotColor = 'bg-blue-500';
+                    if (r.score >= 75) { colorClass = 'text-emerald-600 font-bold'; dotColor = 'bg-emerald-500'; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Strong Hold</span>`; }
+                    else if (r.score < 40 || diff >= 40) { colorClass = 'text-rose-600 font-bold'; dotColor = 'bg-rose-500'; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">Watch Video</span>`; }
+                    else { statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">Standard</span>`; }
+                    scoreDisplay = `<span class="${colorClass} text-xs sm:text-sm font-black flex items-center justify-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>${r.score}</span>`;
                 }
-
-                const category = r.type === 'chempulse' ? 'Chempulse' : 'Monthly Exam';
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50/70 transition-all cursor-pointer";
-                tr.onclick = () => inspectPaper(r, index);
-                tr.innerHTML = `
-                    <td class="py-3 px-4 text-slate-500 font-medium text-xs">${category}</td>
-                    <td class="py-3 px-4 font-bold text-slate-800">${r.title}</td>
-                    <td class="py-3 px-4 text-center">${scoreDisplay}</td>
-                    <td class="py-3 px-4 text-center text-slate-600 font-mono font-semibold">${r.batchAvg}</td>
-                    <td class="py-3 px-4 text-center text-slate-600 font-mono font-semibold">${r.batchMax}</td>
-                    <td class="py-3 px-4 text-right">${statusBadge}</td>
-                `;
+                const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50/70 transition-all cursor-pointer"; tr.onclick = () => inspectPaper(r, index);
+                tr.innerHTML = `<td class="py-2.5 px-3 text-slate-500 font-medium">${r.type === 'chempulse' ? 'Chempulse' : 'Exam'}</td><td class="py-2.5 px-3 font-bold text-slate-800 truncate max-w-[100px] sm:max-w-none">${r.title}</td><td class="py-2.5 px-3 text-center">${scoreDisplay}</td><td class="py-2.5 px-3 text-center text-slate-600 font-mono font-semibold">${r.batchAvg}</td><td class="py-2.5 px-3 text-center text-slate-600 font-mono font-semibold">${r.batchMax}</td><td class="py-2.5 px-3 text-right">${statusBadge}</td>`;
                 tbody.appendChild(tr);
             });
         }
 
         function renderEnhancedChart(canvasId, records, labelPrefix) {
             const ctx = document.getElementById(canvasId).getContext('2d');
-            
             if (canvasId === 'chempulseCanvas' && chempulseChart) chempulseChart.destroy();
             if (canvasId === 'examCanvas' && examChart) examChart.destroy();
+            const activeRecords = records.filter(r => !r.isNotGiven), labels = activeRecords.map(r => r.title), studentScores = activeRecords.map(r => r.score), batchAverages = activeRecords.map(r => r.batchAvg);
 
-            // Exclude papers that have not been given yet from the chart
-            const activeRecords = records.filter(r => !r.isNotGiven);
-            const labels = activeRecords.map(r => r.title);
-            const studentScores = activeRecords.map(r => r.score);
-            const batchAverages = activeRecords.map(r => r.batchAvg);
+            const pointBackgroundColors = activeRecords.map((r) => { if (r.isAbsent) return 'transparent'; if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return '#ffffff'; return getScoreTierColor(r.score, r.batchMax); });
+            const pointBorderColors = activeRecords.map((r) => { if (r.isAbsent) return 'transparent'; if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return '#f59e0b'; return getScoreTierColor(r.score, r.batchMax); });
+            const pointRadii = activeRecords.map((r) => { if (r.isAbsent) return 0; if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return 11; return 6; });
 
-            // Dynamic Point Color Array based on each mark individually!
-            const pointBackgroundColors = activeRecords.map((r, i) => {
-                if (r.isAbsent) return 'transparent';
-                if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) {
-                    return '#ffffff'; // White center for active selection
-                }
-                return getScoreTierColor(r.score, r.batchMax);
-            });
-
-            const pointBorderColors = activeRecords.map((r, i) => {
-                if (r.isAbsent) return 'transparent';
-                if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) {
-                    return '#f59e0b'; // Amber pulsing border for active selection
-                }
-                return getScoreTierColor(r.score, r.batchMax);
-            });
-
-            const pointRadii = activeRecords.map((r, i) => {
-                if (r.isAbsent) return 0;
-                if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) {
-                    return 11; // Enlarged when selected
-                }
-                return 7;
-            });
-
-            // Dynamic Gradient
+            const activeColors = themeClasses[currentThemeColor].chartGradient;
             const gradient = ctx.createLinearGradient(0, 0, 0, 360);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.28)');
-            gradient.addColorStop(0.7, 'rgba(59, 130, 246, 0.04)');
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.00)');
+            gradient.addColorStop(0, activeColors[0]);
+            gradient.addColorStop(0.7, activeColors[1]);
+            gradient.addColorStop(1, activeColors[2]);
 
             const chart = new Chart(ctx, {
                 type: 'line',
@@ -776,107 +554,20 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Your Mark',
-                            data: studentScores,
-                            borderColor: '#3b82f6',
-                            // Dynamic multi-color segment coloring
-                            segment: {
-                                borderColor: ctx => {
-                                    const p0 = activeRecords[ctx.p0DataIndex];
-                                    const p1 = activeRecords[ctx.p1DataIndex];
-                                    if (!p0 || !p1 || p0.score === null || p1.score === null) return '#94a3b8';
-                                    const avgScore = (p0.score + p1.score) / 2;
-                                    return getScoreTierColor(avgScore, Math.max(p0.batchMax, p1.batchMax));
-                                }
-                            },
-                            backgroundColor: gradient,
-                            borderWidth: 3,
-                            tension: 0.35,
-                            fill: true,
-                            pointBackgroundColor: pointBackgroundColors,
-                            pointBorderColor: pointBorderColors,
-                            pointBorderWidth: 3,
-                            pointRadius: pointRadii,
-                            pointHoverRadius: 12,
-                            pointHoverBorderWidth: 4,
-                            spanGaps: true
+                            label: 'Your Mark', data: studentScores, borderColor: '#3b82f6',
+                            segment: { borderColor: ctx => { const p0 = activeRecords[ctx.p0DataIndex], p1 = activeRecords[ctx.p1DataIndex]; if (!p0 || !p1 || p0.score === null || p1.score === null) return '#94a3b8'; return getScoreTierColor((p0.score + p1.score) / 2, Math.max(p0.batchMax, p1.batchMax)); } },
+                            backgroundColor: gradient, borderWidth: 2.5, tension: 0.35, fill: true, pointBackgroundColor: pointBackgroundColors, pointBorderColor: pointBorderColors, pointBorderWidth: 2.5, pointRadius: pointRadii, pointHoverRadius: 10, pointHoverBorderWidth: 3, spanGaps: true
                         },
-                        {
-                            label: 'Batch Average',
-                            data: batchAverages,
-                            borderColor: '#94a3b8',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 0,
-                            fill: false,
-                            tension: 0.25
-                        }
+                        { label: 'Batch Average', data: batchAverages, borderColor: '#94a3b8', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, fill: false, tension: 0.25 }
                     ]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
-                    },
-                    onClick: (event, elements) => {
-                        if (elements.length > 0) {
-                            const clickedIdx = elements[0].index;
-                            const targetRecord = activeRecords[clickedIdx];
-                            const masterIdx = currentAllRecords.findIndex(r => r.title === targetRecord.title && r.type === targetRecord.type);
-                            inspectPaper(targetRecord, masterIdx);
-                        } else {
-                            showOverallAnalytics();
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: { family: 'sans-serif', size: 12, weight: 'bold' },
-                                usePointStyle: true,
-                                boxWidth: 8
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: '#0f172a',
-                            titleFont: { size: 13, weight: 'bold' },
-                            bodyFont: { size: 12 },
-                            padding: 12,
-                            cornerRadius: 12,
-                            displayColors: true,
-                            callbacks: {
-                                label: function(context) {
-                                    if (context.raw === null) return `${context.dataset.label}: Absent`;
-                                    return `${context.dataset.label}: ${context.raw} marks`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            grid: { color: 'rgba(226, 232, 240, 0.7)' },
-                            ticks: { 
-                                font: { size: 11, weight: '600' },
-                                color: '#64748b',
-                                callback: val => `${val}`
-                            }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { 
-                                font: { size: 11, weight: '600' },
-                                color: '#64748b'
-                            }
-                        }
-                    }
+                    responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                    onClick: (event, elements) => { if (elements.length > 0) { const clickedIdx = elements[0].index, targetRecord = activeRecords[clickedIdx], masterIdx = currentAllRecords.findIndex(r => r.title === targetRecord.title && r.type === targetRecord.type); inspectPaper(targetRecord, masterIdx); } else { showOverallAnalytics(); } },
+                    plugins: { legend: { display: true, position: 'top', labels: { font: { family: 'sans-serif', size: 10, weight: 'bold' }, usePointStyle: true, boxWidth: 6 } }, tooltip: { backgroundColor: '#0f172a', titleFont: { size: 11, weight: 'bold' }, bodyFont: { size: 10 }, padding: 8, cornerRadius: 8, displayColors: true, callbacks: { label: function(context) { if (context.raw === null) return `${context.dataset.label}: Absent`; return `${context.dataset.label}: ${context.raw} marks`; } } } },
+                    scales: { y: { beginAtZero: true, max: 100, grid: { color: 'rgba(226, 232, 240, 0.7)' }, ticks: { font: { size: 9, weight: '600' }, color: '#64748b' } }, x: { grid: { display: false }, ticks: { font: { size: 9, weight: '600' }, color: '#64748b' } } }
                 }
             });
-
             if (canvasId === 'chempulseCanvas') chempulseChart = chart;
             if (canvasId === 'examCanvas') examChart = chart;
         }
@@ -884,29 +575,32 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-
-            const activeClasses = ['bg-blue-600', 'text-white', 'shadow-blue-500/20'];
+            
+            const activeClasses = themeClasses[currentThemeColor].tabActive;
             const inactiveClasses = ['bg-slate-100', 'text-slate-600', 'hover:bg-slate-200'];
-
+            
             ['chempulse', 'exams', 'table'].forEach(t => {
                 const btn = document.getElementById('tabBtn-' + t);
                 if (!btn) return;
-                if (t === tabId) {
-                    btn.classList.remove(...inactiveClasses);
-                    btn.classList.add(...activeClasses);
-                } else {
-                    btn.classList.remove(...activeClasses);
-                    btn.classList.add(...inactiveClasses);
+                
+                // Strip all possible color variants first
+                btn.classList.remove(...allTabClasses, ...inactiveClasses);
+                
+                if (t === tabId) { 
+                    btn.classList.add(...activeClasses); 
+                } else { 
+                    btn.classList.add(...inactiveClasses); 
                 }
             });
         }
 
-        function logout() {
-            document.getElementById('dashboardView').classList.add('hidden');
-            document.getElementById('loginView').classList.remove('hidden');
-            document.getElementById('studentId').value = '';
-            hideError();
-            switchTab('chempulse');
+        function logout() { 
+            document.getElementById('dashboardView').classList.add('hidden'); 
+            document.getElementById('loginView').classList.remove('hidden'); 
+            document.getElementById('studentId').value = ''; 
+            hideError(); 
+            updateGlobalTheme('blue'); // Reset to default blue
+            switchTab('chempulse'); 
         }
     </script>
 </body>
