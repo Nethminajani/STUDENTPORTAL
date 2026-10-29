@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Progress Portal</title>
+    <!-- Load Tailwind CSS for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Chart.js for rendering the canvas graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Tailwind Configuration for Custom Brand Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Ensure smooth transitions for tabs */
+        .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        .tab-content.active { display: block; opacity: 1; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex items-center justify-center p-4">
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginView" class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transform transition-all duration-300">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-slate-900">Student Portal</h1>
+            <p class="text-slate-500 mt-2">Chemistry by Krishan Jayarathna</p>
+        </div>
+
+        <div class="space-y-6">
+            <div>
+                <label for="batchYear" class="block text-sm font-medium text-slate-700 mb-1">A/L Batch Year</label>
+                <select id="batchYear" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-colors bg-white">
+                    <option value="2028">2028 A/L</option>
+                    <option value="2027">2027 A/L</option>
+                    <option value="2026">2026 A/L</option>
+                    <option value="2025">2025 A/L</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="studentId" class="block text-sm font-medium text-slate-700 mb-1">Student ID</label>
+                <input type="text" id="studentId" placeholder="e.g., EMA2028001" 
+                    class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-colors uppercase"
+                    onkeypress="handleKeyPress(event)">
+            </div>
+
+            <!-- Error Message Box (Hidden by default) -->
+            <div id="errorMessage" class="hidden bg-red-50 text-red-600 text-sm py-3 px-4 rounded-lg flex items-center">
+                <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                <span id="errorText">Please enter a valid Student ID.</span>
+            </div>
+
+            <button id="loginBtn" onclick="attemptLogin()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors shadow-md shadow-brand-500/30 flex justify-center items-center">
+                <span>Access Dashboard</span>
+                <svg id="loadingSpinner" class="hidden animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD SCREEN -->
+    <div id="dashboardView" class="hidden w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300">
+        <!-- Dashboard Header -->
+        <div class="bg-brand-900 px-8 py-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h2 class="text-2xl font-bold">Welcome, <span id="displayName" class="text-brand-100">Student</span></h2>
+                <p class="text-brand-100/80 text-sm mt-1">ID: <span id="displayId" class="font-mono"></span> | Class: <span id="displayYear"></span></p>
+            </div>
+            <button onclick="logout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-sm font-medium transition-colors">
+                Log Out
+            </button>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="p-8">
+            <!-- Tabs Navigation -->
+            <div class="flex border-b border-slate-200 mb-6">
+                <button onclick="switchTab('chempulse')" id="tabBtn-chempulse" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors border-brand-600 text-brand-600">
+                    Chempulse Progress
+                </button>
+                <button onclick="switchTab('exams')" id="tabBtn-exams" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors border-transparent text-slate-500 hover:text-slate-700">
+                    Monthly Exams
+                </button>
+                <button onclick="switchTab('table')" id="tabBtn-table" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors border-transparent text-slate-500 hover:text-slate-700">
+                    Marks Table
+                </button>
+            </div>
+
+            <!-- Chempulse Canvas Container -->
+            <div id="tab-chempulse" class="tab-content active">
+                <div class="relative w-full h-[400px]">
+                    <canvas id="chempulseCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Exams Canvas Container -->
+            <div id="tab-exams" class="tab-content">
+                <div class="relative w-full h-[400px]">
+                    <canvas id="examCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Marks Table Container -->
+            <div id="tab-table" class="tab-content">
+                <div class="overflow-x-auto rounded-lg border border-slate-200">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-slate-50">
+                            <tr class="border-b border-slate-200 text-sm">
+                                <th class="py-3 px-4 font-semibold text-slate-700">Category</th>
+                                <th class="py-3 px-4 font-semibold text-slate-700">Paper Name</th>
+                                <th class="py-3 px-4 font-semibold text-slate-700 text-right">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="marksTableBody" class="text-sm divide-y divide-slate-200">
+                            <!-- Rows injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store chart instances to destroy and recreate them cleanly
+        let chempulseChart = null;
+        let examChart = null;
+
+        // --- DATA LAYER ---
+        // Paste your published CSV links here. You need one for Chempulse and one for Monthly Exams.
+        const classDatabases = {
+            "2028": {
+                chempulse: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4zXL7M9u7lRcLNWze91wU_W1L6PWLxpjpvFXI5wjHEu__BoHfj2QWCL_4KpdrR-V1puyMfByyFqj6/pub?gid=2083058040&single=true&output=csv", 
+                exams: "YOUR_2028_EXAMS_CSV_LINK_HERE"
+            },
+            "2027": { chempulse: "", exams: "" }, 
+            "2026": { chempulse: "", exams: "" },
+            "2025": { chempulse: "", exams: "" }
+        };
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                attemptLogin();
+            }
+        }
+
+        function showError(message) {
+            const errorBox = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.innerText = message;
+            errorBox.classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        async function attemptLogin() {
+            hideError();
+            const studentIdInput = document.getElementById('studentId').value.trim().toUpperCase();
+            const yearInput = document.getElementById('batchYear').value;
+            
+            if (!studentIdInput) {
+                showError("Please enter your Student ID.");
+                return;
+            }
+
+            const dbLinks = classDatabases[yearInput];
+            if (!dbLinks || (!dbLinks.chempulse && !dbLinks.exams)) {
+                showError("Database links not configured for " + yearInput);
+                return;
+            }
+
+            // UI Loading state
+            const loginBtn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            loginBtn.disabled = true;
+            spinner.classList.remove('hidden');
+
+            try {
+                let cpCsvText = "";
+                let exCsvText = "";
+                
+                // --- FALLBACK MOCK DATA FOR PREVIEW ---
+                const isMock = !dbLinks.chempulse || dbLinks.chempulse.includes("YOUR_2028");
+                
+                if (isMock) {
+                    cpCsvText = `Student ID,Student Name,Paper 1,Paper 2,Paper 3\nEMA2028001,J.M.Diman Danindu,48.0,55.0,62.0`;
+                    exCsvText = `Student ID,Student Name,Exam 1,Exam 2,Exam 3\nEMA2028001,J.M.Diman Danindu,65.0,72.0,78.0`;
+                } else {
+                    // Try direct fetch first (Google Sheets often allows it), fallback to corsproxy.io if blocked
+                    const fetchWithFallback = async (url) => {
+                        if (!url || url.includes("YOUR_")) return null;
+                        try {
+                            const res = await fetch(url);
+                            if (res.ok) return res;
+                        } catch (e) {
+                            console.log("Direct fetch blocked, using proxy...");
+                        }
+                        // Reliable proxy fallback
+                        return fetch("https://corsproxy.io/?" + encodeURIComponent(url));
+                    };
+
+                    // Fetch both live CSVs from Google Sheets simultaneously
+                    const [cpRes, exRes] = await Promise.all([
+                        fetchWithFallback(dbLinks.chempulse).catch(() => null),
+                        fetchWithFallback(dbLinks.exams).catch(() => null)
+                    ]);
+                    if (cpRes && cpRes.ok) cpCsvText = await cpRes.text();
+                    if (exRes && exRes.ok) exCsvText = await exRes.text();
+                }
+
+                // Helper function to read the standard wide columns (Auto-detects ID column and skips empty rows)
+                function parseCsv(csv, studentId, typeName) {
+                    if (!csv || csv.trim() === "") return [];
+                    
+                    const rows = csv.split(/\r?\n/);
+                    if(rows.length < 2) return [];
+                    
+                    const cleanCell = (cell) => cell ? cell.trim().replace(/(^"|"$)/g, '') : '';
+                    const cleanTargetId = studentId.replace(/\s+/g, '').toUpperCase();
+                    
+                    // Smart Header Detection: Find first row that actually has data columns
+                    let headerIdx = 0;
+                    for(let i=0; i<rows.length; i++) {
+                        if(rows[i].split(',').length >= 3 && rows[i].replace(/,/g, '').trim() !== '') {
+                            headerIdx = i;
+                            break;
+                        }
+                    }
+                    const headers = rows[headerIdx].split(',').map(cleanCell);
+                    
+                    // Smart Target Search: Check both Column 1 and Column 2 for the ID
+                    const targetRow = rows.find((r, idx) => {
+                        if(idx <= headerIdx) return false;
+                        const cols = r.split(',').map(cleanCell);
+                        const col0 = cols[0] ? cols[0].replace(/\s+/g, '').toUpperCase() : '';
+                        const col1 = cols[1] ? cols[1].replace(/\s+/g, '').toUpperCase() : '';
+                        return col0 === cleanTargetId || col1 === cleanTargetId;
+                    });
+                    
+                    let data = [];
+                    if(targetRow) {
+                        const cols = targetRow.split(',').map(cleanCell);
+                        
+                        // Determine if Name is in col 0 or col 1 based on where we found the ID
+                        const col0 = cols[0] ? cols[0].replace(/\s+/g, '').toUpperCase() : '';
+                        const nameColIdx = (col0 === cleanTargetId) ? 1 : 0;
+                        
+                        for(let i = 2; i < headers.length; i++) {
+                            let score = parseFloat(cols[i]);
+                            if(!isNaN(score) && headers[i]) {
+                                data.push({
+                                    id: studentId,
+                                    name: cols[nameColIdx] || "Student",
+                                    type: typeName,
+                                    paper: headers[i],
+                                    score: score
+                                });
+                            }
+                        }
+                    }
+                    return data;
+                }
+
+                if (!isMock && !cpCsvText && !exCsvText) {
+                     showError("Network error: Could not connect to Google Sheets. The link might be broken or blocked.");
+                     loginBtn.disabled = false;
+                     spinner.classList.add('hidden');
+                     return;
+                }
+
+                const cpData = parseCsv(cpCsvText, studentIdInput, 'chempulse');
+                const exData = parseCsv(exCsvText, studentIdInput, 'exam');
+                const studentData = [...cpData, ...exData];
+
+                if (studentData.length === 0) {
+                    showError(`ID '${studentIdInput}' was not found in the Google Sheet. Please check the sheet.`);
+                    loginBtn.disabled = false;
+                    spinner.classList.add('hidden');
+                    return;
+                }
+
+                // Extract data arrays for charts
+                const studentName = studentData[0].name;
+                
+                const cpLabels = cpData.map(d => d.paper);
+                const cpScores = cpData.map(d => d.score);
+                
+                const exLabels = exData.map(d => d.paper);
+                const exScores = exData.map(d => d.score);
+
+                // Update UI Text
+                document.getElementById('displayName').innerText = studentName;
+                document.getElementById('displayId').innerText = studentIdInput;
+                document.getElementById('displayYear').innerText = yearInput + " A/L";
+
+                // Populate Data Table
+                const tbody = document.getElementById('marksTableBody');
+                tbody.innerHTML = ''; // clear old rows
+                studentData.forEach(d => {
+                    const row = document.createElement('tr');
+                    const category = d.type === 'chempulse' ? 'Chempulse' : 'Monthly Exam';
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-slate-600">${category}</td>
+                        <td class="py-3 px-4 font-medium text-slate-800">${d.paper}</td>
+                        <td class="py-3 px-4 text-right font-semibold text-brand-600">${d.score}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Switch Views
+                document.getElementById('loginView').classList.add('hidden');
+                document.getElementById('dashboardView').classList.remove('hidden');
+
+                // Render Canvas Charts
+                renderChart('chempulseCanvas', cpLabels, cpScores, '#2563eb', 'Chempulse Score');
+                renderChart('examCanvas', exLabels, exScores, '#059669', 'Exam Score'); // Emerald green for exams
+
+            } catch (err) {
+                console.error(err);
+                showError("An error occurred while loading data. Ensure your CSV links are valid and public.");
+            } finally {
+                loginBtn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        }
+
+        function renderChart(canvasId, labels, dataPoints, colorHex, datasetLabel) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            
+            // Destroy existing instances to prevent canvas overlap glitches
+            if (canvasId === 'chempulseCanvas' && chempulseChart) {
+                chempulseChart.destroy();
+            }
+            if (canvasId === 'examCanvas' && examChart) {
+                examChart.destroy();
+            }
+
+            // Create gradient fill for the line chart
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, colorHex + '40'); // 40 is hex alpha for ~25% opacity
+            gradient.addColorStop(1, colorHex + '00'); // Transparent at bottom
+
+            const config = {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: datasetLabel,
+                        data: dataPoints,
+                        borderColor: colorHex,
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: colorHex,
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        fill: true,
+                        tension: 0.4 // Smooth curve
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            padding: 12,
+                            titleFont: { size: 14, family: 'Inter' },
+                            bodyFont: { size: 14, family: 'Inter' },
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Marks: ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: '#f1f5f9' },
+                            border: { display: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            border: { display: false }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                }
+            };
+
+            const newChart = new Chart(ctx, config);
+
+            if (canvasId === 'chempulseCanvas') chempulseChart = newChart;
+            if (canvasId === 'examCanvas') examChart = newChart;
+        }
+
+        function switchTab(tabId) {
+            // Update Tab Content Visibility
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            // Update Tab Button Styling
+            const activeClasses = ['border-brand-600', 'text-brand-600'];
+            const inactiveClasses = ['border-transparent', 'text-slate-500', 'hover:text-slate-700'];
+
+            ['chempulse', 'exams', 'table'].forEach(t => {
+                const btn = document.getElementById('tabBtn-' + t);
+                if (t === tabId) {
+                    btn.classList.remove(...inactiveClasses);
+                    btn.classList.add(...activeClasses);
+                } else {
+                    btn.classList.remove(...activeClasses);
+                    btn.classList.add(...inactiveClasses);
+                }
+            });
+        }
+
+        function logout() {
+            // Hide Dashboard, Show Login
+            document.getElementById('dashboardView').classList.add('hidden');
+            document.getElementById('loginView').classList.remove('hidden');
+            
+            // Clear inputs and errors
+            document.getElementById('studentId').value = '';
+            hideError();
+            
+            // Default back to first tab for next login
+            switchTab('chempulse');
+        }
+    </script>
+</body>
+</html>
