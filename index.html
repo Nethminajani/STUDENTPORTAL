@@ -4,96 +4,202 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Student Portal | Chemistry by Krishan Jayarathna</title>
+    <!-- Load Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Load Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
         .tab-content.active { display: block; opacity: 1; }
         .animate-fade { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        /* Custom smooth scrollbar for table */
+        
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 999px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        /* Hide scrollbar for mobile swipeable elements */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Premium Aurora Background Animations & Grid */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        @keyframes float-1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(10vw, -10vh) scale(1.1); }
+            66% { transform: translate(-10vw, 10vh) scale(0.9); }
+        }
+        @keyframes float-2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-15vw, 5vh) scale(1.2); }
+            66% { transform: translate(5vw, -15vh) scale(0.8); }
+        }
+        @keyframes float-3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(15vw, 15vh) scale(0.9); }
+            66% { transform: translate(-10vw, -10vh) scale(1.1); }
+        }
+        .animate-float-1 { animation: float-1 18s infinite ease-in-out; }
+        .animate-float-2 { animation: float-2 22s infinite ease-in-out; }
+        .animate-float-3 { animation: float-3 25s infinite ease-in-out; }
+        
+        /* Premium Login Animations */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-slide-up { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .delay-100 { animation-delay: 100ms; opacity: 0; }
+        .delay-200 { animation-delay: 200ms; opacity: 0; }
+        .delay-300 { animation-delay: 300ms; opacity: 0; }
+        .delay-400 { animation-delay: 400ms; opacity: 0; }
+        .delay-500 { animation-delay: 500ms; opacity: 0; }
+        .animate-shimmer { animation: shimmer 2s infinite; }
     </style>
 </head>
-<body id="bodyRoot" class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-slate-100 font-sans min-h-screen flex items-center justify-center p-0 sm:p-6 transition-colors duration-500">
+<body id="bodyRoot" class="bg-slate-950 text-slate-100 font-sans min-h-screen flex items-center justify-center p-0 sm:p-6 transition-colors duration-700 relative overflow-x-hidden">
+
+    <!-- Premium Animated Aurora Background -->
+    <div id="animatedBg" class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute inset-0 bg-grid-pattern z-0 opacity-50"></div>
+        <div class="absolute inset-0 flex items-center justify-center z-10 mix-blend-screen opacity-55 sm:opacity-45">
+            <div id="blob1" class="absolute w-[50vw] h-[50vw] max-w-[700px] max-h-[700px] bg-blue-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-1 top-[-10%] left-[-10%] transition-colors duration-1000"></div>
+            <div id="blob2" class="absolute w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-indigo-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-2 top-[10%] right-[-10%] transition-colors duration-1000 delay-150"></div>
+            <div id="blob3" class="absolute w-[55vw] h-[55vw] max-w-[800px] max-h-[800px] bg-cyan-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-3 bottom-[-20%] left-[10%] transition-colors duration-1000 delay-300"></div>
+            <div id="blob4" class="absolute w-[40vw] h-[40vw] max-w-[550px] max-h-[550px] bg-violet-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-1 bottom-[-10%] right-[10%] transition-colors duration-1000 delay-500" style="animation-direction: reverse;"></div>
+        </div>
+        <div class="absolute inset-0 z-20 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,6,23,0.85)_100%)]"></div>
+    </div>
 
     <!-- LOGIN SCREEN -->
-    <div id="loginView" class="w-full max-w-md bg-white/95 backdrop-blur-xl sm:rounded-3xl shadow-2xl p-6 sm:p-9 text-slate-800 transform transition-all duration-300 border-0 sm:border border-white/20 min-h-screen sm:min-h-0 flex flex-col justify-center">
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-lg shadow-blue-500/30 mb-3 text-2xl font-bold">
-                ⚗️
+    <div id="loginView" class="relative z-10 w-full max-w-[390px] mx-4 my-6 bg-slate-900/60 backdrop-blur-3xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-6 sm:p-8 text-white transform transition-all duration-500 border-t border-l border-white/20 border-b border-r border-white/5 flex flex-col justify-center animate-slide-up">
+        <div class="text-center mb-6">
+            <div class="relative inline-block animate-slide-up delay-100 mb-3">
+                <div class="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-50 animate-pulse"></div>
+                <div class="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-xl shadow-blue-500/30 text-3xl font-bold border border-white/25 backdrop-blur-md transition-transform duration-300 hover:scale-105 hover:rotate-3 cursor-default">
+                    ⚗️
+                </div>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Student Portal</h1>
-            <p class="text-slate-500 mt-1.5 text-xs sm:text-sm font-medium">Chemistry by Krishan Jayarathna</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white animate-slide-up delay-200">Student Portal</h1>
+            <p class="text-indigo-200/80 mt-1 text-[10px] sm:text-xs font-semibold tracking-widest uppercase animate-slide-up delay-200">Chemistry • Krishan Jayarathna</p>
         </div>
 
-        <div class="space-y-5">
-            <div>
-                <label for="batchYear" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">A/L Batch Year</label>
+        <div class="space-y-4">
+            <!-- Batch Year Select -->
+            <div class="animate-slide-up delay-300">
+                <label for="batchYear" class="block text-[10px] font-bold uppercase tracking-wider text-indigo-200/80 mb-1.5 ml-1">A/L Batch Year</label>
                 <div class="relative">
-                    <select id="batchYear" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50/80 font-medium text-slate-800 appearance-none cursor-pointer">
-                        <option value="2028">2028 A/L</option>
-                        <option value="2027">2027 A/L</option>
-                        <option value="2026">2026 A/L</option>
-                        <option value="2025">2025 A/L</option>
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-indigo-300/70">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <select id="batchYear" class="w-full pl-10 pr-10 py-3.5 rounded-2xl border border-white/10 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 focus:bg-white/10 hover:bg-white/5 outline-none transition-all bg-black/30 text-white text-sm font-semibold appearance-none cursor-pointer backdrop-blur-md">
+                        <option value="2028" class="bg-slate-900 text-white">2028 A/L Batch</option>
+                        <option value="2027" class="bg-slate-900 text-white">2027 A/L Batch</option>
+                        <option value="2026" class="bg-slate-900 text-white">2026 A/L Batch</option>
+                        <option value="2025" class="bg-slate-900 text-white">2025 A/L Batch</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-indigo-300/70">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </div>
                 </div>
             </div>
 
-            <div>
-                <label for="studentId" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Student ID</label>
-                <input type="text" id="studentId" placeholder="e.g., EMA2028001" 
-                    class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-slate-50/80 font-medium text-slate-800 uppercase tracking-wide placeholder:normal-case placeholder:text-slate-400"
-                    onkeypress="handleKeyPress(event)">
+            <!-- Student ID Input -->
+            <div class="animate-slide-up delay-400">
+                <label for="studentId" class="block text-[10px] font-bold uppercase tracking-wider text-indigo-200/80 mb-1.5 ml-1">Student ID</label>
+                <div class="relative">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-indigo-300/70">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
+                    </div>
+                    <input type="text" id="studentId" placeholder="e.g., EMA2028001" autocomplete="off" class="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-white/10 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 focus:bg-white/10 hover:bg-white/5 outline-none transition-all bg-black/30 text-white text-sm font-mono font-bold uppercase tracking-wider placeholder:font-sans placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-slate-500 backdrop-blur-md" onkeypress="handleKeyPress(event)">
+                </div>
             </div>
 
-            <!-- Error Message Box -->
-            <div id="errorMessage" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm py-3 px-4 rounded-xl flex items-center">
-                <svg class="w-4 h-4 mr-2 flex-shrink-0 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                </svg>
+            <!-- Security PIN Input with Show/Hide Toggle -->
+            <div class="animate-slide-up delay-500">
+                <label for="studentPin" class="block text-[10px] font-bold uppercase tracking-wider text-indigo-200/80 mb-1.5 ml-1">Security PIN</label>
+                <div class="relative">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-indigo-300/70">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <input type="password" id="studentPin" placeholder="Last 4 digits of NIC" class="w-full pl-10 pr-10 py-3.5 rounded-2xl border border-white/10 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 focus:bg-white/10 hover:bg-white/5 outline-none transition-all bg-black/30 text-white text-sm font-mono font-bold tracking-widest placeholder:font-sans placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-500 backdrop-blur-md" onkeypress="handleKeyPress(event)">
+                    <button type="button" onclick="togglePinVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-indigo-300/60 hover:text-white transition-colors" title="Show/Hide PIN">
+                        <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Alert -->
+            <div id="errorMessage" class="hidden bg-rose-500/20 border border-rose-500/50 text-rose-200 text-xs py-3 px-4 rounded-2xl flex items-center gap-2.5 backdrop-blur-md animate-fade">
+                <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <span id="errorText">Please enter a valid Student ID.</span>
             </div>
 
-            <button id="loginBtn" onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.99] text-white font-semibold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/25 flex justify-center items-center text-sm tracking-wide">
-                <span>Access Dashboard</span>
-                <svg id="loadingSpinner" class="hidden animate-spin ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
+            <!-- Login Button -->
+            <button id="loginBtn" onclick="attemptLogin()" class="group relative overflow-hidden w-full mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-[length:200%_auto] hover:bg-right active:scale-[0.98] text-white font-bold py-4 px-4 rounded-2xl transition-all duration-300 shadow-[0_0_25px_rgba(59,130,246,0.35)] hover:shadow-[0_0_35px_rgba(59,130,246,0.55)] flex justify-center items-center text-sm tracking-wide border border-blue-400/30 animate-slide-up delay-500">
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
+                <span class="relative z-10 flex items-center gap-2">
+                    <span>Access Analytics Dashboard</span>
+                    <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                </span>
+                <svg id="loadingSpinner" class="hidden relative z-10 animate-spin ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
+
+            <!-- Instant Demo Preview Link -->
+            <div class="pt-2 text-center animate-slide-up delay-500">
+                <button type="button" onclick="loadDemoStudent()" class="text-[11px] font-semibold text-indigo-300/70 hover:text-white transition-colors inline-flex items-center gap-1.5 py-1 px-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10">
+                    <span>✨</span> Preview Interactive Demo Student
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- DASHBOARD SCREEN -->
-    <div id="dashboardView" class="hidden w-full max-w-5xl bg-white rounded-none sm:rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 border-0 sm:border border-slate-100 text-slate-800 min-h-screen sm:min-h-0">
+    <div id="dashboardView" class="hidden relative z-10 w-full max-w-5xl bg-white/95 backdrop-blur-2xl rounded-none sm:rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.45)] overflow-hidden transform transition-all duration-500 border-0 sm:border border-slate-100 text-slate-800 min-h-screen sm:min-h-0">
         <!-- Dashboard Header -->
         <div id="dashHeader" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden">
             <div class="relative z-10 w-full flex justify-between items-start sm:items-center">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span id="displayYear" class="text-[10px] sm:text-xs uppercase tracking-widest text-slate-300 font-semibold">2028 A/L</span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+                        <span id="displayYear" class="text-[10px] sm:text-xs uppercase tracking-widest text-slate-300 font-bold">2028 A/L</span>
                     </div>
-                    <h2 class="text-lg sm:text-2xl font-bold tracking-tight">Welcome, <span id="displayName" class="text-white drop-shadow-sm">Student</span></h2>
-                    <p class="text-slate-300 text-[11px] sm:text-sm mt-0.5 font-medium">Index: <span id="displayId" class="font-mono text-cyan-300 bg-white/10 px-2 py-0.5 rounded-md ml-1 font-semibold"></span></p>
+                    <h2 class="text-lg sm:text-2xl font-extrabold tracking-tight">Welcome, <span id="displayName" class="text-white drop-shadow-md">Student</span></h2>
+                    <p class="text-slate-300 text-[11px] sm:text-sm mt-0.5 font-medium">Index: <span id="displayId" class="font-mono text-cyan-300 bg-white/10 px-2 py-0.5 rounded-md ml-1 font-bold"></span></p>
                 </div>
-                <button onclick="logout()" class="sm:hidden px-3 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-lg text-xs font-semibold transition-all">
+                <button onclick="logout()" class="sm:hidden px-3 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-xs font-semibold transition-all">
                     Log Out
                 </button>
             </div>
             <div class="flex items-center gap-2.5 relative z-10 w-full sm:w-auto justify-between sm:justify-end mt-2 sm:mt-0">
-                <span id="tierBadge" class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-sm w-full sm:w-auto text-center">Analyzing...</span>
-                <button onclick="logout()" class="hidden sm:block px-3.5 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-sm font-semibold transition-all">
+                <span id="tierBadge" class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-sm w-full sm:w-auto text-center whitespace-nowrap">Analyzing...</span>
+                <button onclick="logout()" class="hidden sm:block px-4 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap">
                     Log Out
                 </button>
             </div>
@@ -102,41 +208,106 @@
         <!-- Dashboard Content -->
         <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
             
+            <!-- A/L Exam Countdown Bar -->
+            <div class="bg-slate-900 relative rounded-2xl overflow-hidden shadow-lg border border-slate-800">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-purple-600/10 opacity-50"></div>
+                <div class="relative p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-6 z-10">
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shadow-inner flex-shrink-0">
+                            <span class="text-xl">⏳</span>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-bold text-sm sm:text-base tracking-wide flex items-center gap-2">
+                                A/L <span id="cdYearDisplay">2028</span> Exam Target
+                            </h3>
+                            <p class="text-indigo-200 text-[10px] sm:text-xs font-medium tracking-wide uppercase mt-0.5" id="cdDaysText">Calculating timeline...</p>
+                        </div>
+                    </div>
+                    <div class="w-full sm:flex-1 max-w-md flex flex-col gap-1.5">
+                        <div class="flex justify-between items-center text-white/80 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">
+                            <span>Syllabus Timeline</span>
+                            <span id="cdPercentText" class="font-mono">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-950/80 rounded-full h-2.5 border border-white/10 overflow-hidden shadow-inner">
+                            <div id="cdProgressBar" class="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 w-0 transition-all duration-[1200ms] ease-out relative">
+                                <div class="absolute top-0 right-0 bottom-0 w-10 bg-gradient-to-l from-white/30 to-transparent"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Dynamic Feedback Alert Box -->
-            <div id="alertBox" class="p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm">
+            <div id="alertBox" class="p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm">
                 <div id="alertIcon" class="text-xl sm:text-3xl mt-0.5 flex-shrink-0"></div>
                 <div class="flex-1 w-full overflow-hidden">
-                    <div class="flex flex-row items-center justify-between gap-1.5 mb-1 w-full">
+                    <div class="flex flex-row items-center justify-between gap-2 mb-1 w-full">
                         <h4 id="alertTitle" class="font-bold text-xs sm:text-base truncate"></h4>
-                        <button onclick="showOverallAnalytics()" id="resetOverallBtn" class="flex-shrink-0 text-[10px] sm:text-[11px] font-semibold px-2 py-1 sm:px-2.5 rounded-lg bg-white/80 hover:bg-white border transition-colors shadow-xs">
-                            ← Overall
+                        <button onclick="showOverallAnalytics()" id="resetOverallBtn" class="hidden flex-shrink-0 text-[10px] sm:text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white/90 hover:bg-white text-slate-800 border border-slate-200 shadow-xs transition-all active:scale-95 uppercase tracking-wide">
+                            ← Reset View
                         </button>
                     </div>
                     <p id="alertBody" class="text-[11px] sm:text-sm leading-relaxed text-slate-700"></p>
                 </div>
             </div>
 
-            <!-- Dynamic Stats Summary Grid -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
-                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardRankBox">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel1">Batch Rank</span>
-                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statRank">--</p>
-                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub1">Class standing</p>
+            <!-- Gamification: Trophy Cabinet -->
+            <div>
+                <div class="flex items-center justify-between mb-2 px-1">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-400">Milestone Badges & Streaks</span>
                 </div>
-                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardScoreBox">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel2">Personal Avg</span>
-                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statAvg">--</p>
-                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub2">Across papers</p>
+                <div class="flex flex-nowrap overflow-x-auto gap-2 sm:gap-3 no-scrollbar pb-1" id="trophyCabinet">
+                    <!-- Badges injected dynamically -->
                 </div>
-                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardAvgBox">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel3">Attendance</span>
-                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statAttendance">--</p>
-                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub3">Sessions written</p>
+            </div>
+
+            <!-- Ukuwela-Style Advanced Stats Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <!-- Card 1: Batch Rank / Session Status -->
+                <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-white to-slate-50 shadow-sm" id="cardRankBox">
+                    <div class="flex justify-between items-start mb-1.5 sm:mb-2">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-indigo-600 transition-colors" id="cardLabel1">Batch Rank</span>
+                        <span class="text-base sm:text-lg opacity-80 group-hover:scale-110 transition-transform duration-300">🏆</span>
+                    </div>
+                    <div class="flex items-baseline gap-1.5 mt-0.5 sm:mt-1 overflow-hidden">
+                        <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 tracking-tight transition-all duration-300" id="statRank">--</p>
+                        <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 whitespace-nowrap truncate" id="statRankSub"></p>
+                    </div>
+                    <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1 font-medium truncate" id="cardSub1">Class standing</p>
                 </div>
-                <div class="p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300" id="cardTopBox">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400" id="cardLabel4">Highest Mark</span>
-                    <p class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1 text-slate-800" id="statHighest">--</p>
-                    <p class="text-[9px] sm:text-[11px] text-slate-400 mt-0.5" id="cardSub4">Personal best</p>
+                
+                <!-- Card 2: Performance Trend / Your Mark -->
+                <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-white to-slate-50 shadow-sm" id="cardScoreBox">
+                    <div class="flex justify-between items-start mb-1.5 sm:mb-2">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors" id="cardLabel2">Performance Trend</span>
+                        <span class="text-base sm:text-lg opacity-80 group-hover:scale-110 transition-transform duration-300">⚡️</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5 sm:mt-1">
+                        <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 tracking-tight transition-all duration-300" id="statAvg">--</p>
+                    </div>
+                    <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1 font-medium truncate" id="cardSub2">Based on recent papers</p>
+                </div>
+                
+                <!-- Card 3: Overall Average / Batch Average -->
+                <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-white to-slate-50 shadow-sm" id="cardAvgBox">
+                    <div class="flex justify-between items-start mb-1.5 sm:mb-2">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-emerald-600 transition-colors" id="cardLabel3">Overall Average</span>
+                        <span class="text-base sm:text-lg opacity-80 group-hover:scale-110 transition-transform duration-300">📊</span>
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 tracking-tight transition-all duration-300 mt-0.5 sm:mt-1" id="statAttendance">--</p>
+                    <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1 font-medium truncate" id="cardSub3">Cumulative score</p>
+                </div>
+                
+                <!-- Card 4: AI Target Goal / Batch Highest -->
+                <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-slate-50 to-slate-100 shadow-sm" id="cardTopBox">
+                    <div class="flex justify-between items-start mb-1.5 sm:mb-2">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-amber-600 transition-colors flex items-center gap-1" id="cardLabel4">
+                            ✨ AI Next Target
+                        </span>
+                        <span class="text-base sm:text-lg opacity-80 group-hover:scale-110 transition-transform duration-300">🎯</span>
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-indigo-600 tracking-tight transition-all duration-300 mt-0.5 sm:mt-1" id="statHighest">--</p>
+                    <p class="text-[10px] sm:text-[11px] text-slate-500 mt-1 font-medium truncate" id="cardSub4">Realistic growth step</p>
                 </div>
             </div>
 
@@ -153,58 +324,65 @@
                 </button>
             </div>
 
-            <!-- Chempulse Canvas Container -->
+            <!-- Chempulse Chart Tab -->
             <div id="tab-chempulse" class="tab-content active animate-fade">
-                <div class="p-3 sm:p-5 rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/50 to-white shadow-inner">
-                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2 text-[10px] sm:text-xs">
-                        <div class="flex items-center gap-2 sm:gap-3">
-                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-200"></span> Top (≥75)</span>
-                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 ring-2 ring-blue-200"></span> Solid (40-74)</span>
-                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-rose-200"></span> Review (&lt;40)</span>
+                <div class="p-3.5 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] relative overflow-hidden">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2 text-[10px] sm:text-xs">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-3.5 font-semibold text-slate-600">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Elite (≥75)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Solid (40-74)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200/60"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Review (&lt;40)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/60"><span class="w-2 h-2 rounded-full bg-indigo-500"></span> ✨ AI Path</span>
                         </div>
+                        <button onclick="toggleAverageLine()" class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/70 text-slate-700 font-bold transition-all border border-slate-200/80 shadow-xs active:scale-95 ml-auto sm:ml-0">
+                            <span class="avg-toggle-icon text-xs">👁️</span> <span class="avg-toggle-text">Hide Avg Line</span>
+                        </button>
                     </div>
-                    <div class="relative w-full h-[250px] sm:h-[400px]">
+                    <div class="relative w-full h-[290px] sm:h-[400px]">
                         <canvas id="chempulseCanvas"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Exams Canvas Container -->
+            <!-- Monthly Exams Chart Tab -->
             <div id="tab-exams" class="tab-content animate-fade">
-                <div class="p-3 sm:p-5 rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/50 to-white shadow-inner">
-                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2 text-[10px] sm:text-xs">
-                        <div class="flex items-center gap-2 sm:gap-3">
-                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-200"></span> Top (≥75)</span>
-                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 ring-2 ring-blue-200"></span> Solid (40-74)</span>
-                            <span class="inline-flex items-center gap-1 sm:gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-rose-200"></span> Review (&lt;40)</span>
+                <div class="p-3.5 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] relative overflow-hidden">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2 text-[10px] sm:text-xs">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-3.5 font-semibold text-slate-600">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Elite (≥75)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Solid (40-74)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200/60"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Review (&lt;40)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/60"><span class="w-2 h-2 rounded-full bg-indigo-500"></span> ✨ AI Path</span>
                         </div>
+                        <button onclick="toggleAverageLine()" class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/70 text-slate-700 font-bold transition-all border border-slate-200/80 shadow-xs active:scale-95 ml-auto sm:ml-0">
+                            <span class="avg-toggle-icon text-xs">👁️</span> <span class="avg-toggle-text">Hide Avg Line</span>
+                        </button>
                     </div>
-                    <div class="relative w-full h-[250px] sm:h-[400px]">
+                    <div class="relative w-full h-[290px] sm:h-[400px]">
                         <canvas id="examCanvas"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Marks & Benchmarks Table Container -->
+            <!-- Detailed Analytics Table Tab -->
             <div id="tab-table" class="tab-content animate-fade">
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm no-scrollbar">
-                    <table class="w-full text-left border-collapse text-[11px] sm:text-sm min-w-[500px]">
+                    <table class="w-full text-left border-collapse text-[11px] sm:text-sm min-w-[520px]">
                         <thead class="bg-slate-50/90 text-slate-500 font-bold uppercase text-[9px] sm:text-xs tracking-wider border-b border-slate-200">
                             <tr>
-                                <th class="py-2.5 px-3">Type</th>
-                                <th class="py-2.5 px-3">Paper Title</th>
-                                <th class="py-2.5 px-3 text-center">Score</th>
-                                <th class="py-2.5 px-3 text-center">Avg</th>
-                                <th class="py-2.5 px-3 text-center">Top</th>
-                                <th class="py-2.5 px-3 text-right">Guidance</th>
+                                <th class="py-3 px-3.5">Category</th>
+                                <th class="py-3 px-3.5">Paper Title</th>
+                                <th class="py-3 px-3.5 text-center">Your Mark</th>
+                                <th class="py-3 px-3.5 text-center">Batch Avg</th>
+                                <th class="py-3 px-3.5 text-center">Batch Top</th>
+                                <th class="py-3 px-3.5 text-right">Status & Guidance</th>
                             </tr>
                         </thead>
                         <tbody id="marksTableBody" class="divide-y divide-slate-100 bg-white">
-                            <!-- Injected dynamically -->
                         </tbody>
                     </table>
                 </div>
-                <p class="text-[10px] sm:text-xs text-slate-400 mt-2.5 text-center font-medium">💡 Click on any row above to inspect that specific paper.</p>
+                <p class="text-[10px] sm:text-xs text-slate-400 mt-2.5 text-center font-medium">💡 Tap on any row above to inspect that specific paper's performance.</p>
             </div>
         </div>
     </div>
@@ -216,44 +394,50 @@
         let currentAllRecords = [];
         let activeRecordIndex = -1;
         let currentThemeColor = 'blue';
+        let showAverageLine = true;
 
-        // Immersive Theme Engine Configurations
         const themeClasses = {
             blue: {
-                body: ['from-slate-900', 'via-slate-800', 'to-indigo-950'],
+                body: ['bg-slate-950'],
                 dash: ['border-slate-100', 'shadow-2xl'],
                 tabActive: ['bg-blue-600', 'text-white', 'shadow-blue-500/20'],
-                chartGradient: ['rgba(59, 130, 246, 0.28)', 'rgba(59, 130, 246, 0.04)', 'rgba(59, 130, 246, 0.00)']
+                chartGradient: ['rgba(59, 130, 246, 0.28)', 'rgba(59, 130, 246, 0.04)', 'rgba(59, 130, 246, 0.00)'],
+                blobs: ['bg-blue-600', 'bg-indigo-600', 'bg-cyan-600', 'bg-violet-600']
             },
             emerald: {
-                body: ['from-emerald-950', 'via-teal-950', 'to-emerald-950'],
+                body: ['bg-emerald-950'],
                 dash: ['border-emerald-500/50', 'shadow-emerald-900/30', 'shadow-2xl'],
                 tabActive: ['bg-emerald-600', 'text-white', 'shadow-emerald-500/20'],
-                chartGradient: ['rgba(16, 185, 129, 0.28)', 'rgba(16, 185, 129, 0.04)', 'rgba(16, 185, 129, 0.00)']
+                chartGradient: ['rgba(16, 185, 129, 0.28)', 'rgba(16, 185, 129, 0.04)', 'rgba(16, 185, 129, 0.00)'],
+                blobs: ['bg-emerald-600', 'bg-teal-600', 'bg-green-600', 'bg-lime-600']
             },
             rose: {
-                body: ['from-rose-950', 'via-red-950', 'to-rose-950'],
+                body: ['bg-rose-950'],
                 dash: ['border-rose-500/60', 'shadow-rose-900/40', 'shadow-2xl'],
                 tabActive: ['bg-rose-600', 'text-white', 'shadow-rose-500/20'],
-                chartGradient: ['rgba(244, 63, 94, 0.28)', 'rgba(244, 63, 94, 0.04)', 'rgba(244, 63, 94, 0.00)']
+                chartGradient: ['rgba(244, 63, 94, 0.28)', 'rgba(244, 63, 94, 0.04)', 'rgba(244, 63, 94, 0.00)'],
+                blobs: ['bg-rose-600', 'bg-red-600', 'bg-pink-600', 'bg-fuchsia-600']
             },
             amber: {
-                body: ['from-amber-950', 'via-orange-950', 'to-amber-950'],
+                body: ['bg-amber-950'],
                 dash: ['border-amber-500/50', 'shadow-amber-900/30', 'shadow-2xl'],
                 tabActive: ['bg-amber-600', 'text-white', 'shadow-amber-500/20'],
-                chartGradient: ['rgba(245, 158, 11, 0.28)', 'rgba(245, 158, 11, 0.04)', 'rgba(245, 158, 11, 0.00)']
+                chartGradient: ['rgba(245, 158, 11, 0.28)', 'rgba(245, 158, 11, 0.04)', 'rgba(245, 158, 11, 0.00)'],
+                blobs: ['bg-amber-600', 'bg-orange-600', 'bg-yellow-600', 'bg-red-500']
             },
             slate: {
-                body: ['from-slate-900', 'via-slate-800', 'to-slate-900'],
+                body: ['bg-slate-900'],
                 dash: ['border-slate-500/50', 'shadow-slate-900/30', 'shadow-2xl'],
                 tabActive: ['bg-slate-600', 'text-white', 'shadow-slate-500/20'],
-                chartGradient: ['rgba(100, 116, 139, 0.28)', 'rgba(100, 116, 139, 0.04)', 'rgba(100, 116, 139, 0.00)']
+                chartGradient: ['rgba(100, 116, 139, 0.28)', 'rgba(100, 116, 139, 0.04)', 'rgba(100, 116, 139, 0.00)'],
+                blobs: ['bg-slate-600', 'bg-gray-600', 'bg-zinc-600', 'bg-slate-500']
             }
         };
 
         const allBodyClasses = Object.values(themeClasses).flatMap(t => t.body);
         const allDashClasses = Object.values(themeClasses).flatMap(t => t.dash);
         const allTabClasses = Object.values(themeClasses).flatMap(t => t.tabActive);
+        const allBlobClasses = Object.values(themeClasses).flatMap(t => t.blobs);
 
         function updateGlobalTheme(themeName) {
             currentThemeColor = themeName;
@@ -265,6 +449,10 @@
             dash.classList.remove(...allDashClasses);
             dash.classList.add(...themeClasses[themeName].dash);
 
+            const blobs = ['blob1', 'blob2', 'blob3', 'blob4'].map(id => document.getElementById(id));
+            blobs.forEach(b => b.classList.remove(...allBlobClasses));
+            blobs.forEach((b, i) => b.classList.add(themeClasses[themeName].blobs[i]));
+
             const activeTabMatch = document.querySelector('.tab-content.active');
             if (activeTabMatch) switchTab(activeTabMatch.id.replace('tab-', ''));
 
@@ -272,9 +460,9 @@
             [chempulseChart, examChart].forEach(chart => {
                 if (chart && chart.data.datasets.length > 0) {
                     const ctx = chart.canvas.getContext('2d');
-                    const gradient = ctx.createLinearGradient(0, 0, 0, 360);
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 380);
                     gradient.addColorStop(0, colors[0]);
-                    gradient.addColorStop(0.7, colors[1]);
+                    gradient.addColorStop(0.65, colors[1]);
                     gradient.addColorStop(1, colors[2]);
                     chart.data.datasets[0].backgroundColor = gradient;
                     chart.update();
@@ -289,9 +477,30 @@
             "2025": { chempulse: "", exams: "" }
         };
 
-        function handleKeyPress(event) { if (event.key === 'Enter') attemptLogin(); }
-        function showError(message) { document.getElementById('errorText').innerText = message; document.getElementById('errorMessage').classList.remove('hidden'); }
-        function hideError() { document.getElementById('errorMessage').classList.add('hidden'); }
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') attemptLogin();
+        }
+
+        function togglePinVisibility() {
+            const pinInput = document.getElementById('studentPin');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>`;
+            } else {
+                pinInput.type = 'password';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('errorText').innerText = message;
+            document.getElementById('errorMessage').classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
 
         function getScoreTierColor(score, batchMax) {
             if (score === null || isNaN(score)) return '#94a3b8';
@@ -305,20 +514,32 @@
             if (!url || !url.startsWith('http')) return null;
             try {
                 let text = null;
-                const fetchUrls = [url, 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url), 'https://corsproxy.io/?' + encodeURIComponent(url)];
+                const fetchUrls = [
+                    url,
+                    'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+                    'https://corsproxy.io/?' + encodeURIComponent(url)
+                ];
                 for (const fetchUrl of fetchUrls) {
-                    try { const res = await fetch(fetchUrl); if (res.ok) { text = await res.text(); break; } } catch (e) {}
+                    try {
+                        const res = await fetch(fetchUrl);
+                        if (res.ok) {
+                            text = await res.text();
+                            break;
+                        }
+                    } catch (e) {}
                 }
                 if (!text) return null;
 
-                const rows = []; let row = [], col = "", inQ = false;
+                const rows = [];
+                let row = [], col = "", inQ = false;
                 for (let c of text) {
                     if (c === '"') inQ = !inQ;
                     else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
-                    else if (c === '\n' && !inQ) { row.push(col.trim()); if(row.join('')) rows.push(row); row = []; col = ""; }
+                    else if (c === '\n' && !inQ) { row.push(col.trim()); if (row.join('')) rows.push(row); row = []; col = ""; }
                     else if (c !== '\r') col += c;
                 }
-                row.push(col.trim()); if(row.join('')) rows.push(row);
+                row.push(col.trim());
+                if (row.join('')) rows.push(row);
                 if (rows.length < 2) return null;
 
                 let headerIdx = rows.findIndex(r => r.some(c => c.toLowerCase().includes('name') || c.toLowerCase().includes('index')));
@@ -326,16 +547,26 @@
                 const headers = rows[headerIdx].map(h => h.trim().replace(/(^"|"$)/g, ''));
 
                 let idCol = 1, nameCol = 0;
-                if (headers[0].toLowerCase().includes('index') || headers[0].toLowerCase().includes('id')) { idCol = 0; nameCol = 1; }
+                if (headers[0].toLowerCase().includes('index') || headers[0].toLowerCase().includes('id')) {
+                    idCol = 0;
+                    nameCol = 1;
+                }
+                let pinCol = headers.findIndex(h => h.toLowerCase().includes('nic') || h.toLowerCase().includes('pin') || h.toLowerCase().includes('password'));
+                
                 const dataRows = rows.slice(headerIdx + 1).filter(r => r[idCol] && r[idCol].trim() !== '');
 
                 const paperMeta = [];
-                for (let c = 2; c < headers.length; c++) {
-                    const rawTitle = headers[c] ? headers[c].trim() : `${prefix} ${c - 1}`;
+                for (let c = 0; c < headers.length; c++) {
+                    if (c === idCol || c === nameCol || c === pinCol) continue;
+
+                    const rawTitle = headers[c] ? headers[c].trim() : `${prefix} ${paperMeta.length + 1}`;
                     const scores = [];
                     dataRows.forEach(r => {
                         const val = r[c] ? r[c].trim().replace(/(^"|"$)/g, '') : '';
-                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) scores.push(parseFloat(val));
+                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
+                            const num = parseFloat(val);
+                            if (num >= 0 && num <= 100) scores.push(num);
+                        }
                     });
                     const isConducted = scores.length > 0;
                     paperMeta.push({
@@ -343,21 +574,26 @@
                         title: rawTitle.toLowerCase().includes(prefix.toLowerCase()) ? rawTitle : `${prefix} ${rawTitle}`,
                         max: isConducted ? Math.max(...scores) : 0,
                         avg: isConducted ? parseFloat((scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1)) : 0,
-                        validCount: scores.length, isConducted: isConducted
+                        validCount: scores.length,
+                        isConducted: isConducted
                     });
                 }
 
                 const conductedMetas = paperMeta.filter(m => m.isConducted);
                 const studentRankings = dataRows.map(r => {
-                    let total = 0, count = 0;
+                    let total = 0;
                     conductedMetas.forEach(meta => {
                         const val = r[meta.colIndex] ? r[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
-                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) { total += parseFloat(val); count++; }
+                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
+                            total += parseFloat(val);
+                        }
                     });
                     return {
                         id: r[idCol].trim().replace(/(^"|"$)/g, '').toUpperCase(),
-                        name: r[nameCol].trim().replace(/(^"|"$)/g, '') || "Student",
-                        avg: count > 0 ? total / count : 0, rawRow: r
+                        name: r[nameCol] ? r[nameCol].trim().replace(/(^"|"$)/g, '') : "Student",
+                        pin: pinCol !== -1 && r[pinCol] ? r[pinCol].trim().replace(/(^"|"$)/g, '') : null,
+                        avg: conductedMetas.length > 0 ? total / conductedMetas.length : 0,
+                        rawRow: r
                     };
                 }).sort((a, b) => b.avg - a.avg);
 
@@ -365,41 +601,205 @@
                 if (studentRankIndex === -1) return null;
 
                 const targetStudent = studentRankings[studentRankIndex];
-                const paperRecords = []; let attendedCount = 0;
+                const paperRecords = [];
+                let attendedCount = 0;
 
                 paperMeta.forEach(meta => {
                     if (!meta.isConducted) {
-                        paperRecords.push({ title: meta.title, score: null, isAbsent: false, isNotGiven: true, batchAvg: "-", batchMax: "-", type: prefix.toLowerCase() });
+                        paperRecords.push({
+                            title: meta.title, score: null, isAbsent: false, isNotGiven: true,
+                            batchAvg: "-", batchMax: "-", type: prefix.toLowerCase()
+                        });
                         return;
                     }
                     const rawVal = targetStudent.rawRow[meta.colIndex] ? targetStudent.rawRow[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
                     const isAbsent = rawVal === '' || rawVal.toUpperCase() === 'AB' || isNaN(rawVal);
                     if (!isAbsent) attendedCount++;
                     paperRecords.push({
-                        title: meta.title, score: isAbsent ? null : parseFloat(rawVal),
-                        isAbsent: isAbsent, isNotGiven: false, batchAvg: meta.avg, batchMax: meta.max, type: prefix.toLowerCase()
+                        title: meta.title,
+                        score: isAbsent ? null : parseFloat(rawVal),
+                        isAbsent: isAbsent,
+                        isNotGiven: false,
+                        batchAvg: meta.avg,
+                        batchMax: meta.max,
+                        type: prefix.toLowerCase()
                     });
                 });
 
                 return {
-                    name: targetStudent.name, rank: `${studentRankIndex + 1} / ${studentRankings.length}`,
-                    overallAvg: targetStudent.avg.toFixed(1), totalPapers: conductedMetas.length,
-                    attendedPapers: attendedCount, records: paperRecords
+                    name: targetStudent.name,
+                    rankNum: studentRankIndex + 1,
+                    totalStudents: studentRankings.length,
+                    overallAvg: targetStudent.avg.toFixed(1),
+                    totalPapers: conductedMetas.length,
+                    attendedPapers: attendedCount,
+                    records: paperRecords,
+                    pin: targetStudent.pin
                 };
-            } catch (err) { return null; }
+            } catch (err) {
+                return null;
+            }
+        }
+
+        function populateDashboardWithData(primaryData, examData, studentIdInput, yearInput) {
+            currentAllRecords = [
+                ...(primaryData ? primaryData.records : []),
+                ...(examData ? examData.records : [])
+            ];
+
+            // 1. A/L Exam Countdown Progress
+            const examYear = parseInt(yearInput);
+            const targetExamDate = new Date(examYear, 7, 1); // August 1st of Target Year
+            const syllabusStartDate = new Date(examYear - 2, 4, 1); // May 1st, 2 years prior
+            const currentDate = new Date();
+
+            const totalDays = (targetExamDate - syllabusStartDate) / (1000 * 60 * 60 * 24);
+            const passedDays = (currentDate - syllabusStartDate) / (1000 * 60 * 60 * 24);
+            let progressPercent = Math.max(5, Math.min(100, (passedDays / totalDays) * 100));
+            const daysRemaining = Math.ceil((targetExamDate - currentDate) / (1000 * 60 * 60 * 24));
+
+            document.getElementById('cdYearDisplay').innerText = examYear;
+            if (daysRemaining > 0) {
+                document.getElementById('cdDaysText').innerHTML = `<span class="text-white font-mono font-bold text-xs sm:text-sm">${daysRemaining}</span> Days Remaining`;
+            } else {
+                document.getElementById('cdDaysText').innerText = "EXAM PERIOD ACTIVE";
+                progressPercent = 100;
+            }
+
+            setTimeout(() => {
+                document.getElementById('cdProgressBar').style.width = `${progressPercent}%`;
+                document.getElementById('cdPercentText').innerText = `${Math.round(progressPercent)}%`;
+            }, 400);
+
+            // 2. Gamification Badges
+            const cabinet = document.getElementById('trophyCabinet');
+            cabinet.innerHTML = '';
+            const earnedBadges = [];
+            const attendedRecords = currentAllRecords.filter(r => !r.isNotGiven);
+
+            let activeStreak = 0;
+            for (let i = attendedRecords.length - 1; i >= 0; i--) {
+                if (!attendedRecords[i].isAbsent) activeStreak++;
+                else break;
+            }
+
+            if (attendedRecords.length >= 3 && activeStreak === attendedRecords.length) {
+                earnedBadges.push({ icon: '🌟', title: 'Unbroken (100% Attendance)', classes: 'text-amber-700 bg-amber-50 border-amber-200' });
+            } else if (activeStreak >= 3) {
+                earnedBadges.push({ icon: '🔥', title: `${activeStreak} Paper Streak`, classes: 'text-orange-700 bg-orange-50 border-orange-200' });
+            }
+
+            const validScoresOnly = attendedRecords.filter(r => !r.isAbsent).map(r => r.score);
+            if (validScoresOnly.length >= 2) {
+                const lastScore = validScoresOnly[validScoresOnly.length - 1];
+                const prevScore = validScoresOnly[validScoresOnly.length - 2];
+                if (lastScore - prevScore >= 12) {
+                    earnedBadges.push({ icon: '🚀', title: `Comeback Kid (+${lastScore - prevScore})`, classes: 'text-purple-700 bg-purple-50 border-purple-200' });
+                }
+            }
+
+            if (validScoresOnly.some(s => s >= 75)) {
+                earnedBadges.push({ icon: '💎', title: 'Elite Club (75+ Scorer)', classes: 'text-emerald-700 bg-emerald-50 border-emerald-200' });
+            }
+
+            if (earnedBadges.length > 0) {
+                earnedBadges.forEach(b => {
+                    cabinet.innerHTML += `<div class="flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border ${b.classes} flex items-center gap-1.5 sm:gap-2 shadow-xs cursor-default hover:-translate-y-0.5 transition-transform"><span class="text-sm sm:text-base">${b.icon}</span><span class="text-[10px] sm:text-xs font-bold uppercase tracking-wide">${b.title}</span></div>`;
+                });
+            } else {
+                cabinet.innerHTML = `<div class="flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 flex items-center gap-2 shadow-xs cursor-default"><span class="text-sm">🌱</span><span class="text-[10px] sm:text-xs font-bold uppercase tracking-wide">Complete more papers to unlock achievement badges!</span></div>`;
+            }
+
+            // 3. Percentile & Trend Math
+            const percentile = Math.max(1, Math.round((1 - ((primaryData.rankNum - 1) / primaryData.totalStudents)) * 100));
+
+            let trendStr = "--", trendColor = "text-slate-500", trendVal = 0;
+            if (validScoresOnly.length >= 2) {
+                const latest = validScoresOnly[validScoresOnly.length - 1];
+                const prev = validScoresOnly[validScoresOnly.length - 2];
+                trendVal = parseFloat((latest - prev).toFixed(1));
+                if (trendVal > 0) { trendStr = `▲ +${trendVal}`; trendColor = "text-emerald-600"; }
+                else if (trendVal < 0) { trendStr = `▼ ${Math.abs(trendVal)}`; trendColor = "text-rose-600"; }
+                else { trendStr = `■ 0`; trendColor = "text-slate-500"; }
+            }
+
+            // 4. AI Growth Engine: Smart Predictive Target Calculation
+            let nextGoal = "--";
+            let nextGoalSub = "Target for next paper";
+
+            if (validScoresOnly.length > 0) {
+                const latest = validScoresOnly[validScoresOnly.length - 1];
+                let recentAvg = latest;
+                if (validScoresOnly.length >= 3) {
+                    recentAvg = (validScoresOnly[validScoresOnly.length - 1] + validScoresOnly[validScoresOnly.length - 2] + validScoresOnly[validScoresOnly.length - 3]) / 3;
+                } else if (validScoresOnly.length === 2) {
+                    recentAvg = (validScoresOnly[validScoresOnly.length - 1] + validScoresOnly[validScoresOnly.length - 2]) / 2;
+                }
+
+                if (latest >= 75) {
+                    nextGoal = "75+";
+                    nextGoalSub = "Maintain Elite 'A' Tier";
+                } else {
+                    const gap = 75 - latest;
+                    const momentumMultiplier = latest > recentAvg ? 1.2 : 1.0;
+                    const baseJump = 12 * momentumMultiplier;
+                    const stepJump = Math.min(gap, Math.max(Math.ceil(baseJump), 6));
+                    nextGoal = `${latest + stepJump}`;
+                    nextGoalSub = `Realistic +${stepJump} mark step toward 'A'`;
+                }
+            }
+
+            currentStudentSummary = {
+                name: primaryData.name,
+                id: studentIdInput,
+                year: yearInput,
+                rankText: `#${primaryData.rankNum}`,
+                rankSub: `of ${primaryData.totalStudents} • Top ${percentile}%`,
+                overallAvg: primaryData.overallAvg,
+                trendHtml: `<span class="${trendColor}">${trendStr}</span>`,
+                attendance: `${primaryData.attendedPapers} / ${primaryData.totalPapers}`,
+                nextGoal: nextGoal,
+                nextGoalSub: nextGoalSub
+            };
+
+            document.getElementById('displayName').innerText = primaryData.name;
+            document.getElementById('displayId').innerText = studentIdInput;
+            document.getElementById('displayYear').innerText = `${yearInput} A/L`;
+
+            showOverallAnalytics();
+            populateMarksTable(currentAllRecords);
+
+            if (primaryData) renderEnhancedChart('chempulseCanvas', primaryData.records, 'Chempulse');
+            if (examData) {
+                renderEnhancedChart('examCanvas', examData.records, 'Monthly Exam');
+                document.getElementById('tabBtn-exams').classList.remove('hidden');
+            } else {
+                document.getElementById('tabBtn-exams').classList.add('hidden');
+            }
+
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('dashboardView').classList.remove('hidden');
         }
 
         async function attemptLogin() {
             hideError();
             const studentIdInput = document.getElementById('studentId').value.trim().toUpperCase();
+            const studentPinInput = document.getElementById('studentPin').value.trim();
             const yearInput = document.getElementById('batchYear').value;
+
             if (!studentIdInput) { showError("Please enter your Student ID."); return; }
+            if (!studentPinInput) { showError("Please enter your Security PIN."); return; }
+
             const dbLinks = classDatabases[yearInput];
-            if (!dbLinks) { showError("Database links not configured for " + yearInput); return; }
+            if (!dbLinks || (!dbLinks.chempulse && !dbLinks.exams)) {
+                showError(`No live database configured for ${yearInput} yet. Try 2028 A/L or click 'Preview Demo Student'.`);
+                return;
+            }
 
             const loginBtn = document.getElementById('loginBtn');
             const spinner = document.getElementById('loadingSpinner');
-            loginBtn.disabled = true; spinner.classList.remove('hidden');
+            loginBtn.disabled = true;
+            spinner.classList.remove('hidden');
 
             try {
                 const [chempulseData, examData] = await Promise.all([
@@ -407,46 +807,85 @@
                     fetchSheetAnalytics(dbLinks.exams, studentIdInput, 'Exam')
                 ]);
 
-                if (!chempulseData && !examData) { showError(`Student ID '${studentIdInput}' not found in the sheet.`); return; }
-
+                if (!chempulseData && !examData) {
+                    showError(`Student ID '${studentIdInput}' not found in the ${yearInput} batch sheet.`);
+                    return;
+                }
                 const primaryData = chempulseData || examData;
-                currentAllRecords = [...(chempulseData ? chempulseData.records : []), ...(examData ? examData.records : [])];
-                const validScores = currentAllRecords.filter(r => !r.isAbsent && !r.isNotGiven).map(r => r.score);
 
-                currentStudentSummary = {
-                    name: primaryData.name, id: studentIdInput, year: yearInput, rank: primaryData.rank,
-                    overallAvg: primaryData.overallAvg, attendance: `${primaryData.attendedPapers} / ${primaryData.totalPapers}`,
-                    highestScore: validScores.length > 0 ? Math.max(...validScores) : 0
-                };
+                if (primaryData.pin) {
+                    const sheetPinStr = String(primaryData.pin).toLowerCase().trim();
+                    const sheetPinDigits = sheetPinStr.replace(/[^0-9]/g, '');
+                    const enteredPin = studentPinInput.toLowerCase().trim();
+                    if (
+                        enteredPin !== sheetPinStr &&
+                        enteredPin !== sheetPinStr.slice(-4) &&
+                        !(sheetPinDigits.length >= 4 && enteredPin.replace(/[^0-9]/g, '') === sheetPinDigits.slice(-4))
+                    ) {
+                        showError("Incorrect Security PIN. Please verify the last 4 digits of your NIC.");
+                        return;
+                    }
+                }
 
-                document.getElementById('displayName').innerText = primaryData.name;
-                document.getElementById('displayId').innerText = studentIdInput;
-                document.getElementById('displayYear').innerText = `${yearInput} A/L`;
+                populateDashboardWithData(primaryData, examData, studentIdInput, yearInput);
+            } catch (err) {
+                showError("Network error while loading data. Please check your internet connection.");
+            } finally {
+                loginBtn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        }
 
-                showOverallAnalytics();
-                populateMarksTable(currentAllRecords);
-
-                if (chempulseData) renderEnhancedChart('chempulseCanvas', chempulseData.records, 'Chempulse');
-                if (examData) {
-                    renderEnhancedChart('examCanvas', examData.records, 'Monthly Exam');
-                    document.getElementById('tabBtn-exams').classList.remove('hidden');
-                } else { document.getElementById('tabBtn-exams').classList.add('hidden'); }
-
-                document.getElementById('loginView').classList.add('hidden');
-                document.getElementById('dashboardView').classList.remove('hidden');
-
-            } catch (err) { showError("An error occurred loading your data."); } 
-            finally { loginBtn.disabled = false; spinner.classList.add('hidden'); }
+        function loadDemoStudent() {
+            hideError();
+            const demoRecords = [
+                { title: "Chempulse 01", score: 34, isAbsent: false, isNotGiven: false, batchAvg: 48.2, batchMax: 88, type: "chempulse" },
+                { title: "Chempulse 02", score: 46, isAbsent: false, isNotGiven: false, batchAvg: 51.5, batchMax: 91, type: "chempulse" },
+                { title: "Chempulse 03", score: 52, isAbsent: false, isNotGiven: false, batchAvg: 49.0, batchMax: 86, type: "chempulse" },
+                { title: "Chempulse 04", score: null, isAbsent: true, isNotGiven: false, batchAvg: 54.8, batchMax: 94, type: "chempulse" },
+                { title: "Chempulse 05", score: 58, isAbsent: false, isNotGiven: false, batchAvg: 52.3, batchMax: 89, type: "chempulse" },
+                { title: "Chempulse 06", score: 74, isAbsent: false, isNotGiven: false, batchAvg: 56.1, batchMax: 95, type: "chempulse" },
+                { title: "Chempulse 07", score: null, isAbsent: false, isNotGiven: true, batchAvg: "-", batchMax: "-", type: "chempulse" }
+            ];
+            const demoPrimaryData = {
+                name: "Kavindu Perera (Demo)",
+                rankNum: 14,
+                totalStudents: 185,
+                overallAvg: "52.8",
+                totalPapers: 6,
+                attendedPapers: 5,
+                records: demoRecords,
+                pin: "1234"
+            };
+            populateDashboardWithData(demoPrimaryData, null, "EMA2028DEMO", "2028");
         }
 
         function showOverallAnalytics() {
             activeRecordIndex = -1;
             if (!currentStudentSummary) return;
             const summary = currentStudentSummary;
-            document.getElementById('cardLabel1').innerText = "Batch Rank"; document.getElementById('statRank').innerText = summary.rank; document.getElementById('cardSub1').innerText = "Overall Batch Position";
-            document.getElementById('cardLabel2').innerText = "Personal Average"; document.getElementById('statAvg').innerText = `${summary.overallAvg}%`; document.getElementById('cardSub2').innerText = "Across completed papers";
-            document.getElementById('cardLabel3').innerText = "Paper Attendance"; document.getElementById('statAttendance').innerText = summary.attendance; document.getElementById('cardSub3').innerText = "Sessions written";
-            document.getElementById('cardLabel4').innerText = "Highest Mark"; document.getElementById('statHighest').innerText = summary.highestScore; document.getElementById('cardSub4').innerText = "Personal best mark";
+
+            document.getElementById('statRank').className = "text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 tracking-tight transition-all duration-300 mt-0.5 sm:mt-1";
+
+            document.getElementById('cardLabel1').innerText = "Batch Rank";
+            document.getElementById('statRank').innerText = summary.rankText;
+            document.getElementById('statRankSub').innerText = summary.rankSub;
+            document.getElementById('cardSub1').innerText = "Overall Batch Standing";
+
+            document.getElementById('cardLabel2').innerText = "Performance Trend";
+            document.getElementById('statAvg').innerHTML = summary.trendHtml;
+            document.getElementById('cardSub2').innerText = "Versus previous paper";
+
+            document.getElementById('cardLabel3').innerText = "Overall Average";
+            document.getElementById('statAttendance').innerText = `${summary.overallAvg}%`;
+            document.getElementById('cardSub3').innerText = `Attended ${summary.attendance} papers`;
+
+            document.getElementById('cardLabel4').innerText = "✨ AI Next Target";
+            document.getElementById('statHighest').innerText = summary.nextGoal;
+            document.getElementById('cardSub4').innerText = summary.nextGoalSub;
+
+            document.getElementById('resetOverallBtn').classList.add('hidden');
+
             applyTierTheme(parseFloat(summary.overallAvg), null);
             highlightSelectedRow(-1);
             if (chempulseChart) chempulseChart.update();
@@ -454,18 +893,51 @@
         }
 
         function inspectPaper(record, index) {
-            activeRecordIndex = index; highlightSelectedRow(index);
+            activeRecordIndex = index;
+            highlightSelectedRow(index);
+
+            document.getElementById('statRank').className = "text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight transition-all duration-300 truncate mt-1";
+            document.getElementById('resetOverallBtn').classList.remove('hidden');
+
             if (record.isNotGiven) {
-                document.getElementById('cardLabel1').innerText = "Paper Status"; document.getElementById('statRank').innerText = "Pending"; document.getElementById('cardSub1').innerText = "Not yet conducted";
-                document.getElementById('cardLabel2').innerText = "Your Score"; document.getElementById('statAvg').innerText = "N/A"; document.getElementById('cardSub2').innerText = "No marks recorded";
-                document.getElementById('cardLabel3').innerText = "Batch Avg"; document.getElementById('statAttendance').innerText = "-"; document.getElementById('cardSub3').innerText = "Awaiting upload";
-                document.getElementById('cardLabel4').innerText = "Batch Top"; document.getElementById('statHighest').innerText = "-"; document.getElementById('cardSub4').innerText = "Awaiting upload";
-                applyTierTheme(null, record); return;
+                document.getElementById('cardLabel1').innerText = "Paper Status";
+                document.getElementById('statRank').innerText = "Pending";
+                document.getElementById('statRankSub').innerText = "";
+                document.getElementById('cardSub1').innerText = "Not yet conducted";
+
+                document.getElementById('cardLabel2').innerText = "Your Score";
+                document.getElementById('statAvg').innerText = "N/A";
+                document.getElementById('cardSub2').innerText = "No marks recorded";
+
+                document.getElementById('cardLabel3').innerText = "Batch Avg";
+                document.getElementById('statAttendance').innerText = "-";
+                document.getElementById('cardSub3').innerText = "Awaiting upload";
+
+                document.getElementById('cardLabel4').innerText = "Batch Top";
+                document.getElementById('statHighest').innerText = "-";
+                document.getElementById('cardSub4').innerText = "Awaiting upload";
+
+                applyTierTheme(null, record);
+                return;
             }
-            document.getElementById('cardLabel1').innerText = "Session Status"; document.getElementById('statRank').innerText = record.isAbsent ? "Absent" : "Completed"; document.getElementById('cardSub1').innerText = record.isAbsent ? "Did not sit" : "Verified mark";
-            document.getElementById('cardLabel2').innerText = "Your Mark"; document.getElementById('statAvg').innerText = record.isAbsent ? "AB" : record.score; document.getElementById('cardSub2').innerText = record.isAbsent ? "Missed paper" : `Out of 100`;
-            document.getElementById('cardLabel3').innerText = "Batch Average"; document.getElementById('statAttendance').innerText = record.batchAvg; document.getElementById('cardSub3').innerText = "Class benchmark";
-            document.getElementById('cardLabel4').innerText = "Batch Highest"; document.getElementById('statHighest').innerText = record.batchMax; document.getElementById('cardSub4').innerText = "Top mark in class";
+
+            document.getElementById('cardLabel1').innerText = "Session Status";
+            document.getElementById('statRank').innerText = record.isAbsent ? "Absent" : "Completed";
+            document.getElementById('statRankSub').innerText = "";
+            document.getElementById('cardSub1').innerText = record.isAbsent ? "Did not sit" : "Verified mark";
+
+            document.getElementById('cardLabel2').innerText = "Your Mark";
+            document.getElementById('statAvg').innerText = record.isAbsent ? "AB" : record.score;
+            document.getElementById('cardSub2').innerText = record.isAbsent ? "Missed paper" : "Out of 100";
+
+            document.getElementById('cardLabel3').innerText = "Batch Average";
+            document.getElementById('statAttendance').innerText = record.batchAvg;
+            document.getElementById('cardSub3').innerText = "Class benchmark";
+
+            document.getElementById('cardLabel4').innerText = "Batch Highest";
+            document.getElementById('statHighest').innerText = record.batchMax;
+            document.getElementById('cardSub4').innerText = "Top mark in class";
+
             applyTierTheme(record.score, record);
             if (chempulseChart) chempulseChart.update();
             if (examChart) examChart.update();
@@ -473,61 +945,133 @@
 
         function highlightSelectedRow(index) {
             document.querySelectorAll('#marksTableBody tr').forEach((tr, i) => {
-                tr.className = i === index ? "bg-blue-50/90 border-l-4 border-l-blue-600 transition-all font-semibold cursor-pointer" : "hover:bg-slate-50/70 transition-all cursor-pointer";
+                tr.className = i === index
+                    ? "bg-blue-50/90 border-l-4 border-l-blue-600 transition-all font-semibold cursor-pointer"
+                    : "hover:bg-slate-50/70 transition-all cursor-pointer";
             });
         }
 
         function applyTierTheme(scoreOrAvg, record) {
-            const badge = document.getElementById('tierBadge'), alertBox = document.getElementById('alertBox'), alertTitle = document.getElementById('alertTitle'), alertBody = document.getElementById('alertBody'), alertIcon = document.getElementById('alertIcon'), dashHeader = document.getElementById('dashHeader');
-            const setCardBorders = (borderColor, bgColor) => { ['cardRankBox', 'cardScoreBox', 'cardAvgBox', 'cardTopBox'].forEach(id => { document.getElementById(id).className = `p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 ${borderColor} ${bgColor}`; }); };
+            const badge = document.getElementById('tierBadge');
+            const alertBox = document.getElementById('alertBox');
+            const alertTitle = document.getElementById('alertTitle');
+            const alertBody = document.getElementById('alertBody');
+            const alertIcon = document.getElementById('alertIcon');
+            const dashHeader = document.getElementById('dashHeader');
+
+            const setCardBorders = (borderColor, bgColor) => {
+                ['cardRankBox', 'cardScoreBox', 'cardAvgBox', 'cardTopBox'].forEach(id => {
+                    document.getElementById(id).className = `p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default ${borderColor} ${bgColor}`;
+                });
+            };
 
             if (record && record.isNotGiven) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-500/80 text-white border border-slate-400 w-full sm:w-auto text-center"; badge.innerText = "Upcoming Paper";
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-500/80 text-white border border-slate-400 w-full sm:w-auto text-center";
+                badge.innerText = "Upcoming Paper";
                 dashHeader.className = "bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-slate-50 border-slate-200 text-slate-800"; alertIcon.innerText = "⏳"; alertTitle.innerText = `${record.title} - Not Yet Conducted`; alertBody.innerText = "This paper has not yet been administered or marks have not been uploaded by Krishan Jayarathna's team."; setCardBorders("border-slate-200", "bg-slate-50/50"); 
-                updateGlobalTheme('slate'); return;
+                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-slate-50 border-slate-200 text-slate-800";
+                alertIcon.innerText = "⏳";
+                alertTitle.innerText = `${record.title} — Not Yet Conducted`;
+                alertBody.innerText = "This paper has not yet been administered or marks have not been uploaded yet.";
+                setCardBorders("border-slate-200/80", "bg-gradient-to-br from-slate-50 to-slate-100/50");
+                updateGlobalTheme('slate');
+                return;
             }
+
             if (record && record.isAbsent) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-500 text-white border border-amber-400 shadow-md shadow-amber-500/20 w-full sm:w-auto text-center"; badge.innerText = "Session Missed";
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-500 text-white border border-amber-400 shadow-md shadow-amber-500/20 w-full sm:w-auto text-center";
+                badge.innerText = "Session Missed";
                 dashHeader.className = "bg-gradient-to-r from-amber-950 via-amber-900 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-amber-50 border-amber-200 text-amber-950"; alertIcon.innerText = "⚠️"; alertTitle.innerText = `Absent for ${record.title}`; alertBody.innerText = `You did not sit for this exam. The class average was ${record.batchAvg} and the highest score was ${record.batchMax}. Make sure to collect the paper and watch the video discussion immediately!`; setCardBorders("border-amber-200", "bg-amber-50/40"); 
-                updateGlobalTheme('amber'); return;
+                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-amber-50 border-amber-200 text-amber-950";
+                alertIcon.innerText = "⚠️";
+                alertTitle.innerText = `Absent for ${record.title}`;
+                alertBody.innerText = `You missed this session (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Please collect the printed paper and complete the discussion recording immediately.`;
+                setCardBorders("border-amber-200/80", "bg-gradient-to-br from-amber-50 to-amber-100/50");
+                updateGlobalTheme('amber');
+                return;
             }
-            const val = parseFloat(scoreOrAvg || 0), isSinglePaper = !!record, diff = isSinglePaper ? (record.batchMax - val) : 0;
+
+            const val = parseFloat(scoreOrAvg || 0);
+            const isSinglePaper = !!record;
+            const diff = isSinglePaper ? (record.batchMax - val) : 0;
+
             if (val < 40 || (isSinglePaper && diff >= 40)) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-rose-500 text-white border border-rose-400 shadow-lg shadow-rose-500/25 animate-pulse w-full sm:w-auto text-center"; badge.innerText = isSinglePaper ? "Needs Review / Watch Discussion" : "Immediate Action Needed";
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-rose-500 text-white border border-rose-400 shadow-lg shadow-rose-500/25 animate-pulse w-full sm:w-auto text-center";
+                badge.innerText = isSinglePaper ? "Needs Review • Watch Discussion" : "Immediate Action Needed";
                 dashHeader.className = "bg-gradient-to-r from-rose-950 via-rose-900 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-rose-50/90 border-rose-200 text-rose-950"; alertIcon.innerText = "🚨"; alertTitle.innerText = isSinglePaper ? `Score Alert on ${record.title} (${val} Marks)` : "Critical Performance Gap Detected"; alertBody.innerText = isSinglePaper ? `You scored ${val} (Batch Top: ${record.batchMax}, Avg: ${record.batchAvg}). You are lagging behind the target standard for this paper. Definitely watch the paper discussion video and rewrite your corrections.` : `Your current overall average is ${val}%. Make sure to watch every discussion recording, clarify calculation steps, and consult with Krishan Jayarathna.`; setCardBorders("border-rose-200", "bg-rose-50/30");
+                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-rose-50/90 border-rose-200 text-rose-950";
+                alertIcon.innerText = "🚨";
+                alertTitle.innerText = isSinglePaper ? `Score Alert on ${record.title} (${val} Marks)` : "Critical Performance Gap Detected";
+                alertBody.innerText = isSinglePaper
+                    ? `You scored ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Review the full paper discussion video and rewrite all missed questions.`
+                    : `Your overall average is ${val}%. Follow the indigo AI Projected Path on your graph to steadily climb toward the 75+ 'A' zone.`;
+                setCardBorders("border-rose-200/80", "bg-gradient-to-br from-rose-50 to-rose-100/50");
                 updateGlobalTheme('rose');
             } else if (val < 75) {
-                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-blue-500 text-white border border-blue-400 shadow-md shadow-blue-500/20 w-full sm:w-auto text-center"; badge.innerText = isSinglePaper ? "Standard Performance" : "Steady Progress";
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-blue-500 text-white border border-blue-400 shadow-md shadow-blue-500/20 w-full sm:w-auto text-center";
+                badge.innerText = isSinglePaper ? "Solid Standard" : "Steady Progress";
                 dashHeader.className = "bg-gradient-to-r from-blue-950 via-indigo-950 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-blue-50/90 border-blue-200 text-blue-950"; alertIcon.innerText = "📈"; alertTitle.innerText = isSinglePaper ? `${record.title} - Score: ${val} Marks` : "Consistent Foundation"; alertBody.innerText = isSinglePaper ? `Solid mark of ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Review the marking scheme to convert this B/C standard into an A standard.` : `Your overall average is ${val}%. You are maintaining solid progress. Tighten your speed and chemical calculation accuracy to push into the top bracket!`; setCardBorders("border-blue-200", "bg-blue-50/30");
+                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-blue-50/90 border-blue-200 text-blue-950";
+                alertIcon.innerText = "📈";
+                alertTitle.innerText = isSinglePaper ? `${record.title} — Score: ${val} Marks` : "Consistent Foundation";
+                alertBody.innerText = isSinglePaper
+                    ? `Solid score of ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Refine your structured & calculation steps to break into the 75+ bracket.`
+                    : `Your overall average is ${val}%. Check your AI Next Target card above and aim for that exact step on the upcoming paper!`;
+                setCardBorders("border-blue-200/80", "bg-gradient-to-br from-blue-50 to-blue-100/50");
                 updateGlobalTheme('blue');
             } else {
-                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white border border-emerald-400 shadow-lg shadow-emerald-500/25 w-full sm:w-auto text-center"; badge.innerText = isSinglePaper ? "Elite Top Score" : "Top Tier / Consistent";
+                badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white border border-emerald-400 shadow-lg shadow-emerald-500/25 w-full sm:w-auto text-center";
+                badge.innerText = isSinglePaper ? "Elite Top Score" : "Top Tier • 'A' Standard";
                 dashHeader.className = "bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-2.5 sm:gap-4 shadow-sm bg-emerald-50/90 border-emerald-200 text-emerald-950"; alertIcon.innerText = "🎯"; alertTitle.innerText = isSinglePaper ? `Outstanding Mark on ${record.title}!` : "Excellent Consistency!"; alertBody.innerText = isSinglePaper ? `Outstanding score of ${val}! (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). You are performing in the elite tier for this paper.` : `Your overall average is ${val}%. You are leading the batch. Maintain this disciplined exam temperament!`; setCardBorders("border-emerald-200", "bg-emerald-50/30");
+                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-emerald-50/90 border-emerald-200 text-emerald-950";
+                alertIcon.innerText = "🎯";
+                alertTitle.innerText = isSinglePaper ? `Outstanding Mark on ${record.title}!` : "Excellent Consistency!";
+                alertBody.innerText = isSinglePaper
+                    ? `Exceptional score of ${val}! (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). You are performing in the elite Island/District rank zone.`
+                    : `Your overall average is ${val}%. You are firmly in the 'A' grade standard—keep maintaining your speed and accuracy!`;
+                setCardBorders("border-emerald-200/80", "bg-gradient-to-br from-emerald-50 to-emerald-100/50");
                 updateGlobalTheme('emerald');
             }
         }
 
         function populateMarksTable(records) {
-            const tbody = document.getElementById('marksTableBody'); tbody.innerHTML = '';
+            const tbody = document.getElementById('marksTableBody');
+            tbody.innerHTML = '';
             records.forEach((r, index) => {
                 let scoreDisplay = '', statusBadge = '';
-                if (r.isNotGiven) { scoreDisplay = `<span class="text-slate-400 font-semibold italic text-[10px] sm:text-xs">Not Given</span>`; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 font-medium">Pending</span>`; }
-                else if (r.isAbsent) { scoreDisplay = `<span class="text-amber-600 font-bold text-[10px] sm:text-xs bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Absent</span>`; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold">Missed</span>`; }
-                else {
+                if (r.isNotGiven) {
+                    scoreDisplay = `<span class="text-slate-400 font-semibold italic text-[10px] sm:text-xs">Not Given</span>`;
+                    statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500 font-semibold">Pending</span>`;
+                } else if (r.isAbsent) {
+                    scoreDisplay = `<span class="text-amber-700 font-bold text-[10px] sm:text-xs bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Absent</span>`;
+                    statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">Missed</span>`;
+                } else {
                     const diff = r.batchMax - r.score;
                     let colorClass = 'text-blue-600 font-bold', dotColor = 'bg-blue-500';
-                    if (r.score >= 75) { colorClass = 'text-emerald-600 font-bold'; dotColor = 'bg-emerald-500'; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Strong Hold</span>`; }
-                    else if (r.score < 40 || diff >= 40) { colorClass = 'text-rose-600 font-bold'; dotColor = 'bg-rose-500'; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">Watch Video</span>`; }
-                    else { statusBadge = `<span class="text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">Standard</span>`; }
-                    scoreDisplay = `<span class="${colorClass} text-xs sm:text-sm font-black flex items-center justify-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>${r.score}</span>`;
+                    if (r.score >= 75) {
+                        colorClass = 'text-emerald-600 font-bold';
+                        dotColor = 'bg-emerald-500';
+                        statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Elite Hold</span>`;
+                    } else if (r.score < 40 || diff >= 40) {
+                        colorClass = 'text-rose-600 font-bold';
+                        dotColor = 'bg-rose-500';
+                        statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">Watch Video</span>`;
+                    } else {
+                        statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">Solid</span>`;
+                    }
+                    scoreDisplay = `<span class="${colorClass} font-mono text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>${r.score}</span>`;
                 }
-                const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50/70 transition-all cursor-pointer"; tr.onclick = () => inspectPaper(r, index);
-                tr.innerHTML = `<td class="py-2.5 px-3 text-slate-500 font-medium">${r.type === 'chempulse' ? 'Chempulse' : 'Exam'}</td><td class="py-2.5 px-3 font-bold text-slate-800 truncate max-w-[100px] sm:max-w-none">${r.title}</td><td class="py-2.5 px-3 text-center">${scoreDisplay}</td><td class="py-2.5 px-3 text-center text-slate-600 font-mono font-semibold">${r.batchAvg}</td><td class="py-2.5 px-3 text-center text-slate-600 font-mono font-semibold">${r.batchMax}</td><td class="py-2.5 px-3 text-right">${statusBadge}</td>`;
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/70 transition-all cursor-pointer";
+                tr.onclick = () => inspectPaper(r, index);
+                tr.innerHTML = `
+                    <td class="py-3 px-3.5 text-slate-500 font-semibold">${r.type === 'chempulse' ? 'Chempulse' : 'Exam'}</td>
+                    <td class="py-3 px-3.5 font-bold text-slate-800 truncate max-w-[120px] sm:max-w-none">${r.title}</td>
+                    <td class="py-3 px-3.5 text-center">${scoreDisplay}</td>
+                    <td class="py-3 px-3.5 text-center text-slate-600 font-mono font-semibold">${r.batchAvg}</td>
+                    <td class="py-3 px-3.5 text-center text-slate-600 font-mono font-semibold">${r.batchMax}</td>
+                    <td class="py-3 px-3.5 text-right">${statusBadge}</td>
+                `;
                 tbody.appendChild(tr);
             });
         }
@@ -536,38 +1080,374 @@
             const ctx = document.getElementById(canvasId).getContext('2d');
             if (canvasId === 'chempulseCanvas' && chempulseChart) chempulseChart.destroy();
             if (canvasId === 'examCanvas' && examChart) examChart.destroy();
-            const activeRecords = records.filter(r => !r.isNotGiven), labels = activeRecords.map(r => r.title), studentScores = activeRecords.map(r => r.score), batchAverages = activeRecords.map(r => r.batchAvg);
 
-            const pointBackgroundColors = activeRecords.map((r) => { if (r.isAbsent) return 'transparent'; if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return '#ffffff'; return getScoreTierColor(r.score, r.batchMax); });
-            const pointBorderColors = activeRecords.map((r) => { if (r.isAbsent) return 'transparent'; if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return '#f59e0b'; return getScoreTierColor(r.score, r.batchMax); });
-            const pointRadii = activeRecords.map((r) => { if (r.isAbsent) return 0; if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return 11; return 6; });
+            const activeRecords = records.filter(r => !r.isNotGiven);
+            const labels = activeRecords.map(r => r.title);
+            const studentScores = activeRecords.map(r => r.score);
+            const batchAverages = activeRecords.map(r => r.batchAvg);
+
+            // AI Chart Path Calculation
+            let lastValidIdx = -1;
+            let lastValidScore = 0;
+            const validScoresArr = [];
+
+            for (let i = 0; i < activeRecords.length; i++) {
+                if (!activeRecords[i].isAbsent && activeRecords[i].score !== null) {
+                    lastValidIdx = i;
+                    lastValidScore = activeRecords[i].score;
+                    validScoresArr.push(lastValidScore);
+                }
+            }
+
+            const pathToA = new Array(activeRecords.length).fill(null);
+            let futureLabels = [], futureStudentScores = [], futureBatchAverages = [], futurePathToA = [];
+
+            if (lastValidIdx !== -1) {
+                pathToA[lastValidIdx] = lastValidScore;
+
+                if (lastValidScore < 75) {
+                    const gap = 75 - lastValidScore;
+                    let recentAvg = lastValidScore;
+                    if (validScoresArr.length >= 3) {
+                        recentAvg = (validScoresArr[validScoresArr.length - 1] + validScoresArr[validScoresArr.length - 2] + validScoresArr[validScoresArr.length - 3]) / 3;
+                    } else if (validScoresArr.length === 2) {
+                        recentAvg = (validScoresArr[validScoresArr.length - 1] + validScoresArr[validScoresArr.length - 2]) / 2;
+                    }
+                    const momentumMultiplier = lastValidScore > recentAvg ? 1.2 : 1.0;
+                    const baseJump = 12 * momentumMultiplier;
+                    const stepVal = Math.min(gap, Math.max(Math.ceil(baseJump), 6));
+                    const steps = Math.ceil(gap / stepVal);
+
+                    for (let i = 1; i <= steps; i++) {
+                        futureLabels.push(i === steps ? "Target 'A'" : `Next +${i}`);
+                        futureStudentScores.push(null);
+                        futureBatchAverages.push(null);
+                        futurePathToA.push(i === steps ? 75 : Math.min(lastValidScore + (stepVal * i), 75));
+                    }
+                } else {
+                    futureLabels.push("Maintain 'A'");
+                    futureStudentScores.push(null);
+                    futureBatchAverages.push(null);
+                    futurePathToA.push(Math.max(lastValidScore, 75));
+                }
+            }
+
+            const finalLabels = [...labels, ...futureLabels];
+            const finalStudentScores = [...studentScores, ...futureStudentScores];
+            const finalBatchAverages = [...batchAverages, ...futureBatchAverages];
+            const finalPathToA = [...pathToA, ...futurePathToA];
+
+            const pointBackgroundColors = activeRecords.map(r => {
+                if (r.isAbsent) return 'transparent';
+                if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return '#ffffff';
+                return getScoreTierColor(r.score, r.batchMax);
+            });
+            const pointBorderColors = activeRecords.map(r => {
+                if (r.isAbsent) return 'transparent';
+                if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return '#f59e0b';
+                return getScoreTierColor(r.score, r.batchMax);
+            });
+            const pointRadii = activeRecords.map(r => {
+                if (r.isAbsent) return 0;
+                if (activeRecordIndex >= 0 && currentAllRecords[activeRecordIndex]?.title === r.title) return 10;
+                return 5.5;
+            });
+
+            const finalPointBgColors = [...pointBackgroundColors, ...futureLabels.map(() => '#6366f1')];
+            const finalPointBorderColors = [...pointBorderColors, ...futureLabels.map(() => '#ffffff')];
+            const finalPointRadii = [...pointRadii, ...futureLabels.map(() => 5.5)];
 
             const activeColors = themeClasses[currentThemeColor].chartGradient;
-            const gradient = ctx.createLinearGradient(0, 0, 0, 360);
+            const gradient = ctx.createLinearGradient(0, 0, 0, 380);
             gradient.addColorStop(0, activeColors[0]);
-            gradient.addColorStop(0.7, activeColors[1]);
+            gradient.addColorStop(0.65, activeColors[1]);
             gradient.addColorStop(1, activeColors[2]);
+
+            // Soft fill gradient for the AI Projected Path
+            const aiGradient = ctx.createLinearGradient(0, 0, 0, 380);
+            aiGradient.addColorStop(0, 'rgba(99, 102, 241, 0.22)');
+            aiGradient.addColorStop(0.8, 'rgba(99, 102, 241, 0.02)');
+            aiGradient.addColorStop(1, 'rgba(99, 102, 241, 0.00)');
+
+            // Custom Premium Aesthetics Plugin (Zone Band, Crosshair, Glow & Score Pills)
+            const premiumChartPlugin = {
+                id: 'premiumChartAesthetics',
+                beforeDatasetsDraw(chart) {
+                    const { ctx, chartArea: { top, bottom, left, right }, scales: { y } } = chart;
+                    ctx.save();
+
+                    // 1. Shaded "A-Grade Elite Zone" (75 to 100)
+                    const y75 = y.getPixelForValue(75);
+                    if (y75 >= top && y75 <= bottom) {
+                        const zoneGrad = ctx.createLinearGradient(0, top, 0, y75);
+                        zoneGrad.addColorStop(0, 'rgba(16, 185, 129, 0.09)');
+                        zoneGrad.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
+                        ctx.fillStyle = zoneGrad;
+                        ctx.fillRect(left, top, right - left, y75 - top);
+
+                        // Dashed 'A' Target Line at 75
+                        ctx.beginPath();
+                        ctx.setLineDash([6, 6]);
+                        ctx.moveTo(left, y75);
+                        ctx.lineTo(right, y75);
+                        ctx.strokeStyle = 'rgba(16, 185, 129, 0.45)';
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        // Subtle Badge Label on the right edge
+                        ctx.font = '700 9px "Plus Jakarta Sans", sans-serif';
+                        ctx.fillStyle = '#059669';
+                        ctx.textAlign = 'right';
+                        ctx.fillText('🎯 "A" GRADE ZONE (75+)', right - 8, y75 - 6);
+                    }
+
+                    // 2. Interactive Vertical Hover Crosshair
+                    if (chart.tooltip?._active?.length) {
+                        const activePoint = chart.tooltip._active[0];
+                        const x = activePoint.element.x;
+                        ctx.beginPath();
+                        ctx.setLineDash([4, 4]);
+                        ctx.moveTo(x, top);
+                        ctx.lineTo(x, bottom);
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeStyle = 'rgba(99, 102, 241, 0.35)';
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                    ctx.restore();
+                },
+                beforeDatasetDraw(chart, args) {
+                    // 3. 3D Neon Glow behind the main lines
+                    if (args.index === 0 || args.index === 2) {
+                        const { ctx } = chart;
+                        ctx.save();
+                        ctx.shadowColor = args.index === 0 ? 'rgba(59, 130, 246, 0.45)' : 'rgba(99, 102, 241, 0.45)';
+                        ctx.shadowBlur = 14;
+                        ctx.shadowOffsetY = 6;
+                    }
+                },
+                afterDatasetDraw(chart, args) {
+                    if (args.index === 0 || args.index === 2) {
+                        chart.ctx.restore();
+                    }
+                },
+                afterDatasetsDraw(chart) {
+                    // 4. Floating Score Pill Badges above points
+                    const { ctx } = chart;
+                    ctx.save();
+
+                    // Main Student Scores Pills
+                    const meta0 = chart.getDatasetMeta(0);
+                    meta0.data.forEach((point, index) => {
+                        const val = finalStudentScores[index];
+                        if (val !== null && val !== undefined && !isNaN(val)) {
+                            const x = point.x;
+                            const y = point.y - 16;
+                            const text = `${val}`;
+                            ctx.font = '700 10px "JetBrains Mono", monospace';
+                            const textWidth = ctx.measureText(text).width;
+                            const padX = 6;
+                            const boxW = textWidth + padX * 2;
+                            const boxH = 16;
+
+                            const r = activeRecords[index];
+                            const pillColor = r ? getScoreTierColor(r.score, r.batchMax) : '#3b82f6';
+
+                            // Pill Background
+                            ctx.fillStyle = '#ffffff';
+                            ctx.shadowColor = 'rgba(15, 23, 42, 0.12)';
+                            ctx.shadowBlur = 6;
+                            ctx.shadowOffsetY = 2;
+                            ctx.beginPath();
+                            ctx.roundRect(x - boxW / 2, y - boxH / 2, boxW, boxH, 6);
+                            ctx.fill();
+
+                            // Pill Border
+                            ctx.shadowBlur = 0;
+                            ctx.shadowOffsetY = 0;
+                            ctx.strokeStyle = pillColor;
+                            ctx.lineWidth = 1.5;
+                            ctx.stroke();
+
+                            // Pill Score Text
+                            ctx.fillStyle = '#0f172a';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(text, x, y + 0.5);
+                        }
+                    });
+
+                    // AI Projected Path Target Pills
+                    const meta2 = chart.getDatasetMeta(2);
+                    if (meta2 && !meta2.hidden) {
+                        meta2.data.forEach((point, index) => {
+                            if (index > lastValidIdx) {
+                                const val = finalPathToA[index];
+                                if (val !== null && val !== undefined) {
+                                    const x = point.x;
+                                    const y = point.y - 16;
+                                    const text = `🎯${val}`;
+                                    ctx.font = '700 9.5px "JetBrains Mono", monospace';
+                                    const textWidth = ctx.measureText(text).width;
+                                    const boxW = textWidth + 10;
+                                    const boxH = 16;
+
+                                    ctx.fillStyle = '#eef2ff';
+                                    ctx.beginPath();
+                                    ctx.roundRect(x - boxW / 2, y - boxH / 2, boxW, boxH, 6);
+                                    ctx.fill();
+
+                                    ctx.strokeStyle = '#6366f1';
+                                    ctx.lineWidth = 1.2;
+                                    ctx.stroke();
+
+                                    ctx.fillStyle = '#4338ca';
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'middle';
+                                    ctx.fillText(text, x, y + 0.5);
+                                }
+                            }
+                        });
+                    }
+
+                    ctx.restore();
+                }
+            };
 
             const chart = new Chart(ctx, {
                 type: 'line',
+                plugins: [premiumChartPlugin],
                 data: {
-                    labels: labels,
+                    labels: finalLabels,
                     datasets: [
                         {
-                            label: 'Your Mark', data: studentScores, borderColor: '#3b82f6',
-                            segment: { borderColor: ctx => { const p0 = activeRecords[ctx.p0DataIndex], p1 = activeRecords[ctx.p1DataIndex]; if (!p0 || !p1 || p0.score === null || p1.score === null) return '#94a3b8'; return getScoreTierColor((p0.score + p1.score) / 2, Math.max(p0.batchMax, p1.batchMax)); } },
-                            backgroundColor: gradient, borderWidth: 2.5, tension: 0.35, fill: true, pointBackgroundColor: pointBackgroundColors, pointBorderColor: pointBorderColors, pointBorderWidth: 2.5, pointRadius: pointRadii, pointHoverRadius: 10, pointHoverBorderWidth: 3, spanGaps: true
+                            label: 'Your Mark',
+                            data: finalStudentScores,
+                            borderColor: '#3b82f6',
+                            segment: {
+                                borderColor: ctx => {
+                                    const p0 = activeRecords[ctx.p0DataIndex], p1 = activeRecords[ctx.p1DataIndex];
+                                    if (!p0 || !p1 || p0.score === null || p1.score === null) return '#94a3b8';
+                                    return getScoreTierColor((p0.score + p1.score) / 2, Math.max(p0.batchMax, p1.batchMax));
+                                }
+                            },
+                            backgroundColor: gradient,
+                            borderWidth: 3.5,
+                            tension: 0.42,
+                            fill: true,
+                            pointBackgroundColor: finalPointBgColors,
+                            pointBorderColor: finalPointBorderColors,
+                            pointBorderWidth: 3,
+                            pointRadius: finalPointRadii,
+                            pointHoverRadius: 10,
+                            pointHoverBorderWidth: 3.5,
+                            spanGaps: true
                         },
-                        { label: 'Batch Average', data: batchAverages, borderColor: '#94a3b8', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, fill: false, tension: 0.25 }
+                        {
+                            label: 'Batch Average',
+                            data: finalBatchAverages,
+                            borderColor: '#94a3b8',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 3,
+                            pointBackgroundColor: '#cbd5e1',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 1.5,
+                            pointHoverRadius: 6,
+                            fill: false,
+                            tension: 0.35,
+                            hidden: !showAverageLine
+                        },
+                        {
+                            label: 'AI Projected Path',
+                            data: finalPathToA,
+                            borderColor: '#6366f1',
+                            backgroundColor: aiGradient,
+                            borderWidth: 3,
+                            borderDash: [6, 5],
+                            pointBackgroundColor: '#6366f1',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2.5,
+                            pointRadius: ctx => ctx.dataIndex > lastValidIdx ? 6 : 0,
+                            pointHoverRadius: 9,
+                            fill: true,
+                            tension: 0.35
+                        }
                     ]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
-                    onClick: (event, elements) => { if (elements.length > 0) { const clickedIdx = elements[0].index, targetRecord = activeRecords[clickedIdx], masterIdx = currentAllRecords.findIndex(r => r.title === targetRecord.title && r.type === targetRecord.type); inspectPaper(targetRecord, masterIdx); } else { showOverallAnalytics(); } },
-                    plugins: { legend: { display: true, position: 'top', labels: { font: { family: 'sans-serif', size: 10, weight: 'bold' }, usePointStyle: true, boxWidth: 6 } }, tooltip: { backgroundColor: '#0f172a', titleFont: { size: 11, weight: 'bold' }, bodyFont: { size: 10 }, padding: 8, cornerRadius: 8, displayColors: true, callbacks: { label: function(context) { if (context.raw === null) return `${context.dataset.label}: Absent`; return `${context.dataset.label}: ${context.raw} marks`; } } } },
-                    scales: { y: { beginAtZero: true, max: 100, grid: { color: 'rgba(226, 232, 240, 0.7)' }, ticks: { font: { size: 9, weight: '600' }, color: '#64748b' } }, x: { grid: { display: false }, ticks: { font: { size: 9, weight: '600' }, color: '#64748b' } } }
+                    layout: {
+                        padding: { top: 26, right: 16, left: 4, bottom: 4 }
+                    },
+                    animation: { duration: 1000, easing: 'easeOutQuart' },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const clickedIdx = elements[0].index;
+                            if (clickedIdx >= activeRecords.length) return;
+                            const targetRecord = activeRecords[clickedIdx];
+                            const masterIdx = currentAllRecords.findIndex(r => r.title === targetRecord.title && r.type === targetRecord.type);
+                            inspectPaper(targetRecord, masterIdx);
+                        } else {
+                            showOverallAnalytics();
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleFont: { family: '"Plus Jakarta Sans", sans-serif', size: 13, weight: '800' },
+                            bodyFont: { family: '"JetBrains Mono", monospace', size: 11.5, weight: '600' },
+                            padding: 12,
+                            cornerRadius: 12,
+                            borderColor: 'rgba(255, 255, 255, 0.12)',
+                            borderWidth: 1,
+                            displayColors: true,
+                            boxPadding: 6,
+                            filter: tooltipItem => {
+                                if (tooltipItem.datasetIndex === 2 && tooltipItem.dataIndex <= lastValidIdx) return false;
+                                return true;
+                            },
+                            callbacks: {
+                                label: context => {
+                                    if (context.datasetIndex === 2) return ` ✨ AI Step Target: ${context.raw} marks`;
+                                    if (context.raw === null) return ` ${context.dataset.label}: Absent`;
+                                    return ` ${context.dataset.label}: ${context.raw} marks`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            border: { display: false },
+                            grid: { color: 'rgba(226, 232, 240, 0.6)', drawTicks: false },
+                            ticks: {
+                                stepSize: 25,
+                                padding: 8,
+                                font: { family: '"JetBrains Mono", monospace', size: 10, weight: '600' },
+                                color: '#64748b'
+                            }
+                        },
+                        x: {
+                            border: { display: false },
+                            grid: { display: false },
+                            ticks: {
+                                padding: 8,
+                                font: { family: '"Plus Jakarta Sans", sans-serif', size: 10.5, weight: '700' },
+                                color: '#475569'
+                            }
+                        }
+                    }
                 }
             });
+
             if (canvasId === 'chempulseCanvas') chempulseChart = chart;
             if (canvasId === 'examCanvas') examChart = chart;
         }
@@ -575,32 +1455,40 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            
+
             const activeClasses = themeClasses[currentThemeColor].tabActive;
             const inactiveClasses = ['bg-slate-100', 'text-slate-600', 'hover:bg-slate-200'];
-            
+
             ['chempulse', 'exams', 'table'].forEach(t => {
                 const btn = document.getElementById('tabBtn-' + t);
                 if (!btn) return;
-                
-                // Strip all possible color variants first
                 btn.classList.remove(...allTabClasses, ...inactiveClasses);
-                
-                if (t === tabId) { 
-                    btn.classList.add(...activeClasses); 
-                } else { 
-                    btn.classList.add(...inactiveClasses); 
+                if (t === tabId) btn.classList.add(...activeClasses);
+                else btn.classList.add(...inactiveClasses);
+            });
+        }
+
+        function toggleAverageLine() {
+            showAverageLine = !showAverageLine;
+            document.querySelectorAll('.avg-toggle-text').forEach(el => el.innerText = showAverageLine ? "Hide Avg Line" : "Show Avg Line");
+            document.querySelectorAll('.avg-toggle-icon').forEach(el => el.innerText = showAverageLine ? "👁️" : "🙈");
+
+            [chempulseChart, examChart].forEach(chart => {
+                if (chart && chart.data.datasets.length > 1) {
+                    chart.data.datasets[1].hidden = !showAverageLine;
+                    chart.update();
                 }
             });
         }
 
-        function logout() { 
-            document.getElementById('dashboardView').classList.add('hidden'); 
-            document.getElementById('loginView').classList.remove('hidden'); 
-            document.getElementById('studentId').value = ''; 
-            hideError(); 
-            updateGlobalTheme('blue'); // Reset to default blue
-            switchTab('chempulse'); 
+        function logout() {
+            document.getElementById('dashboardView').classList.add('hidden');
+            document.getElementById('loginView').classList.remove('hidden');
+            document.getElementById('studentId').value = '';
+            document.getElementById('studentPin').value = '';
+            hideError();
+            updateGlobalTheme('blue');
+            switchTab('chempulse');
         }
     </script>
 </body>
