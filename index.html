@@ -37,11 +37,10 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Premium Aurora Background Animations & Grid */
-        .bg-grid-pattern {
-            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+        /* Premium Chemistry Background Animations & Graphene Grid */
+        .bg-hex-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='103.923' viewBox='0 0 60 103.923' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 17.32l20 11.547v23.094L30 63.508l-20-11.547V28.867L30 17.32zm0-17.32l30 17.32v34.64L30 86.603l-30-17.32V17.32L30 0z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background-size: 60px 103.923px;
         }
         @keyframes float-1 {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -61,6 +60,24 @@
         .animate-float-1 { animation: float-1 18s infinite ease-in-out; }
         .animate-float-2 { animation: float-2 22s infinite ease-in-out; }
         .animate-float-3 { animation: float-3 25s infinite ease-in-out; }
+
+        /* Falling Snow Animation */
+        @keyframes snowfall {
+            0% { transform: translateY(-10vh) translateX(0) scale(0.8); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(110vh) translateX(25px) scale(1.2); opacity: 0; }
+        }
+        .snowflake { 
+            position: absolute; 
+            background-color: rgba(255, 255, 255, 0.8); 
+            border-radius: 50%;
+            filter: blur(1px); 
+            animation: snowfall linear infinite; 
+            z-index: 5; 
+            pointer-events: none; 
+            user-select: none;
+        }
         
         /* Premium Login Animations */
         @keyframes slideUpFade {
@@ -82,99 +99,110 @@
 </head>
 <body id="bodyRoot" class="bg-slate-950 text-slate-100 font-sans min-h-screen flex items-center justify-center p-0 sm:p-6 transition-colors duration-700 relative overflow-x-hidden">
 
-    <!-- Premium Animated Aurora Background -->
-    <div id="animatedBg" class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute inset-0 bg-grid-pattern z-0 opacity-50"></div>
+    <!-- Premium Animated Chemistry Background -->
+    <div id="animatedBg" class="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#020617]">
+        <!-- Ethereal Magical Forest Background -->
+        <div class="absolute inset-0 bg-cover bg-center opacity-100 transition-all duration-1000" style="background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2500&auto=format&fit=crop');">
+            <!-- Deep Magical Blue/Purple Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-b from-[#0a0f3d]/60 via-[#1e1345]/50 to-[#020617]/90"></div>
+        </div>
+        
+        <!-- Chemistry Graphene Pattern -->
+        <div class="absolute inset-0 bg-hex-pattern z-0 opacity-20"></div>
+        
+        <!-- Falling Snow Vibe -->
+        <div class="snowflake w-2 h-2" style="left: 10%; animation-duration: 15s; animation-delay: 0s;"></div>
+        <div class="snowflake w-3 h-3" style="left: 25%; animation-duration: 12s; animation-delay: 4s;"></div>
+        <div class="snowflake w-1.5 h-1.5" style="left: 40%; animation-duration: 18s; animation-delay: 2s;"></div>
+        <div class="snowflake w-2.5 h-2.5" style="left: 55%; animation-duration: 14s; animation-delay: 7s;"></div>
+        <div class="snowflake w-2 h-2" style="left: 70%; animation-duration: 16s; animation-delay: 1s;"></div>
+        <div class="snowflake w-3 h-3" style="left: 85%; animation-duration: 13s; animation-delay: 5s;"></div>
+        <div class="snowflake w-1.5 h-1.5" style="left: 95%; animation-duration: 17s; animation-delay: 3s;"></div>
+        <div class="snowflake w-2 h-2" style="left: 5%; animation-duration: 14s; animation-delay: 8s;"></div>
+        <div class="snowflake w-2.5 h-2.5" style="left: 50%; animation-duration: 15s; animation-delay: 10s;"></div>
+        <div class="snowflake w-1.5 h-1.5" style="left: 80%; animation-duration: 19s; animation-delay: 11s;"></div>
+
         <div class="absolute inset-0 flex items-center justify-center z-10 mix-blend-screen opacity-55 sm:opacity-45">
             <div id="blob1" class="absolute w-[50vw] h-[50vw] max-w-[700px] max-h-[700px] bg-blue-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-1 top-[-10%] left-[-10%] transition-colors duration-1000"></div>
             <div id="blob2" class="absolute w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-indigo-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-2 top-[10%] right-[-10%] transition-colors duration-1000 delay-150"></div>
             <div id="blob3" class="absolute w-[55vw] h-[55vw] max-w-[800px] max-h-[800px] bg-cyan-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-3 bottom-[-20%] left-[10%] transition-colors duration-1000 delay-300"></div>
             <div id="blob4" class="absolute w-[40vw] h-[40vw] max-w-[550px] max-h-[550px] bg-violet-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-1 bottom-[-10%] right-[10%] transition-colors duration-1000 delay-500" style="animation-direction: reverse;"></div>
         </div>
-        <div class="absolute inset-0 z-20 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,6,23,0.85)_100%)]"></div>
+        <div class="absolute inset-0 z-20 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,6,23,0.85)_100%)] pointer-events-none"></div>
     </div>
 
     <!-- LOGIN SCREEN -->
-    <div id="loginView" class="relative z-10 w-full max-w-[390px] mx-4 my-6 bg-slate-900/60 backdrop-blur-3xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-6 sm:p-8 text-white transform transition-all duration-500 border-t border-l border-white/20 border-b border-r border-white/5 flex flex-col justify-center animate-slide-up">
-        <div class="text-center mb-6">
-            <div class="relative inline-block animate-slide-up delay-100 mb-3">
-                <div class="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-50 animate-pulse"></div>
-                <div class="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-xl shadow-blue-500/30 text-3xl font-bold border border-white/25 backdrop-blur-md transition-transform duration-300 hover:scale-105 hover:rotate-3 cursor-default">
-                    ⚗️
+    <div id="loginView" class="relative z-30 w-full max-w-[420px] mx-4 my-6 bg-[#0c133a]/30 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_15px_50px_rgba(0,0,0,0.6)] p-8 sm:p-12 text-white border border-white/10 flex flex-col justify-center animate-slide-up">
+        <div class="text-center mb-8 flex flex-col items-center">
+            <!-- Chemistry Icons -->
+            <div class="flex justify-center gap-3 mb-4 animate-slide-up delay-100">
+                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                    <span class="text-xl drop-shadow-md" title="Atom">⚛️</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                    <span class="text-xl drop-shadow-md" title="Chemistry">🧪</span>
                 </div>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white animate-slide-up delay-200">Student Portal</h1>
-            <p class="text-indigo-200/80 mt-1 text-[10px] sm:text-xs font-semibold tracking-widest uppercase animate-slide-up delay-200">Chemistry • Krishan Jayarathna</p>
+            <h2 class="text-[10px] font-extrabold tracking-[0.2em] text-white/60 uppercase mb-2 animate-slide-up delay-200">Chemistry by Krishan Jayarathna</h2>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-wide text-white animate-slide-up delay-300">Student Portal</h1>
         </div>
 
         <div class="space-y-4">
             <!-- Batch Year Select -->
-            <div class="animate-slide-up delay-300">
-                <label for="batchYear" class="block text-[10px] font-bold uppercase tracking-wider text-indigo-200/80 mb-1.5 ml-1">A/L Batch Year</label>
-                <div class="relative">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-indigo-300/70">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <select id="batchYear" class="w-full pl-10 pr-10 py-3.5 rounded-2xl border border-white/10 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 focus:bg-white/10 hover:bg-white/5 outline-none transition-all bg-black/30 text-white text-sm font-semibold appearance-none cursor-pointer backdrop-blur-md">
-                        <option value="2028" class="bg-slate-900 text-white">2028 A/L Batch</option>
-                        <option value="2027" class="bg-slate-900 text-white">2027 A/L Batch</option>
-                        <option value="2026" class="bg-slate-900 text-white">2026 A/L Batch</option>
-                        <option value="2025" class="bg-slate-900 text-white">2025 A/L Batch</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-indigo-300/70">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </div>
+            <div class="animate-slide-up delay-300 relative">
+                <select id="batchYear" class="w-full bg-white/10 border border-white/20 rounded-full text-white px-6 py-3.5 focus:outline-none focus:border-white focus:bg-white/20 appearance-none cursor-pointer text-sm transition-all shadow-inner backdrop-blur-sm">
+                    <option value="2028" class="bg-slate-900 text-white">2028 A/L Batch</option>
+                    <option value="2027" class="bg-slate-900 text-white">2027 A/L Batch</option>
+                    <option value="2026" class="bg-slate-900 text-white">2026 A/L Batch</option>
+                    <option value="2025" class="bg-slate-900 text-white">2025 A/L Batch</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5 text-white/70">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
             </div>
 
             <!-- Student ID Input -->
             <div class="animate-slide-up delay-400">
-                <label for="studentId" class="block text-[10px] font-bold uppercase tracking-wider text-indigo-200/80 mb-1.5 ml-1">Student ID</label>
-                <div class="relative">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-indigo-300/70">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
-                    </div>
-                    <input type="text" id="studentId" placeholder="e.g., EMA2028001" autocomplete="off" class="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-white/10 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 focus:bg-white/10 hover:bg-white/5 outline-none transition-all bg-black/30 text-white text-sm font-mono font-bold uppercase tracking-wider placeholder:font-sans placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-slate-500 backdrop-blur-md" onkeypress="handleKeyPress(event)">
-                </div>
+                <input type="text" id="studentId" placeholder="Student ID" autocomplete="off" class="w-full bg-white/10 border border-white/20 rounded-full text-white px-6 py-3.5 focus:outline-none focus:border-white focus:bg-white/20 font-mono uppercase tracking-wider transition-all text-sm shadow-inner backdrop-blur-sm placeholder-white/40" onkeypress="handleKeyPress(event)">
             </div>
 
             <!-- Security PIN Input with Show/Hide Toggle -->
-            <div class="animate-slide-up delay-500">
-                <label for="studentPin" class="block text-[10px] font-bold uppercase tracking-wider text-indigo-200/80 mb-1.5 ml-1">Security PIN</label>
-                <div class="relative">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-indigo-300/70">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    </div>
-                    <input type="password" id="studentPin" placeholder="Last 4 digits of NIC" class="w-full pl-10 pr-10 py-3.5 rounded-2xl border border-white/10 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 focus:bg-white/10 hover:bg-white/5 outline-none transition-all bg-black/30 text-white text-sm font-mono font-bold tracking-widest placeholder:font-sans placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-500 backdrop-blur-md" onkeypress="handleKeyPress(event)">
-                    <button type="button" onclick="togglePinVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-indigo-300/60 hover:text-white transition-colors" title="Show/Hide PIN">
-                        <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                        </svg>
-                    </button>
-                </div>
+            <div class="animate-slide-up delay-500 relative">
+                <input type="password" id="studentPin" placeholder="Password" class="w-full bg-white/10 border border-white/20 rounded-full text-white px-6 py-3.5 pr-12 focus:outline-none focus:border-white focus:bg-white/20 font-mono tracking-widest transition-all text-sm shadow-inner backdrop-blur-sm placeholder-white/40" onkeypress="handleKeyPress(event)">
+                <button type="button" onclick="togglePinVisibility()" class="absolute right-5 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" title="Show/Hide PIN">
+                    <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Extra Links -->
+            <div class="flex items-center text-[12px] text-white/80 font-medium animate-slide-up delay-500 pt-1 px-2">
+                <label class="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
+                    <input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-white/40 bg-transparent text-indigo-500 focus:ring-2 focus:ring-white/30 cursor-pointer transition-all">
+                    Remember me
+                </label>
             </div>
 
             <!-- Error Alert -->
-            <div id="errorMessage" class="hidden bg-rose-500/20 border border-rose-500/50 text-rose-200 text-xs py-3 px-4 rounded-2xl flex items-center gap-2.5 backdrop-blur-md animate-fade">
+            <div id="errorMessage" class="hidden bg-rose-500/20 border border-rose-500/50 text-rose-100 text-xs py-2 px-3 rounded-lg flex items-center gap-2 backdrop-blur-md animate-fade mt-2">
                 <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <span id="errorText">Please enter a valid Student ID.</span>
             </div>
 
             <!-- Login Button -->
-            <button id="loginBtn" onclick="attemptLogin()" class="group relative overflow-hidden w-full mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-[length:200%_auto] hover:bg-right active:scale-[0.98] text-white font-bold py-4 px-4 rounded-2xl transition-all duration-300 shadow-[0_0_25px_rgba(59,130,246,0.35)] hover:shadow-[0_0_35px_rgba(59,130,246,0.55)] flex justify-center items-center text-sm tracking-wide border border-blue-400/30 animate-slide-up delay-500">
-                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
+            <button id="loginBtn" onclick="attemptLogin()" class="w-full mt-6 bg-white hover:bg-gray-100 active:scale-[0.98] text-slate-900 font-bold py-3.5 px-4 rounded-full transition-all duration-300 shadow-[0_4px_15px_rgba(255,255,255,0.2)] hover:shadow-[0_4px_20px_rgba(255,255,255,0.4)] flex justify-center items-center text-[15px] animate-slide-up delay-500">
                 <span class="relative z-10 flex items-center gap-2">
-                    <span>Access Analytics Dashboard</span>
-                    <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                    <span>Login</span>
                 </span>
-                <svg id="loadingSpinner" class="hidden relative z-10 animate-spin ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg id="loadingSpinner" class="hidden relative z-10 animate-spin ml-2 h-4 w-4 text-slate-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
 
             <!-- Instant Demo Preview Link -->
-            <div class="pt-2 text-center animate-slide-up delay-500">
-                <button type="button" onclick="loadDemoStudent()" class="text-[11px] font-semibold text-indigo-300/70 hover:text-white transition-colors inline-flex items-center gap-1.5 py-1 px-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10">
-                    <span>✨</span> Preview Interactive Demo Student
+            <div class="pt-4 text-center animate-slide-up delay-500">
+                <button type="button" onclick="loadDemoStudent()" class="text-[11px] font-medium text-white/50 hover:text-white transition-all duration-300 inline-flex items-center gap-1.5 tracking-wide bg-transparent px-3 py-1.5 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5">
+                    Preview Demo Student
                 </button>
             </div>
         </div>
@@ -387,9 +415,77 @@
         </div>
     </div>
 
+    <!-- ADMIN DASHBOARD SCREEN -->
+    <div id="adminDashboardView" class="hidden relative z-10 w-full max-w-5xl bg-white/95 backdrop-blur-2xl rounded-none sm:rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.45)] overflow-hidden transform transition-all duration-500 border-0 sm:border border-slate-100 text-slate-800 min-h-screen sm:min-h-0">
+        <!-- Admin Header -->
+        <div class="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 relative overflow-hidden">
+            <div>
+                <h2 class="text-lg sm:text-2xl font-extrabold tracking-tight">Admin Portal <span class="text-purple-400">| Chemistry</span></h2>
+                <p class="text-slate-300 text-[11px] sm:text-sm mt-0.5 font-medium">Batch Analytics: <span id="adminDisplayYear" class="font-mono text-cyan-300 bg-white/10 px-2 py-0.5 rounded-md ml-1 font-bold"></span></p>
+            </div>
+            <button onclick="logout()" class="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 active:scale-95 border border-rose-500/30 hover:border-rose-500/60 rounded-xl text-xs sm:text-sm font-bold text-rose-200 transition-all">
+                Exit Admin
+            </button>
+        </div>
+
+        <!-- Admin Content -->
+        <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Total Students</span>
+                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 mt-1" id="adminTotalStudents">--</p>
+                </div>
+                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Class Average</span>
+                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-blue-600 mt-1" id="adminClassAvg">--</p>
+                </div>
+                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Top Student</span>
+                    <p class="text-lg sm:text-xl font-extrabold text-emerald-600 mt-1 truncate" id="adminTopStudent">--</p>
+                </div>
+                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
+                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Avg Attendance</span>
+                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-purple-600 mt-1" id="adminAttendance">--</p>
+                </div>
+            </div>
+
+            <!-- Admin Chart -->
+            <div class="p-4 sm:p-6 rounded-3xl border border-slate-200 bg-white shadow-sm">
+                <h3 class="text-xs sm:text-sm font-bold text-slate-600 mb-4 uppercase tracking-wider flex items-center gap-2"><span class="text-purple-500">📊</span> Class Average Trend</h3>
+                <div class="relative w-full h-[250px] sm:h-[300px]">
+                    <canvas id="adminChartCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Top 20 Table -->
+            <div class="rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/90 px-4 py-3.5 border-b border-slate-200">
+                    <h3 class="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2"><span class="text-amber-500">🏆</span> Top 20 Students Leaderboard</h3>
+                </div>
+                <div class="overflow-x-auto no-scrollbar">
+                    <table class="w-full text-left border-collapse text-[11px] sm:text-sm min-w-[500px]">
+                        <thead class="bg-white text-slate-500 font-bold uppercase text-[9px] sm:text-xs tracking-wider border-b border-slate-200">
+                            <tr>
+                                <th class="py-3 px-4 w-16 text-center">Rank</th>
+                                <th class="py-3 px-4">Student Name</th>
+                                <th class="py-3 px-4">Index No</th>
+                                <th class="py-3 px-4 text-center">Overall Avg</th>
+                                <th class="py-3 px-4 text-center">Papers Attended</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminLeaderboardBody" class="divide-y divide-slate-100 bg-white">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let chempulseChart = null;
         let examChart = null;
+        let adminChart = null;
         let currentStudentSummary = null;
         let currentAllRecords = [];
         let activeRecordIndex = -1;
@@ -796,6 +892,13 @@
                 return;
             }
 
+            // --- ADMIN LOGIN OVERRIDE ---
+            if (studentIdInput === 'ADMIN123' && studentPinInput === 'admin321') {
+                loadAdminDashboard(dbLinks.chempulse, yearInput);
+                return;
+            }
+            // ----------------------------
+
             const loginBtn = document.getElementById('loginBtn');
             const spinner = document.getElementById('loadingSpinner');
             loginBtn.disabled = true;
@@ -830,6 +933,202 @@
                 populateDashboardWithData(primaryData, examData, studentIdInput, yearInput);
             } catch (err) {
                 showError("Network error while loading data. Please check your internet connection.");
+            } finally {
+                loginBtn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        }
+
+        async function fetchAdminAnalytics(url, prefix) {
+            try {
+                let text = null;
+                const fetchUrls = [ url, 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url), 'https://corsproxy.io/?' + encodeURIComponent(url) ];
+                for (const fUrl of fetchUrls) {
+                    try { const res = await fetch(fUrl); if (res.ok) { text = await res.text(); break; } } catch(e){}
+                }
+                if (!text) return null;
+
+                const rows = [];
+                let row = [], col = "", inQ = false;
+                for (let c of text) {
+                    if (c === '"') inQ = !inQ;
+                    else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
+                    else if (c === '\n' && !inQ) { row.push(col.trim()); if (row.join('')) rows.push(row); row = []; col = ""; }
+                    else if (c !== '\r') col += c;
+                }
+                row.push(col.trim());
+                if (row.join('')) rows.push(row);
+                if (rows.length < 2) return null;
+
+                let headerIdx = rows.findIndex(r => r.some(c => c.toLowerCase().includes('name') || c.toLowerCase().includes('index')));
+                if (headerIdx === -1) headerIdx = 0;
+                const headers = rows[headerIdx].map(h => h.trim().replace(/(^"|"$)/g, ''));
+
+                let idCol = 1, nameCol = 0;
+                if (headers[0].toLowerCase().includes('index') || headers[0].toLowerCase().includes('id')) { idCol = 0; nameCol = 1; }
+                let pinCol = headers.findIndex(h => h.toLowerCase().includes('nic') || h.toLowerCase().includes('pin') || h.toLowerCase().includes('password'));
+
+                const dataRows = rows.slice(headerIdx + 1).filter(r => r[idCol] && r[idCol].trim() !== '');
+
+                const paperMeta = [];
+                let totalStudentAttendanceCount = 0;
+                let totalPossibleAttendanceCount = 0;
+
+                for (let c = 0; c < headers.length; c++) {
+                    if (c === idCol || c === nameCol || c === pinCol) continue;
+                    const rawTitle = headers[c] ? headers[c].trim() : `${prefix} ${paperMeta.length + 1}`;
+                    const scores = [];
+                    dataRows.forEach(r => {
+                        const val = r[c] ? r[c].trim().replace(/(^"|"$)/g, '') : '';
+                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
+                            const num = parseFloat(val);
+                            if (num >= 0 && num <= 100) scores.push(num);
+                        }
+                    });
+                    const isConducted = scores.length > 0;
+                    if (isConducted) {
+                        totalStudentAttendanceCount += scores.length;
+                        totalPossibleAttendanceCount += dataRows.length;
+                    }
+                    paperMeta.push({
+                        title: rawTitle.toLowerCase().includes(prefix.toLowerCase()) ? rawTitle : `${prefix} ${rawTitle}`,
+                        avg: isConducted ? parseFloat((scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1)) : 0,
+                        isConducted: isConducted,
+                        colIndex: c
+                    });
+                }
+
+                const conductedMetas = paperMeta.filter(m => m.isConducted);
+
+                const studentRankings = dataRows.map(r => {
+                    let total = 0;
+                    let attended = 0;
+                    conductedMetas.forEach(meta => {
+                        const val = r[meta.colIndex] ? r[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
+                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
+                            total += parseFloat(val);
+                            attended++;
+                        }
+                    });
+                    const avg = conductedMetas.length > 0 ? total / conductedMetas.length : 0;
+                    return {
+                        id: r[idCol].trim().replace(/(^"|"$)/g, '').toUpperCase(),
+                        name: r[nameCol] ? r[nameCol].trim().replace(/(^"|"$)/g, '') : "Student",
+                        avg: avg,
+                        attended: attended
+                    };
+                }).sort((a, b) => b.avg - a.avg);
+
+                const overallClassAvg = conductedMetas.length > 0 ? (conductedMetas.reduce((sum, meta) => sum + meta.avg, 0) / conductedMetas.length).toFixed(1) : 0;
+
+                return {
+                    totalStudents: dataRows.length,
+                    overallClassAvg: overallClassAvg,
+                    attendanceRate: totalPossibleAttendanceCount > 0 ? Math.round((totalStudentAttendanceCount / totalPossibleAttendanceCount) * 100) : 0,
+                    top20: studentRankings.slice(0, 20),
+                    paperMeta: conductedMetas
+                };
+            } catch (err) { 
+                console.error("Error in fetchAdminAnalytics:", err);
+                return null; 
+            }
+        }
+
+        async function loadAdminDashboard(url, yearInput) {
+            const loginBtn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            loginBtn.disabled = true;
+            spinner.classList.remove('hidden');
+
+            try {
+                const adminData = await fetchAdminAnalytics(url, 'Chempulse');
+                if (!adminData) { showError("Failed to load admin analytics."); return; }
+
+                updateGlobalTheme('slate'); 
+
+                document.getElementById('adminDisplayYear').innerText = `${yearInput} A/L`;
+                document.getElementById('adminTotalStudents').innerText = adminData.totalStudents;
+                document.getElementById('adminClassAvg').innerText = `${adminData.overallClassAvg}%`;
+                document.getElementById('adminTopStudent').innerText = adminData.top20[0] ? adminData.top20[0].name : "N/A";
+                document.getElementById('adminAttendance').innerText = `${adminData.attendanceRate}%`;
+
+                // Render Top 20 Table
+                const tbody = document.getElementById('adminLeaderboardBody');
+                tbody.innerHTML = '';
+                adminData.top20.forEach((s, idx) => {
+                    // Sanitize text to prevent HTML breakdown errors
+                    const safeName = (s.name || "Student").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    const safeId = (s.id || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    
+                    let rankColor = 'text-slate-600';
+                    if (idx === 0) rankColor = 'text-amber-500 font-black text-lg';
+                    else if (idx < 3) rankColor = 'text-slate-800 font-bold';
+
+                    let avgColor = 'text-blue-600';
+                    if (s.avg >= 75) avgColor = 'text-emerald-600 font-bold';
+                    else if (s.avg < 40) avgColor = 'text-rose-600';
+
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="py-3 px-4 text-center ${rankColor}">#${idx + 1}</td>
+                            <td class="py-3 px-4 font-bold text-slate-800 truncate max-w-[150px] sm:max-w-none">${safeName}</td>
+                            <td class="py-3 px-4 text-slate-500 font-mono text-xs">${safeId}</td>
+                            <td class="py-3 px-4 text-center font-mono ${avgColor}">${(s.avg || 0).toFixed(1)}</td>
+                            <td class="py-3 px-4 text-center text-slate-500 text-xs">${s.attended} / ${adminData.paperMeta.length}</td>
+                        </tr>
+                    `);
+                });
+
+                // REVEAL DASHBOARD FIRST so Chart.js can calculate correct container dimensions!
+                document.getElementById('loginView').classList.add('hidden');
+                document.getElementById('adminDashboardView').classList.remove('hidden');
+
+                // Render Chart on a slight delay to ensure browser layout is painted
+                setTimeout(() => {
+                    if (adminChart) adminChart.destroy();
+                    const ctx = document.getElementById('adminChartCanvas').getContext('2d');
+                    adminChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: adminData.paperMeta.map(p => p.title),
+                            datasets: [{
+                                label: 'Batch Average',
+                                data: adminData.paperMeta.map(p => p.avg),
+                                backgroundColor: 'rgba(168, 85, 247, 0.7)',
+                                hoverBackgroundColor: 'rgba(147, 51, 234, 0.9)',
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true, 
+                            maintainAspectRatio: false,
+                            plugins: { 
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                    padding: 10, 
+                                    cornerRadius: 10
+                                }
+                            },
+                            scales: { 
+                                y: { 
+                                    beginAtZero: true, 
+                                    max: 100,
+                                    grid: { color: 'rgba(226, 232, 240, 0.6)' },
+                                    ticks: { color: '#64748b' }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: '#475569' }
+                                }
+                            }
+                        }
+                    });
+                }, 50);
+
+            } catch(e) {
+                console.error("Admin dashboard generation error:", e);
+                showError("Error generating admin dashboard. Please try again.");
             } finally {
                 loginBtn.disabled = false;
                 spinner.classList.add('hidden');
@@ -1483,6 +1782,7 @@
 
         function logout() {
             document.getElementById('dashboardView').classList.add('hidden');
+            document.getElementById('adminDashboardView').classList.add('hidden');
             document.getElementById('loginView').classList.remove('hidden');
             document.getElementById('studentId').value = '';
             document.getElementById('studentPin').value = '';
