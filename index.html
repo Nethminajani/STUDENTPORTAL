@@ -98,6 +98,12 @@
         .delay-400 { animation-delay: 400ms; opacity: 0; }
         .delay-500 { animation-delay: 500ms; opacity: 0; }
         .animate-shimmer { animation: shimmer 2s infinite; }
+        
+        /* Accordion Animations */
+        .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .accordion-content.expanded { max-height: 1500px; opacity: 1; }
+        .rotate-icon { transition: transform 0.3s ease; }
+        .expanded .rotate-icon { transform: rotate(180deg); }
     </style>
 </head>
 <body id="bodyRoot" class="bg-slate-950 text-slate-100 font-sans min-h-screen flex items-center justify-center p-0 sm:p-6 transition-colors duration-700 relative overflow-x-hidden">
@@ -353,6 +359,9 @@
                 <button onclick="switchTab('table')" id="tabBtn-table" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
                     Detailed Analytics Table
                 </button>
+                <button onclick="switchTab('quizzes')" id="tabBtn-quizzes" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                    Quizzes & Links
+                </button>
             </div>
 
             <!-- Chempulse Chart Tab -->
@@ -415,6 +424,16 @@
                 </div>
                 <p class="text-[10px] sm:text-xs text-slate-400 mt-2.5 text-center font-medium">💡 Tap on any row above to inspect that specific paper's performance.</p>
             </div>
+
+            <!-- Quizzes & Links Tab -->
+            <div id="tab-quizzes" class="tab-content animate-fade">
+                <div class="p-4 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] min-h-[300px]">
+                    <h3 class="text-sm sm:text-base font-bold text-slate-700 mb-4 flex items-center gap-2"><span class="text-indigo-500">📚</span> Unit Quizzes & Resources</h3>
+                    <div id="studentQuizContainer" class="space-y-3">
+                        <div class="text-center py-8 text-slate-400 text-xs sm:text-sm font-medium animate-pulse">Connecting to Cloud Server...</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -426,40 +445,49 @@
                 <h2 class="text-lg sm:text-2xl font-extrabold tracking-tight">Admin Portal <span class="text-purple-400">| Chemistry</span></h2>
                 <p class="text-slate-300 text-[11px] sm:text-sm mt-0.5 font-medium">Batch Analytics: <span id="adminDisplayYear" class="font-mono text-cyan-300 bg-white/10 px-2 py-0.5 rounded-md ml-1 font-bold"></span></p>
             </div>
-            <button onclick="logout()" class="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 active:scale-95 border border-rose-500/30 hover:border-rose-500/60 rounded-xl text-xs sm:text-sm font-bold text-rose-200 transition-all">
-                Exit Admin
-            </button>
+            <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
+                <div class="flex bg-white/10 p-1 rounded-xl border border-white/20 w-full sm:w-auto justify-center">
+                    <button onclick="switchAdminTab('analytics')" id="adminTabBtn-analytics" class="px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-purple-600 text-white shadow-md w-1/2 sm:w-auto">Analytics</button>
+                    <button onclick="switchAdminTab('quizzes')" id="adminTabBtn-quizzes" class="px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-300 hover:text-white w-1/2 sm:w-auto">Quiz Manager</button>
+                </div>
+                <button onclick="logout()" class="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 active:scale-95 border border-rose-500/30 hover:border-rose-500/60 rounded-xl text-xs sm:text-sm font-bold text-rose-200 transition-all w-full sm:w-auto">
+                    Exit Admin
+                </button>
+            </div>
         </div>
 
         <!-- Admin Content -->
-        <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Total Students</span>
-                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 mt-1" id="adminTotalStudents">--</p>
+        <div class="p-4 sm:p-8 relative">
+            
+            <!-- Analytics View -->
+            <div id="adminView-analytics" class="space-y-4 sm:space-y-6 animate-fade">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <!-- Total Students -->
+                    <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Students</span>
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-800 mt-1" id="adminTotalStudents">--</p>
+                    </div>
+                    <!-- Class Average -->
+                    <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Class Average</span>
+                        <p class="text-2xl sm:text-3xl font-extrabold text-purple-600 mt-1" id="adminClassAvg">--</p>
+                    </div>
+                    <!-- Top Student -->
+                    <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Top Student</span>
+                        <p class="text-lg sm:text-xl font-extrabold text-slate-800 mt-1 truncate" id="adminTopStudent">--</p>
+                    </div>
+                    <!-- Attendance -->
+                    <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Avg Attendance</span>
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-800 mt-1" id="adminAttendance">--</p>
+                    </div>
                 </div>
-                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Class Average</span>
-                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-blue-600 mt-1" id="adminClassAvg">--</p>
-                </div>
-                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Top Student</span>
-                    <p class="text-lg sm:text-xl font-extrabold text-emerald-600 mt-1 truncate" id="adminTopStudent">--</p>
-                </div>
-                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-sm hover:-translate-y-1 transition-transform">
-                    <span class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Avg Attendance</span>
-                    <p class="text-2xl sm:text-3xl font-extrabold font-mono text-purple-600 mt-1" id="adminAttendance">--</p>
-                </div>
-            </div>
 
-            <!-- Admin Chart -->
-            <div class="p-4 sm:p-6 rounded-3xl border border-slate-200 bg-white shadow-sm">
-                <h3 class="text-xs sm:text-sm font-bold text-slate-600 mb-4 uppercase tracking-wider flex items-center gap-2"><span class="text-purple-500">📊</span> Class Average Trend</h3>
-                <div class="relative w-full h-[250px] sm:h-[300px]">
+                <div class="relative w-full h-[250px] sm:h-[300px] bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                     <canvas id="adminChartCanvas"></canvas>
                 </div>
-            </div>
 
             <!-- Top 20 Table -->
             <div class="rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -482,8 +510,91 @@
                     </table>
                 </div>
             </div>
+            </div>
+
+            <!-- Quiz Manager View -->
+            <div id="adminView-quizzes" class="hidden space-y-4 sm:space-y-6 animate-fade">
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold text-slate-700 flex items-center gap-2">
+                                <span class="text-indigo-500">⚙️</span> Quiz & Resource Manager
+                                <span id="cloudSyncBadge" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">☁️ Cloud Ready</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Create Units (Folders), Sub-topics (Subfolders), and external Quiz/PDF cards.</p>
+                        </div>
+                        <button type="button" onclick="adminAddUnit()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-indigo-500/30 transition-all flex items-center gap-1.5 cursor-pointer">
+                            <span class="text-base leading-none">+</span> Add Unit Folder
+                        </button>
+                    </div>
+                    <div id="adminQuizContainer" class="space-y-4">
+                        <!-- Loaded from Firebase -->
+                        <div class="text-center py-8 text-slate-400 text-sm animate-pulse">Connecting to Firebase Cloud...</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <!-- CUSTOM MODAL FOR ADDING UNITS / TOPICS / LINKS & CONFIRMATIONS -->
+    <div id="quizActionModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 animate-fade">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 text-slate-800">
+            <div class="flex items-center justify-between mb-2">
+                <h3 id="quizModalTitle" class="text-lg font-extrabold text-slate-800">Add New Unit</h3>
+                <button type="button" onclick="closeQuizModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold text-sm transition-colors">✕</button>
+            </div>
+            <p id="quizModalDesc" class="text-xs text-slate-500 mb-4">Enter the details below to save to Firebase.</p>
+            <div id="quizModalFields" class="space-y-3">
+                <div>
+                    <label id="quizModalLabel1" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Title</label>
+                    <input id="quizModalInput1" type="text" placeholder="e.g., Unit 01 - Atomic Structure" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-semibold text-slate-800" onkeydown="if(event.key==='Enter') handleQuizModalSubmit()">
+                </div>
+                <div id="quizModalField2" class="hidden">
+                    <label id="quizModalLabel2" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">External Link URL</label>
+                    <input id="quizModalInput2" type="url" placeholder="https://forms.gle/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-mono text-slate-800" onkeydown="if(event.key==='Enter') handleQuizModalSubmit()">
+                </div>
+            </div>
+            <div id="quizModalError" class="hidden mt-3 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-2 rounded-xl"></div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button type="button" onclick="closeQuizModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all">Cancel</button>
+                <button type="button" id="quizModalSubmitBtn" onclick="handleQuizModalSubmit()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all">Save Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIREBASE CLOUD CONNECTION (Supports Realtime Database + Firestore) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCRGchK8YAzVxfMeXBS4B_19-IzxWh2ZOY",
+            authDomain: "student-quize-9fd23.firebaseapp.com",
+            databaseURL: "https://student-quize-9fd23-default-rtdb.firebaseio.com",
+            projectId: "student-quize-9fd23",
+            storageBucket: "student-quize-9fd23.firebasestorage.app",
+            messagingSenderId: "1093450055501",
+            appId: "1:1093450055501:web:1ac44746badc10e28fc104",
+            measurementId: "G-PC8PGVTPRE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const rtdb = getDatabase(app);
+
+        // Expose both Realtime DB and Firestore to global window
+        window.firebaseDB = db;
+        window.firebaseDoc = doc;
+        window.firebaseSetDoc = setDoc;
+        window.firebaseOnSnapshot = onSnapshot;
+
+        window.firebaseRTDB = rtdb;
+        window.firebaseRef = ref;
+        window.firebaseSet = set;
+        window.firebaseOnValue = onValue;
+    </script>
 
     <script>
         let chempulseChart = null;
@@ -494,6 +605,10 @@
         let activeRecordIndex = -1;
         let currentThemeColor = 'blue';
         let showAverageLine = true;
+        
+        // Quiz System Variables
+        let globalQuizData = [];
+        let currentQuizUnsubscribe = null;
 
         const themeClasses = {
             blue: {
@@ -878,6 +993,9 @@
 
             document.getElementById('loginView').classList.add('hidden');
             document.getElementById('dashboardView').classList.remove('hidden');
+            
+            // Connect to Firebase and fetch Quizzes for this Batch
+            initQuizListener(yearInput);
         }
 
         async function attemptLogin() {
@@ -1085,6 +1203,9 @@
                 // REVEAL DASHBOARD FIRST so Chart.js can calculate correct container dimensions!
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('adminDashboardView').classList.remove('hidden');
+
+                // Connect to Firebase and fetch Quizzes for this Batch
+                initQuizListener(yearInput);
 
                 // Render Chart on a slight delay to ensure browser layout is painted
                 setTimeout(() => {
@@ -1733,35 +1854,29 @@
                             ticks: {
                                 stepSize: 25,
                                 padding: 8,
-                                font: { family: '"JetBrains Mono", monospace', size: 10, weight: '600' },
-                                color: '#64748b'
+                                color: '#64748b',
+                                font: { family: '"Plus Jakarta Sans", sans-serif', size: 10, weight: '600' }
                             }
                         },
                         x: {
-                            border: { display: false },
                             grid: { display: false },
-                            ticks: {
-                                padding: 8,
-                                font: { family: '"Plus Jakarta Sans", sans-serif', size: 10.5, weight: '700' },
-                                color: '#475569'
-                            }
+                            ticks: { color: '#475569', font: { family: '"Plus Jakarta Sans", sans-serif', size: 10, weight: '600' } }
                         }
                     }
                 }
             });
-
-            if (canvasId === 'chempulseCanvas') chempulseChart = chart;
-            if (canvasId === 'examCanvas') examChart = chart;
         }
 
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.id === 'tab-' + tabId) tab.classList.add('active');
+            });
 
             const activeClasses = themeClasses[currentThemeColor].tabActive;
             const inactiveClasses = ['bg-slate-100', 'text-slate-600', 'hover:bg-slate-200'];
 
-            ['chempulse', 'exams', 'table'].forEach(t => {
+            ['chempulse', 'exams', 'table', 'quizzes'].forEach(t => {
                 const btn = document.getElementById('tabBtn-' + t);
                 if (!btn) return;
                 btn.classList.remove(...allTabClasses, ...inactiveClasses);
@@ -1784,6 +1899,7 @@
         }
 
         function logout() {
+            if (currentQuizUnsubscribe) { currentQuizUnsubscribe(); currentQuizUnsubscribe = null; }
             document.getElementById('dashboardView').classList.add('hidden');
             document.getElementById('adminDashboardView').classList.add('hidden');
             document.getElementById('loginView').classList.remove('hidden');
@@ -1792,6 +1908,476 @@
             hideError();
             updateGlobalTheme('blue');
             switchTab('chempulse');
+            switchAdminTab('analytics');
+        }
+
+        // ---- FIREBASE QUIZ SYSTEM LOGIC & CUSTOM MODAL ----
+        let activeQuizYear = '2028';
+        let pendingModalCallback = null;
+
+        function setCloudBadge(text, colorType) {
+            const badge = document.getElementById('cloudSyncBadge');
+            if (!badge) return;
+            badge.innerText = text;
+            if (colorType === 'emerald') {
+                badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200";
+            } else if (colorType === 'amber') {
+                badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200";
+            } else {
+                badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200";
+            }
+        }
+
+        function initQuizListener(year) {
+            activeQuizYear = String(year || '2028').trim();
+            if (currentQuizUnsubscribe) {
+                try { currentQuizUnsubscribe(); } catch (e) {}
+                currentQuizUnsubscribe = null;
+            }
+
+            // Render immediate UI so the button is never stuck on "Connecting..."
+            renderStudentQuizzes();
+            renderAdminQuizzes();
+
+            // Wait for module script if still loading
+            if (!window.firebaseRTDB && !window.firebaseDB) {
+                setTimeout(() => initQuizListener(activeQuizYear), 300);
+                return;
+            }
+
+            // 1. Primary Listener: Firebase Realtime Database (Matches your databaseURL)
+            if (window.firebaseRTDB) {
+                try {
+                    const quizRef = window.firebaseRef(window.firebaseRTDB, 'quizzes/batch_' + activeQuizYear);
+                    currentQuizUnsubscribe = window.firebaseOnValue(quizRef, (snapshot) => {
+                        const data = snapshot.val();
+                        if (data && Array.isArray(data.units)) {
+                            globalQuizData = data.units;
+                        } else if (Array.isArray(data)) {
+                            globalQuizData = data;
+                        } else {
+                            globalQuizData = [];
+                        }
+                        setCloudBadge('☁️ Live Synced (RTDB)', 'emerald');
+                        renderStudentQuizzes();
+                        renderAdminQuizzes();
+                    }, (err) => {
+                        console.warn("RTDB read fallback to Firestore:", err.message);
+                        connectFirestoreFallback(activeQuizYear);
+                    });
+                    return;
+                } catch (e) {
+                    console.warn("RTDB init error:", e);
+                }
+            }
+
+            connectFirestoreFallback(activeQuizYear);
+        }
+
+        function connectFirestoreFallback(year) {
+            if (!window.firebaseDB) return;
+            try {
+                const docRef = window.firebaseDoc(window.firebaseDB, 'quizzes', 'batch_' + year);
+                currentQuizUnsubscribe = window.firebaseOnSnapshot(docRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        globalQuizData = docSnap.data().units || [];
+                    } else {
+                        globalQuizData = [];
+                    }
+                    setCloudBadge('☁️ Live Synced (Firestore)', 'emerald');
+                    renderStudentQuizzes();
+                    renderAdminQuizzes();
+                }, (error) => {
+                    console.warn("Firestore listener restricted:", error.message);
+                    setCloudBadge('⚡ Instant Mode (Check Firebase Rules)', 'amber');
+                    renderStudentQuizzes();
+                    renderAdminQuizzes();
+                });
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+
+        async function syncQuizzesToFirebase() {
+            setCloudBadge('⏳ Saving to Cloud...', 'indigo');
+            // Normalize empty arrays so Firebase Realtime DB preserves structure cleanly
+            const cleanUnits = globalQuizData.map(u => ({
+                title: u.title || 'Untitled Unit',
+                topics: (u.topics || []).map(t => ({
+                    title: t.title || 'Untitled Topic',
+                    links: (t.links || []).map(l => ({
+                        title: l.title || 'Quiz Link',
+                        url: l.url || '#'
+                    }))
+                }))
+            }));
+
+            let saved = false;
+
+            // Try saving to Firebase Realtime Database first
+            if (window.firebaseRTDB) {
+                try {
+                    const quizRef = window.firebaseRef(window.firebaseRTDB, 'quizzes/batch_' + activeQuizYear);
+                    await window.firebaseSet(quizRef, { units: cleanUnits, updatedAt: Date.now() });
+                    saved = true;
+                    setCloudBadge('☁️ Saved to Firebase', 'emerald');
+                } catch (rtdbErr) {
+                    console.warn("RTDB Save Error:", rtdbErr.message);
+                }
+            }
+
+            // Also try saving to Firestore if available
+            if (!saved && window.firebaseDB) {
+                try {
+                    const docRef = window.firebaseDoc(window.firebaseDB, 'quizzes', 'batch_' + activeQuizYear);
+                    await window.firebaseSetDoc(docRef, { units: cleanUnits, updatedAt: Date.now() });
+                    saved = true;
+                    setCloudBadge('☁️ Saved to Firestore', 'emerald');
+                } catch (fsErr) {
+                    console.warn("Firestore Save Error:", fsErr.message);
+                }
+            }
+
+            if (!saved) {
+                setCloudBadge('⚠️ Saved on Screen (Set Firebase Rules to true)', 'amber');
+            }
+        }
+
+        function openQuizModal(config) {
+            const modal = document.getElementById('quizActionModal');
+            const titleEl = document.getElementById('quizModalTitle');
+            const descEl = document.getElementById('quizModalDesc');
+            const fieldsContainer = document.getElementById('quizModalFields');
+            const label1 = document.getElementById('quizModalLabel1');
+            const input1 = document.getElementById('quizModalInput1');
+            const field2 = document.getElementById('quizModalField2');
+            const input2 = document.getElementById('quizModalInput2');
+            const errBox = document.getElementById('quizModalError');
+            const submitBtn = document.getElementById('quizModalSubmitBtn');
+
+            errBox.classList.add('hidden');
+            titleEl.innerText = config.title;
+            descEl.innerText = config.desc || '';
+
+            if (config.mode === 'confirm') {
+                fieldsContainer.classList.add('hidden');
+                submitBtn.innerText = config.submitText || 'Delete';
+                submitBtn.className = "px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-rose-500/20 transition-all";
+            } else {
+                fieldsContainer.classList.remove('hidden');
+                label1.innerText = config.label1 || 'Title';
+                input1.placeholder = config.placeholder1 || '';
+                input1.value = '';
+                if (config.showSecondField) {
+                    field2.classList.remove('hidden');
+                    input2.placeholder = config.placeholder2 || 'https://...';
+                    input2.value = '';
+                } else {
+                    field2.classList.add('hidden');
+                }
+                submitBtn.innerText = config.submitText || 'Save Now';
+                submitBtn.className = "px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all";
+            }
+
+            pendingModalCallback = config;
+            modal.classList.remove('hidden');
+            if (config.mode !== 'confirm') {
+                setTimeout(() => input1.focus(), 60);
+            }
+        }
+
+        window.closeQuizModal = function() {
+            document.getElementById('quizActionModal').classList.add('hidden');
+            pendingModalCallback = null;
+        };
+
+        window.handleQuizModalSubmit = function() {
+            if (!pendingModalCallback) return;
+            const errBox = document.getElementById('quizModalError');
+            errBox.classList.add('hidden');
+
+            if (pendingModalCallback.mode === 'confirm') {
+                pendingModalCallback.onConfirm();
+                closeQuizModal();
+                return;
+            }
+
+            const val1 = document.getElementById('quizModalInput1').value.trim();
+            const val2 = document.getElementById('quizModalInput2').value.trim();
+
+            if (!val1) {
+                errBox.innerText = "Please enter a title before saving.";
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            if (pendingModalCallback.showSecondField) {
+                if (!val2) {
+                    errBox.innerText = "Please paste the external quiz or resource link.";
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+                const formattedUrl = /^https?:\/\//i.test(val2) ? val2 : 'https://' + val2;
+                pendingModalCallback.onSubmit(val1, formattedUrl);
+            } else {
+                pendingModalCallback.onSubmit(val1);
+            }
+
+            closeQuizModal();
+        };
+
+        function toggleAccordion(id) {
+            const content = document.getElementById('acc-content-' + id);
+            const header = document.getElementById('acc-header-' + id);
+            if (!content || !header) return;
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                header.classList.remove('expanded');
+            } else {
+                content.classList.add('expanded');
+                header.classList.add('expanded');
+            }
+        }
+
+        function renderStudentQuizzes() {
+            const container = document.getElementById('studentQuizContainer');
+            if (!container) return;
+            
+            if (!globalQuizData || globalQuizData.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 bg-slate-50 border border-slate-200 border-dashed rounded-2xl text-slate-400 text-sm font-medium">No units or quizzes published for this batch yet. Check back soon!</div>`;
+                return;
+            }
+
+            let html = '';
+            globalQuizData.forEach((unit, uIdx) => {
+                const topics = unit.topics || [];
+                html += `
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
+                        <button type="button" id="acc-header-u${uIdx}" onclick="toggleAccordion('u${uIdx}')" class="w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50/70 hover:bg-slate-100 flex justify-between items-center transition-colors text-left expanded">
+                            <span class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2.5"><span class="text-indigo-500 text-lg">📁</span> ${unit.title}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600">${topics.length} Subfolder${topics.length === 1 ? '' : 's'}</span>
+                                <svg class="w-5 h-5 text-slate-400 rotate-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div id="acc-content-u${uIdx}" class="accordion-content expanded bg-white">
+                            <div class="p-4 sm:p-5 pt-2 sm:pt-3 space-y-4">
+                `;
+                if (topics.length === 0) {
+                    html += `<div class="text-xs text-slate-400 italic pl-6">No subfolders inside this unit yet.</div>`;
+                } else {
+                    topics.forEach((topic) => {
+                        const links = topic.links || [];
+                        html += `
+                            <div class="pl-3 sm:pl-4 border-l-2 border-indigo-200">
+                                <h4 class="font-bold text-slate-700 text-xs sm:text-sm mb-2.5 flex items-center gap-1.5"><span class="text-amber-500">📂</span> ${topic.title}</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pl-4">
+                        `;
+                        if (links.length === 0) {
+                            html += `<span class="text-xs text-slate-400 italic">No quiz cards added yet.</span>`;
+                        } else {
+                            links.forEach((link) => {
+                                html += `
+                                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/60 hover:shadow-sm transition-all group">
+                                        <div class="flex items-center gap-2.5 overflow-hidden">
+                                            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors text-sm shadow-xs">📝</span>
+                                            <div class="overflow-hidden">
+                                                <p class="text-xs sm:text-sm font-bold text-slate-700 group-hover:text-indigo-700 truncate">${link.title}</p>
+                                                <p class="text-[10px] text-slate-400 truncate">Click to open quiz ↗</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                `;
+                            });
+                        }
+                        html += `</div></div>`;
+                    });
+                }
+                html += `</div></div></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderAdminQuizzes() {
+            const container = document.getElementById('adminQuizContainer');
+            if (!container) return;
+            
+            if (!globalQuizData || globalQuizData.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 px-4 bg-slate-50 border-2 border-slate-200 border-dashed rounded-3xl">
+                        <div class="text-3xl mb-2">📁</div>
+                        <p class="text-slate-700 text-sm font-bold">No Unit Folders Created Yet</p>
+                        <p class="text-slate-400 text-xs mt-1 mb-4">Click "+ Add Unit Folder" above to create your first Chemistry Unit.</p>
+                        <button type="button" onclick="adminAddUnit()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all">+ Create First Unit</button>
+                    </div>`;
+                return;
+            }
+
+            let html = '';
+            globalQuizData.forEach((unit, uIdx) => {
+                const topics = unit.topics || [];
+                html += `
+                    <div class="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/60 shadow-sm relative">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+                            <h4 class="font-extrabold text-slate-800 text-sm sm:text-base flex items-center gap-2"><span class="text-indigo-500 text-lg">📁</span> ${unit.title}</h4>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="adminAddTopic(${uIdx})" class="px-3 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer">+ Add Subfolder</button>
+                                <button type="button" onclick="adminDeleteUnit(${uIdx})" class="px-2.5 py-1.5 bg-white border border-slate-200 text-rose-500 hover:bg-rose-50 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer">Delete Unit</button>
+                            </div>
+                        </div>
+                        <div class="space-y-3 pl-2 sm:pl-6">
+                `;
+                if (topics.length === 0) {
+                    html += `<div class="text-xs text-slate-400 italic py-2">No subfolders yet. Click "+ Add Subfolder" to add a lesson or topic.</div>`;
+                } else {
+                    topics.forEach((topic, tIdx) => {
+                        const links = topic.links || [];
+                        html += `
+                            <div class="border border-slate-200 rounded-xl p-3.5 sm:p-4 bg-white shadow-2xs relative">
+                                <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                                    <h5 class="font-bold text-slate-700 text-xs sm:text-sm flex items-center gap-1.5"><span class="text-amber-500">📂</span> ${topic.title}</h5>
+                                    <div class="flex gap-2">
+                                        <button type="button" onclick="adminAddLink(${uIdx}, ${tIdx})" class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 rounded-lg text-[11px] font-bold transition-all cursor-pointer">+ Add Quiz Card</button>
+                                        <button type="button" onclick="adminDeleteTopic(${uIdx}, ${tIdx})" class="px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-[11px] font-bold transition-all cursor-pointer">Delete</button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                        `;
+                        if (links.length === 0) {
+                            html += `<div class="text-[11px] text-slate-400 italic col-span-full">No quiz cards inside this subfolder yet.</div>`;
+                        } else {
+                            links.forEach((link, lIdx) => {
+                                html += `
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 group hover:border-indigo-300 transition-all">
+                                        <div class="flex items-center gap-2 overflow-hidden pr-2">
+                                            <span class="text-sm">📝</span>
+                                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-slate-700 hover:text-indigo-600 truncate">${link.title}</a>
+                                        </div>
+                                        <button type="button" onclick="adminDeleteLink(${uIdx}, ${tIdx}, ${lIdx})" class="text-rose-400 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition-colors" title="Remove Card">
+                                            ✕
+                                        </button>
+                                    </div>
+                                `;
+                            });
+                        }
+                        html += `</div></div>`;
+                    });
+                }
+                html += `</div></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        window.adminAddUnit = function() {
+            openQuizModal({
+                mode: 'input',
+                title: 'Create New Unit Folder',
+                desc: 'Add a main Chemistry unit folder (e.g., Unit 01 - Atomic Structure).',
+                label1: 'Unit Folder Name',
+                placeholder1: 'e.g., Unit 01 - Atomic Structure',
+                showSecondField: false,
+                submitText: 'Create Unit',
+                onSubmit: (title) => {
+                    globalQuizData.push({ title: title, topics: [] });
+                    renderAdminQuizzes();
+                    renderStudentQuizzes();
+                    syncQuizzesToFirebase();
+                }
+            });
+        };
+
+        window.adminAddTopic = function(uIdx) {
+            const unitName = globalQuizData[uIdx]?.title || 'Unit';
+            openQuizModal({
+                mode: 'input',
+                title: 'Add Subfolder',
+                desc: `Create a subfolder inside "${unitName}".`,
+                label1: 'Subfolder / Topic Name',
+                placeholder1: 'e.g., Electromagnetic Radiation & Quantum Numbers',
+                showSecondField: false,
+                submitText: 'Create Subfolder',
+                onSubmit: (title) => {
+                    if (!globalQuizData[uIdx].topics) globalQuizData[uIdx].topics = [];
+                    globalQuizData[uIdx].topics.push({ title: title, links: [] });
+                    renderAdminQuizzes();
+                    renderStudentQuizzes();
+                    syncQuizzesToFirebase();
+                }
+            });
+        };
+
+        window.adminAddLink = function(uIdx, tIdx) {
+            const topicName = globalQuizData[uIdx]?.topics?.[tIdx]?.title || 'Subfolder';
+            openQuizModal({
+                mode: 'input',
+                title: 'Add External Quiz Card',
+                desc: `Add a clickable quiz or resource card inside "${topicName}".`,
+                label1: 'Card Title',
+                placeholder1: 'e.g., Paper 01 - MCQ Quiz (Google Form)',
+                showSecondField: true,
+                placeholder2: 'https://forms.gle/...',
+                submitText: 'Add Quiz Card',
+                onSubmit: (title, url) => {
+                    if (!globalQuizData[uIdx].topics[tIdx].links) globalQuizData[uIdx].topics[tIdx].links = [];
+                    globalQuizData[uIdx].topics[tIdx].links.push({ title: title, url: url });
+                    renderAdminQuizzes();
+                    renderStudentQuizzes();
+                    syncQuizzesToFirebase();
+                }
+            });
+        };
+
+        window.adminDeleteUnit = function(uIdx) {
+            const unitName = globalQuizData[uIdx]?.title || 'this Unit';
+            openQuizModal({
+                mode: 'confirm',
+                title: 'Delete Unit Folder?',
+                desc: `Are you sure you want to delete "${unitName}" and all subfolders inside it?`,
+                submitText: 'Yes, Delete Unit',
+                onConfirm: () => {
+                    globalQuizData.splice(uIdx, 1);
+                    renderAdminQuizzes();
+                    renderStudentQuizzes();
+                    syncQuizzesToFirebase();
+                }
+            });
+        };
+
+        window.adminDeleteTopic = function(uIdx, tIdx) {
+            const topicName = globalQuizData[uIdx]?.topics?.[tIdx]?.title || 'this Subfolder';
+            openQuizModal({
+                mode: 'confirm',
+                title: 'Delete Subfolder?',
+                desc: `Are you sure you want to delete "${topicName}" and all quiz cards inside it?`,
+                submitText: 'Yes, Delete',
+                onConfirm: () => {
+                    globalQuizData[uIdx].topics.splice(tIdx, 1);
+                    renderAdminQuizzes();
+                    renderStudentQuizzes();
+                    syncQuizzesToFirebase();
+                }
+            });
+        };
+
+        window.adminDeleteLink = function(uIdx, tIdx, lIdx) {
+            globalQuizData[uIdx].topics[tIdx].links.splice(lIdx, 1);
+            renderAdminQuizzes();
+            renderStudentQuizzes();
+            syncQuizzesToFirebase();
+        };
+
+        window.switchAdminTab = function(tab) {
+            if (tab === 'analytics') {
+                document.getElementById('adminView-analytics').classList.remove('hidden');
+                document.getElementById('adminView-quizzes').classList.add('hidden');
+                document.getElementById('adminTabBtn-analytics').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-purple-600 text-white shadow-md w-1/2 sm:w-auto";
+                document.getElementById('adminTabBtn-quizzes').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-300 hover:text-white w-1/2 sm:w-auto";
+            } else {
+                document.getElementById('adminView-analytics').classList.add('hidden');
+                document.getElementById('adminView-quizzes').classList.remove('hidden');
+                document.getElementById('adminTabBtn-analytics').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-300 hover:text-white w-1/2 sm:w-auto";
+                document.getElementById('adminTabBtn-quizzes').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-purple-600 text-white shadow-md w-1/2 sm:w-auto";
+            }
         }
     </script>
 </body>
