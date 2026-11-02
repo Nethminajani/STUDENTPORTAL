@@ -208,13 +208,6 @@
                 </span>
                 <svg id="loadingSpinner" class="hidden relative z-10 animate-spin ml-2 h-4 w-4 text-slate-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
-
-            <!-- Instant Demo Preview Link -->
-            <div class="pt-4 text-center animate-slide-up delay-500">
-                <button type="button" onclick="loadDemoStudent()" class="text-[11px] font-medium text-white/50 hover:text-white transition-all duration-300 inline-flex items-center gap-1.5 tracking-wide bg-transparent px-3 py-1.5 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5">
-                    Preview Demo Student
-                </button>
-            </div>
         </div>
     </div>
 
@@ -360,6 +353,9 @@
                 <button onclick="switchTab('table')" id="tabBtn-table" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
                     Detailed Analytics Table
                 </button>
+                <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                    Top 20 Leaderboard
+                </button>
                 <button onclick="switchTab('quizzes')" id="tabBtn-quizzes" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
                     Quizzes & Links
                 </button>
@@ -424,6 +420,32 @@
                     </table>
                 </div>
                 <p class="text-[10px] sm:text-xs text-slate-400 mt-2.5 text-center font-medium">💡 Tap on any row above to inspect that specific paper's performance.</p>
+            </div>
+
+            <!-- Top 20 Leaderboard Tab -->
+            <div id="tab-leaderboard" class="tab-content animate-fade">
+                <div class="rounded-2xl border border-slate-200 shadow-sm overflow-hidden bg-white">
+                    <div class="bg-slate-50/90 px-4 py-3.5 border-b border-slate-200 flex items-center justify-between">
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                            <span class="text-amber-500 text-base">🏆</span> Batch Top 20 Leaderboard
+                        </h3>
+                        <span class="text-[10px] sm:text-xs font-semibold text-slate-400">Ranked by Overall Average</span>
+                    </div>
+                    <div class="overflow-x-auto no-scrollbar">
+                        <table class="w-full text-left border-collapse text-[11px] sm:text-sm min-w-[420px]">
+                            <thead class="bg-white text-slate-500 font-bold uppercase text-[9px] sm:text-xs tracking-wider border-b border-slate-200">
+                                <tr>
+                                    <th class="py-3 px-4 w-16 text-center">Rank</th>
+                                    <th class="py-3 px-4">Student Name</th>
+                                    <th class="py-3 px-4">Index No</th>
+                                    <th class="py-3 px-4 text-center">Overall Avg</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentLeaderboardBody" class="divide-y divide-slate-100 bg-white">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Quizzes & Links Tab -->
@@ -897,7 +919,8 @@
                     totalPapers: conductedMetas.length,
                     attendedPapers: attendedCount,
                     records: paperRecords,
-                    pin: targetStudent.pin
+                    pin: targetStudent.pin,
+                    top20: studentRankings.slice(0, 20)
                 };
             } catch (err) {
                 return null;
@@ -1029,6 +1052,59 @@
             document.getElementById('displayId').innerText = studentIdInput;
             document.getElementById('displayYear').innerText = `${yearInput} A/L`;
 
+            // Populate Student Top 20 Leaderboard Tab
+            const lbBody = document.getElementById('studentLeaderboardBody');
+            if (lbBody) {
+                lbBody.innerHTML = '';
+                const topList = primaryData.top20 || [];
+                if (topList.length === 0) {
+                    lbBody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-400 font-medium">Leaderboard data unavailable.</td></tr>`;
+                } else {
+                    topList.forEach((s, idx) => {
+                        const safeName = (s.name || "Student").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        const safeId = (s.id || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        let rankBadge = `#${idx + 1}`;
+                        let rankColor = 'text-slate-500 font-bold';
+                        let nameWeight = 'font-semibold text-slate-800';
+                        let rowBg = 'hover:bg-slate-50';
+
+                        if (idx === 0) {
+                            rankBadge = '🥇 #1';
+                            rankColor = 'text-amber-600 font-black';
+                            nameWeight = 'font-extrabold text-amber-950';
+                            rowBg = 'bg-amber-50/50 hover:bg-amber-50/80';
+                        } else if (idx === 1) {
+                            rankBadge = '🥈 #2';
+                            rankColor = 'text-slate-600 font-black';
+                            nameWeight = 'font-bold text-slate-900';
+                            rowBg = 'bg-slate-50/80 hover:bg-slate-100/80';
+                        } else if (idx === 2) {
+                            rankBadge = '🥉 #3';
+                            rankColor = 'text-amber-700 font-black';
+                            nameWeight = 'font-bold text-slate-900';
+                            rowBg = 'bg-orange-50/30 hover:bg-orange-50/60';
+                        }
+
+                        if (s.id === studentIdInput) {
+                            rowBg = 'bg-indigo-50/90 border-l-4 border-l-indigo-600';
+                            nameWeight = 'font-extrabold text-indigo-950';
+                        }
+
+                        const avgVal = parseFloat(s.avg || 0);
+                        const avgColor = avgVal >= 75 ? 'text-emerald-600 font-bold' : (avgVal < 40 ? 'text-rose-600' : 'text-blue-600 font-bold');
+
+                        lbBody.insertAdjacentHTML('beforeend', `
+                            <tr class="${rowBg} transition-colors">
+                                <td class="py-3 px-4 text-center font-mono text-xs sm:text-sm ${rankColor}">${rankBadge}</td>
+                                <td class="py-3 px-4 ${nameWeight} truncate max-w-[150px] sm:max-w-none">${safeName}</td>
+                                <td class="py-3 px-4 text-slate-500 font-mono text-xs">${safeId}</td>
+                                <td class="py-3 px-4 text-center font-mono ${avgColor}">${avgVal.toFixed(1)}%</td>
+                            </tr>
+                        `);
+                    });
+                }
+            }
+
             showOverallAnalytics();
             populateMarksTable(currentAllRecords);
 
@@ -1058,7 +1134,7 @@
 
             const dbLinks = classDatabases[yearInput];
             if (!dbLinks || (!dbLinks.chempulse && !dbLinks.exams)) {
-                showError(`No live database configured for ${yearInput} yet. Try 2028 A/L or click 'Preview Demo Student'.`);
+                showError(`No live database configured for ${yearInput} yet. Please select 2028 A/L Batch.`);
                 return;
             }
 
@@ -1414,30 +1490,6 @@
                     </tr>
                 `);
             });
-        }
-
-        function loadDemoStudent() {
-            hideError();
-            const demoRecords = [
-                { title: "Chempulse 01", score: 34, isAbsent: false, isNotGiven: false, batchAvg: 48.2, batchMax: 88, type: "chempulse" },
-                { title: "Chempulse 02", score: 46, isAbsent: false, isNotGiven: false, batchAvg: 51.5, batchMax: 91, type: "chempulse" },
-                { title: "Chempulse 03", score: 52, isAbsent: false, isNotGiven: false, batchAvg: 49.0, batchMax: 86, type: "chempulse" },
-                { title: "Chempulse 04", score: null, isAbsent: true, isNotGiven: false, batchAvg: 54.8, batchMax: 94, type: "chempulse" },
-                { title: "Chempulse 05", score: 58, isAbsent: false, isNotGiven: false, batchAvg: 52.3, batchMax: 89, type: "chempulse" },
-                { title: "Chempulse 06", score: 74, isAbsent: false, isNotGiven: false, batchAvg: 56.1, batchMax: 95, type: "chempulse" },
-                { title: "Chempulse 07", score: null, isAbsent: false, isNotGiven: true, batchAvg: "-", batchMax: "-", type: "chempulse" }
-            ];
-            const demoPrimaryData = {
-                name: "Kavindu Perera (Demo)",
-                rankNum: 14,
-                totalStudents: 185,
-                overallAvg: "52.8",
-                totalPapers: 6,
-                attendedPapers: 5,
-                records: demoRecords,
-                pin: "1234"
-            };
-            populateDashboardWithData(demoPrimaryData, null, "EMA2028DEMO", "2028");
         }
 
         function showOverallAnalytics() {
@@ -2021,7 +2073,7 @@
             const activeClasses = themeClasses[currentThemeColor].tabActive;
             const inactiveClasses = ['bg-slate-100', 'text-slate-600', 'hover:bg-slate-200'];
 
-            ['chempulse', 'exams', 'table', 'quizzes'].forEach(t => {
+            ['chempulse', 'exams', 'table', 'leaderboard', 'quizzes'].forEach(t => {
                 const btn = document.getElementById('tabBtn-' + t);
                 if (!btn) return;
                 btn.classList.remove(...allTabClasses, ...inactiveClasses);
