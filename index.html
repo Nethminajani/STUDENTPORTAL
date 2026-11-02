@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Student Portal | Chemistry by Krishan Jayarathna</title>
-    <!-- Load Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <!-- Load Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
             }
         }
     </script>
-    <!-- Load Chart.js (Deferred for drastically faster initial page load) -->
+    <!-- Load Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <style>
         .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
@@ -37,31 +37,18 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Premium Chemistry Background Animations & Graphene Grid */
+        /* Premium Chemistry Background Animations */
         .bg-hex-pattern {
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='103.923' viewBox='0 0 60 103.923' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 17.32l20 11.547v23.094L30 63.508l-20-11.547V28.867L30 17.32zm0-17.32l30 17.32v34.64L30 86.603l-30-17.32V17.32L30 0z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
             background-size: 60px 103.923px;
         }
-        @keyframes float-1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(10vw, -10vh) scale(1.1); }
-            66% { transform: translate(-10vw, 10vh) scale(0.9); }
-        }
-        @keyframes float-2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(-15vw, 5vh) scale(1.2); }
-            66% { transform: translate(5vw, -15vh) scale(0.8); }
-        }
-        @keyframes float-3 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(15vw, 15vh) scale(0.9); }
-            66% { transform: translate(-10vw, -10vh) scale(1.1); }
-        }
+        @keyframes float-1 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(10vw, -10vh) scale(1.1); } 66% { transform: translate(-10vw, 10vh) scale(0.9); } }
+        @keyframes float-2 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(-15vw, 5vh) scale(1.2); } 66% { transform: translate(5vw, -15vh) scale(0.8); } }
+        @keyframes float-3 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(15vw, 15vh) scale(0.9); } 66% { transform: translate(-10vw, -10vh) scale(1.1); } }
         .animate-float-1 { animation: float-1 18s infinite ease-in-out; }
         .animate-float-2 { animation: float-2 22s infinite ease-in-out; }
         .animate-float-3 { animation: float-3 25s infinite ease-in-out; }
 
-        /* Magical Light Motes / Fireflies */
         @keyframes float-up {
             0% { transform: translateY(110vh) translateX(0) scale(0.5); opacity: 0; }
             15% { opacity: 0.7; }
@@ -73,20 +60,12 @@
             50% { filter: blur(2px); opacity: 1; box-shadow: 0 0 12px 2px currentColor; }
         }
         .firefly { 
-            position: absolute; 
-            border-radius: 50%;
+            position: absolute; border-radius: 50%;
             animation: float-up linear infinite, pulse-glow 4s ease-in-out infinite; 
-            z-index: 5; 
-            pointer-events: none; 
-            user-select: none;
-            mix-blend-mode: screen;
+            z-index: 5; pointer-events: none; user-select: none; mix-blend-mode: screen;
         }
         
-        /* Premium Login Animations */
-        @keyframes slideUpFade {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         .animate-slide-up { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .delay-100 { animation-delay: 100ms; opacity: 0; }
         .delay-200 { animation-delay: 200ms; opacity: 0; }
@@ -94,43 +73,33 @@
         .delay-400 { animation-delay: 400ms; opacity: 0; }
         .delay-500 { animation-delay: 500ms; opacity: 0; }
         
-        /* Accordion Animations */
         .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
         .accordion-content.expanded { max-height: 1500px; opacity: 1; }
         .rotate-icon { transition: transform 0.3s ease; }
         .expanded .rotate-icon { transform: rotate(180deg); }
 
-        /* Print Styles for Top 20 PDF Export */
         @media print {
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
-            #animatedBg, #loginView, #dashboardView { display: none !important; }
+            #animatedBg, #loginView, #dashHeader, .print\:hidden { display: none !important; }
             @page { margin: 10mm; }
         }
     </style>
 </head>
 <body id="bodyRoot" class="bg-slate-950 text-slate-100 font-sans min-h-screen flex items-center justify-center p-0 sm:p-6 transition-colors duration-700 relative overflow-x-hidden print:bg-white print:p-0">
 
-    <!-- Premium Animated Chemistry Background -->
+    <!-- Premium Animated Background -->
     <div id="animatedBg" class="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#020617]">
-        <!-- Ethereal Magical Forest Background -->
         <div class="absolute inset-0 bg-cover bg-center opacity-100 transition-all duration-1000" style="background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=70&w=1600&auto=format&fit=crop');">
             <div class="absolute inset-0 bg-gradient-to-b from-[#0a0f3d]/60 via-[#1e1345]/50 to-[#020617]/90"></div>
         </div>
-        
-        <!-- Chemistry Graphene Pattern -->
         <div class="absolute inset-0 bg-hex-pattern z-0 opacity-20"></div>
         
-        <!-- Magical Fireflies / Glowing Motes -->
         <div class="firefly w-1.5 h-1.5 bg-cyan-300 text-cyan-300" style="left: 10%; animation-duration: 18s; animation-delay: 0s;"></div>
         <div class="firefly w-2 h-2 bg-purple-300 text-purple-300" style="left: 25%; animation-duration: 22s; animation-delay: 4s;"></div>
         <div class="firefly w-1 h-1 bg-blue-300 text-blue-300" style="left: 40%; animation-duration: 15s; animation-delay: 2s;"></div>
         <div class="firefly w-2.5 h-2.5 bg-indigo-400 text-indigo-400" style="left: 55%; animation-duration: 25s; animation-delay: 7s;"></div>
         <div class="firefly w-1.5 h-1.5 bg-cyan-200 text-cyan-200" style="left: 70%; animation-duration: 19s; animation-delay: 1s;"></div>
         <div class="firefly w-2 h-2 bg-fuchsia-300 text-fuchsia-300" style="left: 85%; animation-duration: 21s; animation-delay: 5s;"></div>
-        <div class="firefly w-1 h-1 bg-cyan-400 text-cyan-400" style="left: 95%; animation-duration: 16s; animation-delay: 3s;"></div>
-        <div class="firefly w-1.5 h-1.5 bg-blue-400 text-blue-400" style="left: 5%; animation-duration: 20s; animation-delay: 8s;"></div>
-        <div class="firefly w-2 h-2 bg-purple-200 text-purple-200" style="left: 50%; animation-duration: 17s; animation-delay: 10s;"></div>
-        <div class="firefly w-1.5 h-1.5 bg-indigo-300 text-indigo-300" style="left: 80%; animation-duration: 23s; animation-delay: 11s;"></div>
 
         <div class="absolute inset-0 flex items-center justify-center z-10 mix-blend-screen opacity-55 sm:opacity-45">
             <div id="blob1" class="absolute w-[50vw] h-[50vw] max-w-[700px] max-h-[700px] bg-blue-600 rounded-full filter blur-[100px] sm:blur-[130px] animate-float-1 top-[-10%] left-[-10%] transition-colors duration-1000"></div>
@@ -144,21 +113,15 @@
     <!-- LOGIN SCREEN -->
     <div id="loginView" class="relative z-30 w-full max-w-[420px] mx-4 my-6 bg-[#0c133a]/30 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_15px_50px_rgba(0,0,0,0.6)] p-8 sm:p-12 text-white border border-white/10 flex flex-col justify-center animate-slide-up">
         <div class="text-center mb-8 flex flex-col items-center">
-            <!-- Chemistry Icons -->
             <div class="flex justify-center gap-3 mb-4 animate-slide-up delay-100">
-                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                    <span class="text-xl drop-shadow-md" title="Atom">⚛️</span>
-                </div>
-                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                    <span class="text-xl drop-shadow-md" title="Chemistry">🧪</span>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.05)]"><span class="text-xl drop-shadow-md">⚛️</span></div>
+                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.05)]"><span class="text-xl drop-shadow-md">🧪</span></div>
             </div>
             <h2 class="text-[10px] font-extrabold tracking-[0.2em] text-white/60 uppercase mb-2 animate-slide-up delay-200">Chemistry by Krishan Jayarathna</h2>
             <h1 class="text-2xl sm:text-3xl font-bold tracking-wide text-white animate-slide-up delay-300">Student Portal</h1>
         </div>
 
         <div class="space-y-4">
-            <!-- Batch Year Select -->
             <div class="animate-slide-up delay-300 relative">
                 <select id="batchYear" class="w-full bg-white/10 border border-white/20 rounded-full text-white px-6 py-3.5 focus:outline-none focus:border-white focus:bg-white/20 appearance-none cursor-pointer text-sm transition-all shadow-inner backdrop-blur-sm">
                     <option value="2028" class="bg-slate-900 text-white">2028 A/L Batch</option>
@@ -171,23 +134,17 @@
                 </div>
             </div>
 
-            <!-- Student ID Input -->
             <div class="animate-slide-up delay-400">
-                <input type="text" id="studentId" placeholder="Student ID" autocomplete="off" class="w-full bg-white/10 border border-white/20 rounded-full text-white px-6 py-3.5 focus:outline-none focus:border-white focus:bg-white/20 font-mono uppercase tracking-wider transition-all text-sm shadow-inner backdrop-blur-sm placeholder-white/40" onkeypress="handleKeyPress(event)">
+                <input type="text" id="studentId" placeholder="Student Index No." autocomplete="off" class="w-full bg-white/10 border border-white/20 rounded-full text-white px-6 py-3.5 focus:outline-none focus:border-white focus:bg-white/20 font-mono uppercase tracking-wider transition-all text-sm shadow-inner backdrop-blur-sm placeholder-white/40" onkeypress="handleKeyPress(event)">
             </div>
 
-            <!-- Security PIN Input with Show/Hide Toggle -->
             <div class="animate-slide-up delay-500 relative">
                 <input type="password" id="studentPin" placeholder="Password" class="w-full bg-white/10 border border-white/20 rounded-full text-white px-6 py-3.5 pr-12 focus:outline-none focus:border-white focus:bg-white/20 font-mono tracking-widest transition-all text-sm shadow-inner backdrop-blur-sm placeholder-white/40" onkeypress="handleKeyPress(event)">
                 <button type="button" onclick="togglePinVisibility()" class="absolute right-5 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" title="Show/Hide PIN">
-                    <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
+                    <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                 </button>
             </div>
 
-            <!-- Extra Links -->
             <div class="flex items-center text-[12px] text-white/80 font-medium animate-slide-up delay-500 pt-1 px-2">
                 <label class="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
                     <input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-white/40 bg-transparent text-indigo-500 focus:ring-2 focus:ring-white/30 cursor-pointer transition-all">
@@ -195,23 +152,19 @@
                 </label>
             </div>
 
-            <!-- Error Alert -->
             <div id="errorMessage" class="hidden bg-rose-500/20 border border-rose-500/50 text-rose-100 text-xs py-2 px-3 rounded-lg flex items-center gap-2 backdrop-blur-md animate-fade mt-2">
                 <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span id="errorText">Please enter a valid Student ID.</span>
+                <span id="errorText">Please enter a valid ID.</span>
             </div>
 
-            <!-- Login Button -->
             <button id="loginBtn" onclick="attemptLogin()" class="w-full mt-6 bg-white hover:bg-gray-100 active:scale-[0.98] text-slate-900 font-bold py-3.5 px-4 rounded-full transition-all duration-300 shadow-[0_4px_15px_rgba(255,255,255,0.2)] hover:shadow-[0_4px_20px_rgba(255,255,255,0.4)] flex justify-center items-center text-[15px] animate-slide-up delay-500">
-                <span class="relative z-10 flex items-center gap-2">
-                    <span>Login</span>
-                </span>
+                <span class="relative z-10 flex items-center gap-2"><span>Login</span></span>
                 <svg id="loadingSpinner" class="hidden relative z-10 animate-spin ml-2 h-4 w-4 text-slate-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
 
-    <!-- STUDENT DASHBOARD SCREEN -->
+    <!-- STUDENT DASHBOARD -->
     <div id="dashboardView" class="hidden relative z-10 w-full max-w-5xl bg-white/95 backdrop-blur-2xl rounded-none sm:rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.45)] overflow-hidden transform transition-all duration-500 border-0 sm:border border-slate-100 text-slate-800 min-h-screen sm:min-h-0">
         <!-- Dashboard Header -->
         <div id="dashHeader" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden">
@@ -224,19 +177,14 @@
                     <h2 class="text-lg sm:text-2xl font-extrabold tracking-tight">Welcome, <span id="displayName" class="text-white drop-shadow-md">Student</span></h2>
                     <p class="text-slate-300 text-[11px] sm:text-sm mt-0.5 font-medium">Index: <span id="displayId" class="font-mono text-cyan-300 bg-white/10 px-2 py-0.5 rounded-md ml-1 font-bold"></span></p>
                 </div>
-                <button onclick="logout()" class="sm:hidden px-3 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-xs font-semibold transition-all">
-                    Log Out
-                </button>
+                <button onclick="logout()" class="sm:hidden px-3 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-xs font-semibold transition-all">Log Out</button>
             </div>
             <div class="flex items-center gap-2.5 relative z-10 w-full sm:w-auto justify-between sm:justify-end mt-2 sm:mt-0">
                 <span id="tierBadge" class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-sm w-full sm:w-auto text-center whitespace-nowrap">Analyzing...</span>
-                <button onclick="logout()" class="hidden sm:block px-4 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap">
-                    Log Out
-                </button>
+                <button onclick="logout()" class="hidden sm:block px-4 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap">Log Out</button>
             </div>
         </div>
 
-        <!-- Dashboard Content -->
         <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
             
             <!-- A/L Exam Countdown Bar -->
@@ -249,7 +197,7 @@
                         </div>
                         <div>
                             <h3 class="text-white font-bold text-sm sm:text-base tracking-wide flex items-center gap-2">
-                                A/L <span id="cdYearDisplay">2028</span> Exam Target
+                                A/L <span id="cdYearDisplay">2028</span> Exam Target <span class="text-[10px] sm:text-xs font-mono font-semibold px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-200 border border-indigo-400/20" id="cdTargetDateBadge">Aug 1, 2028</span>
                             </h3>
                             <p class="text-indigo-200 text-[10px] sm:text-xs font-medium tracking-wide uppercase mt-0.5" id="cdDaysText">Calculating timeline...</p>
                         </div>
@@ -292,9 +240,8 @@
                 </div>
             </div>
 
-            <!-- Ukuwela-Style Advanced Stats Grid -->
+            <!-- Stats Grid -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <!-- Card 1: Batch Rank / Session Status -->
                 <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-white to-slate-50 shadow-sm" id="cardRankBox">
                     <div class="flex justify-between items-start mb-1.5 sm:mb-2">
                         <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-indigo-600 transition-colors" id="cardLabel1">Batch Rank</span>
@@ -307,7 +254,6 @@
                     <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1 font-medium truncate" id="cardSub1">Class standing</p>
                 </div>
                 
-                <!-- Card 2: Performance Trend / Your Mark -->
                 <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-white to-slate-50 shadow-sm" id="cardScoreBox">
                     <div class="flex justify-between items-start mb-1.5 sm:mb-2">
                         <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors" id="cardLabel2">Performance Trend</span>
@@ -319,7 +265,6 @@
                     <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1 font-medium truncate" id="cardSub2">Based on recent papers</p>
                 </div>
                 
-                <!-- Card 3: Overall Average / Batch Average -->
                 <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-white to-slate-50 shadow-sm" id="cardAvgBox">
                     <div class="flex justify-between items-start mb-1.5 sm:mb-2">
                         <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-emerald-600 transition-colors" id="cardLabel3">Overall Average</span>
@@ -329,12 +274,9 @@
                     <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1 font-medium truncate" id="cardSub3">Cumulative score</p>
                 </div>
                 
-                <!-- Card 4: AI Target Goal / Batch Highest -->
                 <div class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default bg-gradient-to-br from-slate-50 to-slate-100 shadow-sm" id="cardTopBox">
                     <div class="flex justify-between items-start mb-1.5 sm:mb-2">
-                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-amber-600 transition-colors flex items-center gap-1" id="cardLabel4">
-                            ✨ AI Next Target
-                        </span>
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-amber-600 transition-colors flex items-center gap-1" id="cardLabel4">✨ AI Next Target</span>
                         <span class="text-base sm:text-lg opacity-80 group-hover:scale-110 transition-transform duration-300">🎯</span>
                     </div>
                     <p class="text-2xl sm:text-3xl font-extrabold font-mono text-indigo-600 tracking-tight transition-all duration-300 mt-0.5 sm:mt-1" id="statHighest">--</p>
@@ -342,28 +284,18 @@
                 </div>
             </div>
 
-            <!-- Swipeable Tabs Navigation -->
+            <!-- Tabs Navigation -->
             <div class="flex flex-nowrap overflow-x-auto gap-2 border-b border-slate-200 pb-3 no-scrollbar snap-x">
-                <button onclick="switchTab('chempulse')" id="tabBtn-chempulse" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm bg-blue-600 text-white shadow-blue-500/20">
-                    Chempulse Progress
-                </button>
-                <button onclick="switchTab('exams')" id="tabBtn-exams" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hidden">
-                    Monthly Exams
-                </button>
-                <button onclick="switchTab('table')" id="tabBtn-table" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
-                    Detailed Analytics Table
-                </button>
-                <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
-                    Top 20 Leaderboard
-                </button>
-                <button onclick="switchTab('quizzes')" id="tabBtn-quizzes" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
-                    Quizzes & Links
-                </button>
+                <button onclick="switchTab('chempulse')" id="tabBtn-chempulse" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm bg-blue-600 text-white shadow-blue-500/20">Chempulse Progress</button>
+                <button onclick="switchTab('exams')" id="tabBtn-exams" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hidden">Monthly Exams</button>
+                <button onclick="switchTab('table')" id="tabBtn-table" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">Detailed Analytics Table</button>
+                <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">Top 20 Leaderboard</button>
+                <button onclick="switchTab('quizzes')" id="tabBtn-quizzes" class="whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">Quizzes & Links</button>
             </div>
 
             <!-- Chempulse Chart Tab -->
             <div id="tab-chempulse" class="tab-content active animate-fade">
-                <div class="p-3.5 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] relative overflow-hidden">
+                <div class="p-3.5 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-sm relative overflow-hidden">
                     <div class="flex flex-wrap justify-between items-center mb-4 gap-2 text-[10px] sm:text-xs">
                         <div class="flex flex-wrap items-center gap-2 sm:gap-3.5 font-semibold text-slate-600">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Elite (≥75)</span>
@@ -375,53 +307,34 @@
                             <span class="avg-toggle-icon text-xs">👁️</span> <span class="avg-toggle-text">Hide Avg Line</span>
                         </button>
                     </div>
-                    <div class="relative w-full h-[290px] sm:h-[400px]">
-                        <canvas id="chempulseCanvas"></canvas>
-                    </div>
+                    <div class="relative w-full h-[290px] sm:h-[400px]"><canvas id="chempulseCanvas"></canvas></div>
                 </div>
             </div>
 
             <!-- Monthly Exams Chart Tab -->
             <div id="tab-exams" class="tab-content animate-fade">
-                <div class="p-3.5 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] relative overflow-hidden">
-                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2 text-[10px] sm:text-xs">
-                        <div class="flex flex-wrap items-center gap-2 sm:gap-3.5 font-semibold text-slate-600">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Elite (≥75)</span>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Solid (40-74)</span>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200/60"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Review (&lt;40)</span>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/60"><span class="w-2 h-2 rounded-full bg-indigo-500"></span> ✨ AI Path</span>
-                        </div>
-                        <button onclick="toggleAverageLine()" class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/70 text-slate-700 font-bold transition-all border border-slate-200/80 shadow-xs active:scale-95 ml-auto sm:ml-0">
-                            <span class="avg-toggle-icon text-xs">👁️</span> <span class="avg-toggle-text">Hide Avg Line</span>
-                        </button>
-                    </div>
-                    <div class="relative w-full h-[290px] sm:h-[400px]">
-                        <canvas id="examCanvas"></canvas>
-                    </div>
+                <div class="p-3.5 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-sm relative overflow-hidden">
+                    <div class="relative w-full h-[290px] sm:h-[400px]"><canvas id="examCanvas"></canvas></div>
                 </div>
             </div>
-
+            
             <!-- Detailed Analytics Table Tab -->
             <div id="tab-table" class="tab-content animate-fade">
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm no-scrollbar">
                     <table class="w-full text-left border-collapse text-[11px] sm:text-sm min-w-[520px]">
                         <thead class="bg-slate-50/90 text-slate-500 font-bold uppercase text-[9px] sm:text-xs tracking-wider border-b border-slate-200">
                             <tr>
-                                <th class="py-3 px-3.5">Category</th>
-                                <th class="py-3 px-3.5">Paper Title</th>
-                                <th class="py-3 px-3.5 text-center">Your Mark</th>
-                                <th class="py-3 px-3.5 text-center">Batch Avg</th>
-                                <th class="py-3 px-3.5 text-center">Batch Top</th>
-                                <th class="py-3 px-3.5 text-right">Status & Guidance</th>
+                                <th class="py-3 px-3.5">Category</th><th class="py-3 px-3.5">Paper Title</th>
+                                <th class="py-3 px-3.5 text-center">Your Mark</th><th class="py-3 px-3.5 text-center">Batch Avg</th>
+                                <th class="py-3 px-3.5 text-center">Batch Top</th><th class="py-3 px-3.5 text-right">Status & Guidance</th>
                             </tr>
                         </thead>
-                        <tbody id="marksTableBody" class="divide-y divide-slate-100 bg-white">
-                        </tbody>
+                        <tbody id="marksTableBody" class="divide-y divide-slate-100 bg-white"></tbody>
                     </table>
                 </div>
                 <p class="text-[10px] sm:text-xs text-slate-400 mt-2.5 text-center font-medium">💡 Tap on any row above to inspect that specific paper's performance.</p>
             </div>
-
+            
             <!-- Top 20 Leaderboard Tab -->
             <div id="tab-leaderboard" class="tab-content animate-fade">
                 <div class="rounded-2xl border border-slate-200 shadow-sm overflow-hidden bg-white">
@@ -429,7 +342,7 @@
                         <h3 class="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
                             <span class="text-amber-500 text-base">🏆</span> Batch Top 20 Leaderboard
                         </h3>
-                        <span class="text-[10px] sm:text-xs font-semibold text-slate-400">Ranked by Overall Average</span>
+                        <span id="studentLbSubtitle" class="text-[10px] sm:text-xs font-bold text-purple-600 bg-purple-50 border border-purple-200 px-2.5 py-1 rounded-full">Latest Paper</span>
                     </div>
                     <div class="overflow-x-auto no-scrollbar">
                         <table class="w-full text-left border-collapse text-[11px] sm:text-sm min-w-[420px]">
@@ -438,11 +351,10 @@
                                     <th class="py-3 px-4 w-16 text-center">Rank</th>
                                     <th class="py-3 px-4">Student Name</th>
                                     <th class="py-3 px-4">Index No</th>
-                                    <th class="py-3 px-4 text-center">Overall Avg</th>
+                                    <th id="studentLbScoreHeader" class="py-3 px-4 text-center text-purple-600">Latest Marks</th>
                                 </tr>
                             </thead>
-                            <tbody id="studentLeaderboardBody" class="divide-y divide-slate-100 bg-white">
-                            </tbody>
+                            <tbody id="studentLeaderboardBody" class="divide-y divide-slate-100 bg-white"></tbody>
                         </table>
                     </div>
                 </div>
@@ -450,16 +362,14 @@
 
             <!-- Quizzes & Links Tab -->
             <div id="tab-quizzes" class="tab-content animate-fade">
-                <div class="p-4 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] min-h-[300px]">
+                <div class="p-4 sm:p-6 rounded-3xl border border-slate-200/90 bg-gradient-to-b from-white via-slate-50/40 to-white shadow-sm min-h-[300px]">
                     <h3 class="text-sm sm:text-base font-bold text-slate-700 mb-4 flex items-center gap-2"><span class="text-indigo-500">📚</span> Unit Quizzes & Resources</h3>
-                    <div id="studentQuizContainer" class="space-y-3">
-                        <div class="text-center py-8 text-slate-400 text-xs sm:text-sm font-medium animate-pulse">Connecting to Cloud Server...</div>
-                    </div>
+                    <div id="studentQuizContainer" class="space-y-3"><div class="text-center py-8 text-slate-400 text-xs sm:text-sm font-medium animate-pulse">Connecting to Cloud...</div></div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <!-- ADMIN DASHBOARD SCREEN -->
     <div id="adminDashboardView" class="hidden relative z-10 w-full max-w-5xl bg-white/95 backdrop-blur-2xl rounded-none sm:rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.45)] overflow-hidden transform transition-all duration-500 border-0 sm:border border-slate-100 text-slate-800 min-h-screen sm:min-h-0 print:shadow-none print:border-none print:w-full print:max-w-none print:m-0 print:bg-white">
         <!-- Admin Header -->
@@ -486,23 +396,19 @@
             <div id="adminView-analytics" class="space-y-4 sm:space-y-6 animate-fade">
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 print:hidden">
-                    <!-- Total Students -->
                     <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col justify-center">
                         <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Students</span>
                         <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 mt-1" id="adminTotalStudents">--</p>
                     </div>
-                    <!-- Avg Attendance -->
                     <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col justify-center">
                         <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Avg Attendance</span>
                         <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 mt-1" id="adminAttendance">--</p>
                     </div>
-                    <!-- Top Student & Marks -->
                     <div class="p-4 sm:p-5 rounded-2xl border border-purple-200 bg-purple-50 shadow-sm flex flex-col justify-center relative overflow-hidden group col-span-2 sm:col-span-1">
                         <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-purple-600 flex items-center gap-1.5 z-10"><span class="text-sm">👑</span> Top Student <span id="adminTopLabel" class="inline-block text-[9px] bg-purple-200/70 text-purple-800 px-1.5 py-0.5 rounded ml-1 font-extrabold truncate max-w-[90px]"></span></span>
                         <p class="text-base sm:text-lg font-extrabold text-purple-900 mt-1 truncate z-10" id="adminTopStudent">--</p>
                         <p class="text-xs sm:text-sm font-bold font-mono text-purple-700 mt-0.5 z-10" id="adminTopMarks">--</p>
                     </div>
-                    <!-- Total Papers Conducted -->
                     <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col justify-center col-span-2 sm:col-span-1">
                         <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Papers Conducted</span>
                         <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 mt-1" id="adminTotalPapers">--</p>
@@ -514,15 +420,13 @@
                     <canvas id="adminChartCanvas"></canvas>
                 </div>
 
-                <!-- Top 20 Leaderboard Table (Dynamic Paper & Total Marks Filter + Print Ready) -->
+                <!-- Top 20 Leaderboard Table -->
                 <div class="rounded-2xl border border-slate-200 shadow-sm overflow-hidden print:border-none print:shadow-none bg-white relative">
-                    <!-- Print-Only Branded Header -->
                     <div class="hidden print:block text-center pb-6 pt-2 mb-4 border-b-2 border-slate-800">
                         <h2 class="text-2xl font-extrabold text-slate-900 uppercase tracking-widest">Chemistry by Krishan Jayarathna</h2>
                         <p class="text-lg font-bold text-slate-600 mt-1">Top 20 Leaderboard — <span id="printBatchYearLabel">Batch</span></p>
                     </div>
 
-                    <!-- Interactive Filter & Print Bar -->
                     <div class="bg-white px-4 py-4 sm:py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 print:hidden">
                         <div class="flex items-center gap-2.5">
                             <span class="text-amber-500 text-xl sm:text-2xl drop-shadow-sm">🏆</span>
@@ -611,31 +515,31 @@
 
     <!-- CUSTOM MODAL FOR ADDING UNITS / TOPICS / LINKS & CONFIRMATIONS -->
     <div id="quizActionModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 animate-fade">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 text-slate-800">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100 text-slate-800 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-2">
-                <h3 id="quizModalTitle" class="text-lg font-extrabold text-slate-800">Add New Unit</h3>
-                <button type="button" onclick="closeQuizModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold text-sm transition-colors">✕</button>
+                <h3 id="quizModalTitle" class="text-base sm:text-lg font-extrabold text-slate-800">Title</h3>
+                <button type="button" onclick="closeQuizModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold text-sm transition-colors active:scale-90">✕</button>
             </div>
-            <p id="quizModalDesc" class="text-xs text-slate-500 mb-4">Enter the details below to save to Firebase.</p>
+            <p id="quizModalDesc" class="text-[11px] sm:text-xs text-slate-500 mb-4"></p>
             <div id="quizModalFields" class="space-y-3">
                 <div>
-                    <label id="quizModalLabel1" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Title</label>
-                    <input id="quizModalInput1" type="text" placeholder="e.g., Unit 01 - Atomic Structure" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-semibold text-slate-800" onkeydown="if(event.key==='Enter') handleQuizModalSubmit()">
+                    <label id="quizModalLabel1" class="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Title</label>
+                    <input id="quizModalInput1" type="text" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-semibold text-slate-800" onkeydown="if(event.key==='Enter') handleQuizModalSubmit()">
                 </div>
                 <div id="quizModalField2" class="hidden">
-                    <label id="quizModalLabel2" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">External Link URL</label>
-                    <input id="quizModalInput2" type="url" placeholder="https://forms.gle/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-mono text-slate-800" onkeydown="if(event.key==='Enter') handleQuizModalSubmit()">
+                    <label id="quizModalLabel2" class="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">URL</label>
+                    <input id="quizModalInput2" type="url" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-mono text-slate-800" onkeydown="if(event.key==='Enter') handleQuizModalSubmit()">
                 </div>
             </div>
-            <div id="quizModalError" class="hidden mt-3 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-2 rounded-xl"></div>
+            <div id="quizModalError" class="hidden mt-3 text-[11px] sm:text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-2 rounded-xl"></div>
             <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeQuizModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all">Cancel</button>
-                <button type="button" id="quizModalSubmitBtn" onclick="handleQuizModalSubmit()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all">Save Now</button>
+                <button type="button" onclick="closeQuizModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all active:scale-95">Cancel</button>
+                <button type="button" id="quizModalSubmitBtn" onclick="handleQuizModalSubmit()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE CLOUD CONNECTION (Supports Realtime Database + Firestore) -->
+    <!-- FIREBASE INIT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -651,20 +555,11 @@
             appId: "1:1093450055501:web:1ac44746badc10e28fc104",
             measurementId: "G-PC8PGVTPRE"
         };
-
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const rtdb = getDatabase(app);
-
-        window.firebaseDB = db;
-        window.firebaseDoc = doc;
-        window.firebaseSetDoc = setDoc;
-        window.firebaseOnSnapshot = onSnapshot;
-
-        window.firebaseRTDB = rtdb;
-        window.firebaseRef = ref;
-        window.firebaseSet = set;
-        window.firebaseOnValue = onValue;
+        window.firebaseDB = getFirestore(app);
+        window.firebaseRTDB = getDatabase(app);
+        window.firebaseDoc = doc; window.firebaseSetDoc = setDoc; window.firebaseOnSnapshot = onSnapshot;
+        window.firebaseRef = ref; window.firebaseSet = set; window.firebaseOnValue = onValue;
     </script>
 
     <script>
@@ -676,47 +571,26 @@
         let activeRecordIndex = -1;
         let currentThemeColor = 'blue';
         let showAverageLine = true;
-        
-        // Quiz System Variables
         let globalQuizData = [];
         let currentQuizUnsubscribe = null;
 
+        const classDatabases = {
+            "2028": { 
+                students: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4zXL7M9u7lRcLNWze91wU_W1L6PWLxpjpvFXI5wjHEu__BoHfj2QWCL_4KpdrR-V1puyMfByyFqj6/pub?gid=0&single=true&output=csv", 
+                chempulse: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4zXL7M9u7lRcLNWze91wU_W1L6PWLxpjpvFXI5wjHEu__BoHfj2QWCL_4KpdrR-V1puyMfByyFqj6/pub?gid=2083058040&single=true&output=csv", 
+                exams: "" 
+            },
+            "2027": { students: "", chempulse: "", exams: "" },
+            "2026": { students: "", chempulse: "", exams: "" },
+            "2025": { students: "", chempulse: "", exams: "" }
+        };
+
         const themeClasses = {
-            blue: {
-                body: ['bg-slate-950'],
-                dash: ['border-slate-100', 'shadow-2xl'],
-                tabActive: ['bg-blue-600', 'text-white', 'shadow-blue-500/20'],
-                chartGradient: ['rgba(59, 130, 246, 0.28)', 'rgba(59, 130, 246, 0.04)', 'rgba(59, 130, 246, 0.00)'],
-                blobs: ['bg-blue-600', 'bg-indigo-600', 'bg-cyan-600', 'bg-violet-600']
-            },
-            emerald: {
-                body: ['bg-emerald-950'],
-                dash: ['border-emerald-500/50', 'shadow-emerald-900/30', 'shadow-2xl'],
-                tabActive: ['bg-emerald-600', 'text-white', 'shadow-emerald-500/20'],
-                chartGradient: ['rgba(16, 185, 129, 0.28)', 'rgba(16, 185, 129, 0.04)', 'rgba(16, 185, 129, 0.00)'],
-                blobs: ['bg-emerald-600', 'bg-teal-600', 'bg-green-600', 'bg-lime-600']
-            },
-            rose: {
-                body: ['bg-rose-950'],
-                dash: ['border-rose-500/60', 'shadow-rose-900/40', 'shadow-2xl'],
-                tabActive: ['bg-rose-600', 'text-white', 'shadow-rose-500/20'],
-                chartGradient: ['rgba(244, 63, 94, 0.28)', 'rgba(244, 63, 94, 0.04)', 'rgba(244, 63, 94, 0.00)'],
-                blobs: ['bg-rose-600', 'bg-red-600', 'bg-pink-600', 'bg-fuchsia-600']
-            },
-            amber: {
-                body: ['bg-amber-950'],
-                dash: ['border-amber-500/50', 'shadow-amber-900/30', 'shadow-2xl'],
-                tabActive: ['bg-amber-600', 'text-white', 'shadow-amber-500/20'],
-                chartGradient: ['rgba(245, 158, 11, 0.28)', 'rgba(245, 158, 11, 0.04)', 'rgba(245, 158, 11, 0.00)'],
-                blobs: ['bg-amber-600', 'bg-orange-600', 'bg-yellow-600', 'bg-red-500']
-            },
-            slate: {
-                body: ['bg-slate-900'],
-                dash: ['border-slate-500/50', 'shadow-slate-900/30', 'shadow-2xl'],
-                tabActive: ['bg-slate-600', 'text-white', 'shadow-slate-500/20'],
-                chartGradient: ['rgba(100, 116, 139, 0.28)', 'rgba(100, 116, 139, 0.04)', 'rgba(100, 116, 139, 0.00)'],
-                blobs: ['bg-slate-600', 'bg-gray-600', 'bg-zinc-600', 'bg-slate-500']
-            }
+            blue: { body: ['bg-slate-950'], dash: ['border-slate-100', 'shadow-2xl'], tabActive: ['bg-blue-600', 'text-white', 'shadow-blue-500/20'], chartGradient: ['rgba(59, 130, 246, 0.28)', 'rgba(59, 130, 246, 0.04)', 'rgba(59, 130, 246, 0.00)'], blobs: ['bg-blue-600', 'bg-indigo-600', 'bg-cyan-600', 'bg-violet-600'] },
+            emerald: { body: ['bg-emerald-950'], dash: ['border-emerald-500/50', 'shadow-emerald-900/30', 'shadow-2xl'], tabActive: ['bg-emerald-600', 'text-white', 'shadow-emerald-500/20'], chartGradient: ['rgba(16, 185, 129, 0.28)', 'rgba(16, 185, 129, 0.04)', 'rgba(16, 185, 129, 0.00)'], blobs: ['bg-emerald-600', 'bg-teal-600', 'bg-green-600', 'bg-lime-600'] },
+            rose: { body: ['bg-rose-950'], dash: ['border-rose-500/60', 'shadow-rose-900/40', 'shadow-2xl'], tabActive: ['bg-rose-600', 'text-white', 'shadow-rose-500/20'], chartGradient: ['rgba(244, 63, 94, 0.28)', 'rgba(244, 63, 94, 0.04)', 'rgba(244, 63, 94, 0.00)'], blobs: ['bg-rose-600', 'bg-red-600', 'bg-pink-600', 'bg-fuchsia-600'] },
+            amber: { body: ['bg-amber-950'], dash: ['border-amber-500/50', 'shadow-amber-900/30', 'shadow-2xl'], tabActive: ['bg-amber-600', 'text-white', 'shadow-amber-500/20'], chartGradient: ['rgba(245, 158, 11, 0.28)', 'rgba(245, 158, 11, 0.04)', 'rgba(245, 158, 11, 0.00)'], blobs: ['bg-amber-600', 'bg-orange-600', 'bg-yellow-600', 'bg-red-500'] },
+            slate: { body: ['bg-slate-900'], dash: ['border-slate-500/50', 'shadow-slate-900/30', 'shadow-2xl'], tabActive: ['bg-slate-600', 'text-white', 'shadow-slate-500/20'], chartGradient: ['rgba(100, 116, 139, 0.28)', 'rgba(100, 116, 139, 0.04)', 'rgba(100, 116, 139, 0.00)'], blobs: ['bg-slate-600', 'bg-gray-600', 'bg-zinc-600', 'bg-slate-500'] }
         };
 
         const allBodyClasses = Object.values(themeClasses).flatMap(t => t.body);
@@ -735,8 +609,8 @@
             dash.classList.add(...themeClasses[themeName].dash);
 
             const blobs = ['blob1', 'blob2', 'blob3', 'blob4'].map(id => document.getElementById(id));
-            blobs.forEach(b => b.classList.remove(...allBlobClasses));
-            blobs.forEach((b, i) => b.classList.add(themeClasses[themeName].blobs[i]));
+            blobs.forEach(b => { if (b) b.classList.remove(...allBlobClasses); });
+            blobs.forEach((b, i) => { if (b) b.classList.add(themeClasses[themeName].blobs[i]); });
 
             const activeTabMatch = document.querySelector('.tab-content.active');
             if (activeTabMatch) switchTab(activeTabMatch.id.replace('tab-', ''));
@@ -755,17 +629,7 @@
             });
         }
 
-        const classDatabases = {
-            "2028": { chempulse: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4zXL7M9u7lRcLNWze91wU_W1L6PWLxpjpvFXI5wjHEu__BoHfj2QWCL_4KpdrR-V1puyMfByyFqj6/pub?gid=2083058040&single=true&output=csv", exams: "" },
-            "2027": { chempulse: "", exams: "" },
-            "2026": { chempulse: "", exams: "" },
-            "2025": { chempulse: "", exams: "" }
-        };
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') attemptLogin();
-        }
-
+        function handleKeyPress(e) { if (e.key === 'Enter') attemptLogin(); }
         function togglePinVisibility() {
             const pinInput = document.getElementById('studentPin');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -777,14 +641,113 @@
                 eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
             }
         }
+        function showError(m) { document.getElementById('errorText').innerText = m; document.getElementById('errorMessage').classList.remove('hidden'); }
+        function hideError() { document.getElementById('errorMessage').classList.add('hidden'); }
 
-        function showError(message) {
-            document.getElementById('errorText').innerText = message;
-            document.getElementById('errorMessage').classList.remove('hidden');
+        function isPinMatch(sheetPinRaw, enteredPinRaw) {
+            if (!sheetPinRaw) return true;
+            const sPin = String(sheetPinRaw).trim().replace(/(^"|"$)/g, '').toLowerCase();
+            const ePin = String(enteredPinRaw || '').trim().toLowerCase();
+            if (!sPin) return true;
+            if (!ePin) return false;
+            if (ePin === sPin || ePin === sPin.slice(-4)) return true;
+            if (sPin.padStart(4, '0') === ePin.padStart(4, '0')) return true;
+            const sDigits = sPin.replace(/[^0-9]/g, '');
+            const eDigits = ePin.replace(/[^0-9]/g, '');
+            if (sDigits && eDigits) {
+                if (sDigits === eDigits || eDigits === sDigits.slice(-4)) return true;
+                if (sDigits.padStart(4, '0') === eDigits.padStart(4, '0')) return true;
+            }
+            return false;
         }
 
-        function hideError() {
-            document.getElementById('errorMessage').classList.add('hidden');
+        async function fetchCsvText(url) {
+            if (!url || !url.startsWith('http')) return null;
+            const fetchUrls = [
+                url,
+                'https://corsproxy.io/?' + encodeURIComponent(url),
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent(url)
+            ];
+            for (const fUrl of fetchUrls) {
+                try {
+                    const res = await fetch(fUrl);
+                    if (res.ok) {
+                        const t = await res.text();
+                        if (t && !t.trim().toLowerCase().startsWith('<!doctype html') && !t.trim().toLowerCase().startsWith('<html')) {
+                            return t;
+                        }
+                    }
+                } catch (e) {}
+            }
+            return null;
+        }
+
+        function parseCsvRows(text) {
+            const rows = [];
+            let row = [], col = "", inQ = false;
+            for (let c of text) {
+                if (c === '"') inQ = !inQ;
+                else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
+                else if (c === '\n' && !inQ) { row.push(col.trim()); if (row.join('')) rows.push(row); row = []; col = ""; }
+                else if (c !== '\r') col += c;
+            }
+            row.push(col.trim());
+            if (row.join('')) rows.push(row);
+            return rows;
+        }
+
+        async function verifyStudentCredentials(url, searchId, enteredPin) {
+            if (!url || !url.startsWith('http')) return { valid: true, skipped: true }; 
+            try {
+                const text = await fetchCsvText(url);
+                if (!text) return { valid: true, skipped: true };
+
+                const rows = parseCsvRows(text);
+                if (rows.length < 2) return { valid: true, skipped: true };
+
+                let hIdx = rows.findIndex(r => r.some(c => c.toLowerCase().includes('index') || c.toLowerCase().includes('id') || c.toLowerCase().includes('name')));
+                if (hIdx === -1) hIdx = 0;
+                const headers = rows[hIdx].map(h => h.trim().replace(/(^"|"$)/g, ''));
+
+                let idCol = headers.findIndex(h => h.toLowerCase().includes('index') || h.toLowerCase().includes('id'));
+                let nameCol = headers.findIndex(h => h.toLowerCase().includes('name'));
+                if (idCol === -1) idCol = (nameCol === 0) ? 1 : 0;
+                if (nameCol === -1) nameCol = (idCol === 0) ? 1 : 0;
+
+                let pinCol = headers.findIndex(h => {
+                    const l = h.toLowerCase();
+                    return l.includes('nic') || l.includes('pin') || l.includes('password') || l.includes('pass') || l.includes('code');
+                });
+
+                // Fallback: if there is a 3rd column (e.g. Col C) and pinCol wasn't named explicitly
+                if (pinCol === -1 && headers.length >= 3) {
+                    for (let c = 0; c < headers.length; c++) {
+                        if (c !== idCol && c !== nameCol) { pinCol = c; break; }
+                    }
+                }
+
+                const cleanCell = (v) => String(v || '').trim().replace(/(^"|"$)/g, '').toUpperCase();
+                const dataRows = rows.slice(hIdx + 1);
+
+                // Match by idCol first, or fallback to checking columns 0..2
+                let targetRow = dataRows.find(r => cleanCell(r[idCol]) === searchId);
+                if (!targetRow) {
+                    targetRow = dataRows.find(r => r.slice(0, 3).some(cell => cleanCell(cell) === searchId));
+                }
+
+                if (!targetRow) return { valid: false, error: 'not_found' };
+                if (pinCol === -1) return { valid: true, skipped: true };
+
+                const sheetPin = targetRow[pinCol] ? targetRow[pinCol].trim().replace(/(^"|"$)/g, '') : '';
+                if (!sheetPin) return { valid: true };
+
+                if (isPinMatch(sheetPin, enteredPin)) {
+                    return { valid: true };
+                }
+                return { valid: false, error: 'wrong_pin' };
+            } catch (e) {
+                return { valid: true, skipped: true };
+            }
         }
 
         function getScoreTierColor(score, batchMax) {
@@ -798,33 +761,10 @@
         async function fetchSheetAnalytics(url, searchId, prefix) {
             if (!url || !url.startsWith('http')) return null;
             try {
-                let text = null;
-                const fetchUrls = [
-                    url,
-                    'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
-                    'https://corsproxy.io/?' + encodeURIComponent(url)
-                ];
-                for (const fetchUrl of fetchUrls) {
-                    try {
-                        const res = await fetch(fetchUrl);
-                        if (res.ok) {
-                            text = await res.text();
-                            break;
-                        }
-                    } catch (e) {}
-                }
+                const text = await fetchCsvText(url);
                 if (!text) return null;
 
-                const rows = [];
-                let row = [], col = "", inQ = false;
-                for (let c of text) {
-                    if (c === '"') inQ = !inQ;
-                    else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
-                    else if (c === '\n' && !inQ) { row.push(col.trim()); if (row.join('')) rows.push(row); row = []; col = ""; }
-                    else if (c !== '\r') col += c;
-                }
-                row.push(col.trim());
-                if (row.join('')) rows.push(row);
+                const rows = parseCsvRows(text);
                 if (rows.length < 2) return null;
 
                 let headerIdx = rows.findIndex(r => r.some(c => c.toLowerCase().includes('name') || c.toLowerCase().includes('index')));
@@ -832,18 +772,19 @@
                 const headers = rows[headerIdx].map(h => h.trim().replace(/(^"|"$)/g, ''));
 
                 let idCol = 1, nameCol = 0;
-                if (headers[0].toLowerCase().includes('index') || headers[0].toLowerCase().includes('id')) {
-                    idCol = 0;
-                    nameCol = 1;
-                }
+                const foundIdCol = headers.findIndex(h => h.toLowerCase().includes('index') || h.toLowerCase().includes('id'));
+                const foundNameCol = headers.findIndex(h => h.toLowerCase().includes('name'));
+                if (foundIdCol !== -1) idCol = foundIdCol;
+                if (foundNameCol !== -1) nameCol = foundNameCol;
+                else if (idCol === 0) nameCol = 1;
+
                 let pinCol = headers.findIndex(h => h.toLowerCase().includes('nic') || h.toLowerCase().includes('pin') || h.toLowerCase().includes('password'));
                 
                 const dataRows = rows.slice(headerIdx + 1).filter(r => r[idCol] && r[idCol].trim() !== '');
-
                 const paperMeta = [];
+
                 for (let c = 0; c < headers.length; c++) {
                     if (c === idCol || c === nameCol || c === pinCol) continue;
-
                     const rawTitle = headers[c] ? headers[c].trim() : `${prefix} ${paperMeta.length + 1}`;
                     const scores = [];
                     dataRows.forEach(r => {
@@ -865,27 +806,48 @@
                 }
 
                 const conductedMetas = paperMeta.filter(m => m.isConducted);
-                const studentRankings = dataRows.map(r => {
+                const latestMeta = conductedMetas.length > 0 ? conductedMetas[conductedMetas.length - 1] : null;
+
+                const allStudentData = dataRows.map(r => {
                     let total = 0;
                     conductedMetas.forEach(meta => {
                         const val = r[meta.colIndex] ? r[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
-                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
-                            total += parseFloat(val);
-                        }
+                        if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) total += parseFloat(val);
                     });
+
+                    let latestScore = null;
+                    if (latestMeta) {
+                        const lVal = r[latestMeta.colIndex] ? r[latestMeta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
+                        if (lVal !== '' && lVal.toUpperCase() !== 'AB' && !isNaN(lVal)) {
+                            latestScore = parseFloat(lVal);
+                        }
+                    }
+
                     return {
                         id: r[idCol].trim().replace(/(^"|"$)/g, '').toUpperCase(),
                         name: r[nameCol] ? r[nameCol].trim().replace(/(^"|"$)/g, '') : "Student",
                         pin: pinCol !== -1 && r[pinCol] ? r[pinCol].trim().replace(/(^"|"$)/g, '') : null,
                         avg: conductedMetas.length > 0 ? total / conductedMetas.length : 0,
+                        latestScore: latestScore,
                         rawRow: r
                     };
-                }).sort((a, b) => b.avg - a.avg);
+                });
 
-                const studentRankIndex = studentRankings.findIndex(s => s.id === searchId);
-                if (studentRankIndex === -1) return null;
+                // Rank Top 20 strictly by the latest conducted paper's marks
+                const latestRankings = allStudentData
+                    .filter(s => s.latestScore !== null)
+                    .sort((a, b) => b.latestScore - a.latestScore);
 
-                const targetStudent = studentRankings[studentRankIndex];
+                const overallRankings = [...allStudentData].sort((a, b) => b.avg - a.avg);
+
+                const targetStudent = allStudentData.find(s => s.id === searchId);
+                if (!targetStudent) return null;
+
+                const latestRankIdx = latestRankings.findIndex(s => s.id === searchId);
+                const overallRankIdx = overallRankings.findIndex(s => s.id === searchId);
+                const effectiveRankNum = latestRankIdx !== -1 ? (latestRankIdx + 1) : (overallRankIdx + 1);
+                const effectiveTotalStudents = latestRankIdx !== -1 ? latestRankings.length : allStudentData.length;
+
                 const paperRecords = [];
                 let attendedCount = 0;
 
@@ -901,130 +863,129 @@
                     const isAbsent = rawVal === '' || rawVal.toUpperCase() === 'AB' || isNaN(rawVal);
                     if (!isAbsent) attendedCount++;
                     paperRecords.push({
-                        title: meta.title,
-                        score: isAbsent ? null : parseFloat(rawVal),
-                        isAbsent: isAbsent,
-                        isNotGiven: false,
-                        batchAvg: meta.avg,
-                        batchMax: meta.max,
-                        type: prefix.toLowerCase()
+                        title: meta.title, score: isAbsent ? null : parseFloat(rawVal),
+                        isAbsent: isAbsent, isNotGiven: false, batchAvg: meta.avg, batchMax: meta.max, type: prefix.toLowerCase()
                     });
                 });
 
                 return {
                     name: targetStudent.name,
-                    rankNum: studentRankIndex + 1,
-                    totalStudents: studentRankings.length,
+                    rankNum: effectiveRankNum,
+                    totalStudents: effectiveTotalStudents,
                     overallAvg: targetStudent.avg.toFixed(1),
                     totalPapers: conductedMetas.length,
                     attendedPapers: attendedCount,
                     records: paperRecords,
                     pin: targetStudent.pin,
-                    top20: studentRankings.slice(0, 20)
+                    latestPaperTitle: latestMeta ? latestMeta.title : "Latest Paper",
+                    top20: latestRankings.slice(0, 20)
                 };
             } catch (err) {
                 return null;
             }
         }
 
-        function populateDashboardWithData(primaryData, examData, studentIdInput, yearInput) {
-            currentAllRecords = [
-                ...(primaryData ? primaryData.records : []),
-                ...(examData ? examData.records : [])
-            ];
-
-            // 1. A/L Exam Countdown Progress
-            const examYear = parseInt(yearInput);
-            const targetExamDate = new Date(examYear, 7, 1); // August 1st of Target Year
-            const syllabusStartDate = new Date(examYear - 2, 4, 1); // May 1st, 2 years prior
+        function updateExamCountdown(yearInput) {
+            const examYear = parseInt(yearInput) || 2028;
+            // August 1st of the target exam year (Month index 7 = August)
+            const targetExamDate = new Date(examYear, 7, 1, 0, 0, 0);
+            // Syllabus start: May 1st, 2 years prior (e.g., May 1, 2026 for 2028 A/L)
+            const syllabusStartDate = new Date(examYear - 2, 4, 1, 0, 0, 0);
             const currentDate = new Date();
 
-            const totalDays = (targetExamDate - syllabusStartDate) / (1000 * 60 * 60 * 24);
-            const passedDays = (currentDate - syllabusStartDate) / (1000 * 60 * 60 * 24);
-            let progressPercent = Math.max(5, Math.min(100, (passedDays / totalDays) * 100));
-            const daysRemaining = Math.ceil((targetExamDate - currentDate) / (1000 * 60 * 60 * 24));
+            const totalTime = targetExamDate.getTime() - syllabusStartDate.getTime();
+            const passedTime = currentDate.getTime() - syllabusStartDate.getTime();
+            let progressPercent = Math.max(5, Math.min(100, (passedTime / totalTime) * 100));
 
-            document.getElementById('cdYearDisplay').innerText = examYear;
-            if (daysRemaining > 0) {
-                document.getElementById('cdDaysText').innerHTML = `<span class="text-white font-mono font-bold text-xs sm:text-sm">${daysRemaining}</span> Days Remaining`;
-            } else {
-                document.getElementById('cdDaysText').innerText = "EXAM PERIOD ACTIVE";
-                progressPercent = 100;
-            }
+            const diffTime = targetExamDate.getTime() - currentDate.getTime();
+            const daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            setTimeout(() => {
-                document.getElementById('cdProgressBar').style.width = `${progressPercent}%`;
-                document.getElementById('cdPercentText').innerText = `${Math.round(progressPercent)}%`;
-            }, 400);
+            const yearEl = document.getElementById('cdYearDisplay');
+            const badgeEl = document.getElementById('cdTargetDateBadge');
+            const daysEl = document.getElementById('cdDaysText');
 
-            // 2. Gamification Badges
-            const cabinet = document.getElementById('trophyCabinet');
-            cabinet.innerHTML = '';
-            const earnedBadges = [];
-            const attendedRecords = currentAllRecords.filter(r => !r.isNotGiven);
+            if (yearEl) yearEl.innerText = examYear;
+            if (badgeEl) badgeEl.innerText = `Aug 1, ${examYear}`;
 
-            let activeStreak = 0;
-            for (let i = attendedRecords.length - 1; i >= 0; i--) {
-                if (!attendedRecords[i].isAbsent) activeStreak++;
-                else break;
-            }
-
-            if (attendedRecords.length >= 3 && activeStreak === attendedRecords.length) {
-                earnedBadges.push({ icon: '🌟', title: 'Unbroken (100% Attendance)', classes: 'text-amber-700 bg-amber-50 border-amber-200' });
-            } else if (activeStreak >= 3) {
-                earnedBadges.push({ icon: '🔥', title: `${activeStreak} Paper Streak`, classes: 'text-orange-700 bg-orange-50 border-orange-200' });
-            }
-
-            const validScoresOnly = attendedRecords.filter(r => !r.isAbsent).map(r => r.score);
-            if (validScoresOnly.length >= 2) {
-                const lastScore = validScoresOnly[validScoresOnly.length - 1];
-                const prevScore = validScoresOnly[validScoresOnly.length - 2];
-                if (lastScore - prevScore >= 12) {
-                    earnedBadges.push({ icon: '🚀', title: `Comeback Kid (+${lastScore - prevScore})`, classes: 'text-purple-700 bg-purple-50 border-purple-200' });
+            if (daysEl) {
+                if (daysRemaining > 0) {
+                    const monthsLeft = Math.floor(daysRemaining / 30.4375);
+                    const remDays = Math.floor(daysRemaining % 30.4375);
+                    const breakdownText = monthsLeft > 0 ? `(${monthsLeft}m ${remDays}d left)` : '';
+                    daysEl.innerHTML = `<span class="text-white font-mono font-bold text-xs sm:text-sm">${daysRemaining}</span> Days Remaining <span class="text-indigo-300/80 normal-case font-semibold ml-1">${breakdownText}</span>`;
+                } else {
+                    daysEl.innerText = "EXAM PERIOD ACTIVE";
+                    progressPercent = 100;
                 }
             }
 
-            if (validScoresOnly.some(s => s >= 75)) {
-                earnedBadges.push({ icon: '💎', title: 'Elite Club (75+ Scorer)', classes: 'text-emerald-700 bg-emerald-50 border-emerald-200' });
+            setTimeout(() => {
+                const bar = document.getElementById('cdProgressBar');
+                const txt = document.getElementById('cdPercentText');
+                if (bar) bar.style.width = `${progressPercent}%`;
+                if (txt) txt.innerText = `${Math.round(progressPercent)}%`;
+            }, 350);
+        }
+
+        function populateDashboardWithData(primaryData, examData, studentIdInput, yearInput) {
+            currentAllRecords = [...(primaryData ? primaryData.records : []), ...(examData ? examData.records : [])];
+            
+            updateExamCountdown(yearInput);
+
+            const cabinet = document.getElementById('trophyCabinet');
+            if (cabinet) {
+                cabinet.innerHTML = '';
+                const earnedBadges = [];
+                const attendedRecords = currentAllRecords.filter(r => !r.isNotGiven);
+
+                let activeStreak = 0;
+                for (let i = attendedRecords.length - 1; i >= 0; i--) {
+                    if (!attendedRecords[i].isAbsent) activeStreak++;
+                    else break;
+                }
+
+                if (attendedRecords.length >= 3 && activeStreak === attendedRecords.length) { earnedBadges.push({ icon: '🌟', title: 'Unbroken (100% Attendance)', classes: 'text-amber-700 bg-amber-50 border-amber-200' }); } 
+                else if (activeStreak >= 3) { earnedBadges.push({ icon: '🔥', title: `${activeStreak} Paper Streak`, classes: 'text-orange-700 bg-orange-50 border-orange-200' }); }
+
+                const validScoresForBadges = attendedRecords.filter(r => !r.isAbsent).map(r => r.score);
+                if (validScoresForBadges.length >= 2) {
+                    const lastScore = validScoresForBadges[validScoresForBadges.length - 1], prevScore = validScoresForBadges[validScoresForBadges.length - 2];
+                    if (lastScore - prevScore >= 12) earnedBadges.push({ icon: '🚀', title: `Comeback Kid (+${lastScore - prevScore})`, classes: 'text-purple-700 bg-purple-50 border-purple-200' });
+                }
+
+                if (validScoresForBadges.some(s => s >= 75)) earnedBadges.push({ icon: '💎', title: 'Elite Club (75+ Scorer)', classes: 'text-emerald-700 bg-emerald-50 border-emerald-200' });
+
+                if (earnedBadges.length > 0) {
+                    earnedBadges.forEach(b => {
+                        cabinet.innerHTML += `<div class="flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border ${b.classes} flex items-center gap-1.5 sm:gap-2 shadow-xs cursor-default hover:-translate-y-0.5 transition-transform"><span class="text-sm sm:text-base">${b.icon}</span><span class="text-[10px] sm:text-xs font-bold uppercase tracking-wide">${b.title}</span></div>`;
+                    });
+                } else {
+                    cabinet.innerHTML = `<div class="flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 flex items-center gap-2 shadow-xs cursor-default"><span class="text-sm">🌱</span><span class="text-[10px] sm:text-xs font-bold uppercase tracking-wide">Complete more papers to unlock achievement badges!</span></div>`;
+                }
             }
 
-            if (earnedBadges.length > 0) {
-                earnedBadges.forEach(b => {
-                    cabinet.innerHTML += `<div class="flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border ${b.classes} flex items-center gap-1.5 sm:gap-2 shadow-xs cursor-default hover:-translate-y-0.5 transition-transform"><span class="text-sm sm:text-base">${b.icon}</span><span class="text-[10px] sm:text-xs font-bold uppercase tracking-wide">${b.title}</span></div>`;
-                });
-            } else {
-                cabinet.innerHTML = `<div class="flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 flex items-center gap-2 shadow-xs cursor-default"><span class="text-sm">🌱</span><span class="text-[10px] sm:text-xs font-bold uppercase tracking-wide">Complete more papers to unlock achievement badges!</span></div>`;
-            }
-
-            // 3. Percentile & Trend Math
+            const attendedRecords = currentAllRecords.filter(r => !r.isNotGiven);
+            const validScoresOnly = attendedRecords.filter(r => !r.isAbsent).map(r => r.score);
             const percentile = Math.max(1, Math.round((1 - ((primaryData.rankNum - 1) / primaryData.totalStudents)) * 100));
 
             let trendStr = "--", trendColor = "text-slate-500", trendVal = 0;
             if (validScoresOnly.length >= 2) {
-                const latest = validScoresOnly[validScoresOnly.length - 1];
-                const prev = validScoresOnly[validScoresOnly.length - 2];
+                const latest = validScoresOnly[validScoresOnly.length - 1], prev = validScoresOnly[validScoresOnly.length - 2];
                 trendVal = parseFloat((latest - prev).toFixed(1));
                 if (trendVal > 0) { trendStr = `▲ +${trendVal}`; trendColor = "text-emerald-600"; }
                 else if (trendVal < 0) { trendStr = `▼ ${Math.abs(trendVal)}`; trendColor = "text-rose-600"; }
                 else { trendStr = `■ 0`; trendColor = "text-slate-500"; }
             }
 
-            // 4. AI Growth Engine: Smart Predictive Target Calculation
-            let nextGoal = "--";
-            let nextGoalSub = "Target for next paper";
-
+            let nextGoal = "--", nextGoalSub = "Target for next paper";
             if (validScoresOnly.length > 0) {
                 const latest = validScoresOnly[validScoresOnly.length - 1];
                 let recentAvg = latest;
-                if (validScoresOnly.length >= 3) {
-                    recentAvg = (validScoresOnly[validScoresOnly.length - 1] + validScoresOnly[validScoresOnly.length - 2] + validScoresOnly[validScoresOnly.length - 3]) / 3;
-                } else if (validScoresOnly.length === 2) {
-                    recentAvg = (validScoresOnly[validScoresOnly.length - 1] + validScoresOnly[validScoresOnly.length - 2]) / 2;
-                }
+                if (validScoresOnly.length >= 3) recentAvg = (validScoresOnly[validScoresOnly.length - 1] + validScoresOnly[validScoresOnly.length - 2] + validScoresOnly[validScoresOnly.length - 3]) / 3;
+                else if (validScoresOnly.length === 2) recentAvg = (validScoresOnly[validScoresOnly.length - 1] + validScoresOnly[validScoresOnly.length - 2]) / 2;
 
                 if (latest >= 75) {
-                    nextGoal = "75+";
-                    nextGoalSub = "Maintain Elite 'A' Tier";
+                    nextGoal = "75+"; nextGoalSub = "Maintain Elite 'A' Tier";
                 } else {
                     const gap = 75 - latest;
                     const momentumMultiplier = latest > recentAvg ? 1.2 : 1.0;
@@ -1036,23 +997,24 @@
             }
 
             currentStudentSummary = {
-                name: primaryData.name,
-                id: studentIdInput,
-                year: yearInput,
-                rankText: `#${primaryData.rankNum}`,
-                rankSub: `of ${primaryData.totalStudents} • Top ${percentile}%`,
-                overallAvg: primaryData.overallAvg,
-                trendHtml: `<span class="${trendColor}">${trendStr}</span>`,
-                attendance: `${primaryData.attendedPapers} / ${primaryData.totalPapers}`,
-                nextGoal: nextGoal,
-                nextGoalSub: nextGoalSub
+                name: primaryData.name, id: studentIdInput, year: yearInput, rankText: `#${primaryData.rankNum}`, rankSub: `of ${primaryData.totalStudents} • Top ${percentile}%`,
+                overallAvg: primaryData.overallAvg, trendHtml: `<span class="${trendColor}">${trendStr}</span>`, attendance: `${primaryData.attendedPapers} / ${primaryData.totalPapers}`,
+                nextGoal: nextGoal, nextGoalSub: nextGoalSub
             };
 
             document.getElementById('displayName').innerText = primaryData.name;
             document.getElementById('displayId').innerText = studentIdInput;
             document.getElementById('displayYear').innerText = `${yearInput} A/L`;
 
-            // Populate Student Top 20 Leaderboard Tab
+            const lbSubtitle = document.getElementById('studentLbSubtitle');
+            const lbScoreHeader = document.getElementById('studentLbScoreHeader');
+            if (lbSubtitle && primaryData.latestPaperTitle) {
+                lbSubtitle.innerText = `${primaryData.latestPaperTitle}`;
+            }
+            if (lbScoreHeader && primaryData.latestPaperTitle) {
+                lbScoreHeader.innerText = `${primaryData.latestPaperTitle} Marks`;
+            }
+
             const lbBody = document.getElementById('studentLeaderboardBody');
             if (lbBody) {
                 lbBody.innerHTML = '';
@@ -1064,41 +1026,23 @@
                         const safeName = (s.name || "Student").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         const safeId = (s.id || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         let rankBadge = `#${idx + 1}`;
-                        let rankColor = 'text-slate-500 font-bold';
-                        let nameWeight = 'font-semibold text-slate-800';
-                        let rowBg = 'hover:bg-slate-50';
+                        let rankColor = 'text-slate-500 font-bold', nameWeight = 'font-semibold text-slate-800', rowBg = 'hover:bg-slate-50';
 
-                        if (idx === 0) {
-                            rankBadge = '🥇 #1';
-                            rankColor = 'text-amber-600 font-black';
-                            nameWeight = 'font-extrabold text-amber-950';
-                            rowBg = 'bg-amber-50/50 hover:bg-amber-50/80';
-                        } else if (idx === 1) {
-                            rankBadge = '🥈 #2';
-                            rankColor = 'text-slate-600 font-black';
-                            nameWeight = 'font-bold text-slate-900';
-                            rowBg = 'bg-slate-50/80 hover:bg-slate-100/80';
-                        } else if (idx === 2) {
-                            rankBadge = '🥉 #3';
-                            rankColor = 'text-amber-700 font-black';
-                            nameWeight = 'font-bold text-slate-900';
-                            rowBg = 'bg-orange-50/30 hover:bg-orange-50/60';
-                        }
+                        if (idx === 0) { rankBadge = '🥇 #1'; rankColor = 'text-amber-600 font-black'; nameWeight = 'font-extrabold text-amber-950'; rowBg = 'bg-amber-50/50 hover:bg-amber-50/80'; } 
+                        else if (idx === 1) { rankBadge = '🥈 #2'; rankColor = 'text-slate-600 font-black'; nameWeight = 'font-bold text-slate-900'; rowBg = 'bg-slate-50/80 hover:bg-slate-100/80'; } 
+                        else if (idx === 2) { rankBadge = '🥉 #3'; rankColor = 'text-amber-700 font-black'; nameWeight = 'font-bold text-slate-900'; rowBg = 'bg-orange-50/30 hover:bg-orange-50/60'; }
 
-                        if (s.id === studentIdInput) {
-                            rowBg = 'bg-indigo-50/90 border-l-4 border-l-indigo-600';
-                            nameWeight = 'font-extrabold text-indigo-950';
-                        }
+                        if (s.id === studentIdInput) { rowBg = 'bg-indigo-50/90 border-l-4 border-l-indigo-600'; nameWeight = 'font-extrabold text-indigo-950'; }
 
-                        const avgVal = parseFloat(s.avg || 0);
-                        const avgColor = avgVal >= 75 ? 'text-emerald-600 font-bold' : (avgVal < 40 ? 'text-rose-600' : 'text-blue-600 font-bold');
+                        const markVal = parseFloat(s.latestScore ?? 0);
+                        const markColor = markVal >= 75 ? 'text-emerald-600 font-extrabold' : (markVal < 40 ? 'text-rose-600 font-bold' : 'text-blue-600 font-extrabold');
 
                         lbBody.insertAdjacentHTML('beforeend', `
                             <tr class="${rowBg} transition-colors">
                                 <td class="py-3 px-4 text-center font-mono text-xs sm:text-sm ${rankColor}">${rankBadge}</td>
                                 <td class="py-3 px-4 ${nameWeight} truncate max-w-[150px] sm:max-w-none">${safeName}</td>
                                 <td class="py-3 px-4 text-slate-500 font-mono text-xs">${safeId}</td>
-                                <td class="py-3 px-4 text-center font-mono ${avgColor}">${avgVal.toFixed(1)}%</td>
+                                <td class="py-3 px-4 text-center font-mono text-sm sm:text-base ${markColor}">${markVal}</td>
                             </tr>
                         `);
                     });
@@ -1108,18 +1052,17 @@
             showOverallAnalytics();
             populateMarksTable(currentAllRecords);
 
+            const examTabBtn = document.getElementById('tabBtn-exams');
             if (primaryData) renderEnhancedChart('chempulseCanvas', primaryData.records, 'Chempulse');
             if (examData) {
                 renderEnhancedChart('examCanvas', examData.records, 'Monthly Exam');
-                document.getElementById('tabBtn-exams').classList.remove('hidden');
+                if (examTabBtn) examTabBtn.classList.remove('hidden');
             } else {
-                document.getElementById('tabBtn-exams').classList.add('hidden');
+                if (examTabBtn) examTabBtn.classList.add('hidden');
             }
 
             document.getElementById('loginView').classList.add('hidden');
             document.getElementById('dashboardView').classList.remove('hidden');
-            
-            // Connect to Firebase and fetch Quizzes for this Batch
             initQuizListener(yearInput);
         }
 
@@ -1130,16 +1073,15 @@
             const yearInput = document.getElementById('batchYear').value;
 
             if (!studentIdInput) { showError("Please enter your Student ID."); return; }
-            if (!studentPinInput) { showError("Please enter your Security PIN."); return; }
+            if (!studentPinInput) { showError("Please enter your Password / PIN."); return; }
 
             const dbLinks = classDatabases[yearInput];
             if (!dbLinks || (!dbLinks.chempulse && !dbLinks.exams)) {
-                showError(`No live database configured for ${yearInput} yet. Please select 2028 A/L Batch.`);
+                showError(`No live database configured for ${yearInput} yet.`);
                 return;
             }
 
-            // --- ADMIN LOGIN OVERRIDE ---
-            if (studentIdInput === 'ADMIN123' && studentPinInput === 'admin321') {
+            if (studentIdInput.toLowerCase() === 'kj' && studentPinInput.toLowerCase() === 'kj321') {
                 loadAdminDashboard(dbLinks.chempulse, yearInput);
                 return;
             }
@@ -1150,60 +1092,53 @@
             spinner.classList.remove('hidden');
 
             try {
-                const [chempulseData, examData] = await Promise.all([
+                const [authResult, chempulseData, examData] = await Promise.all([
+                    dbLinks.students ? verifyStudentCredentials(dbLinks.students, studentIdInput, studentPinInput) : Promise.resolve({ valid: true, skipped: true }),
                     fetchSheetAnalytics(dbLinks.chempulse, studentIdInput, 'Chempulse'),
                     fetchSheetAnalytics(dbLinks.exams, studentIdInput, 'Exam')
                 ]);
 
+                if (authResult && !authResult.valid) {
+                    if (authResult.error === 'wrong_pin') {
+                        showError("Incorrect Password / PIN. Please check your PIN and try again.");
+                        return;
+                    }
+                    if (authResult.error === 'not_found' && !chempulseData && !examData) {
+                        showError(`Student ID '${studentIdInput}' not found in the ${yearInput} batch.`);
+                        return;
+                    }
+                }
+
                 if (!chempulseData && !examData) {
-                    showError(`Student ID '${studentIdInput}' not found in the ${yearInput} batch sheet.`);
+                    showError(`Student ID '${studentIdInput}' not found in the ${yearInput} marks sheet.`);
                     return;
                 }
                 const primaryData = chempulseData || examData;
 
-                if (primaryData.pin) {
-                    const sheetPinStr = String(primaryData.pin).toLowerCase().trim();
-                    const sheetPinDigits = sheetPinStr.replace(/[^0-9]/g, '');
-                    const enteredPin = studentPinInput.toLowerCase().trim();
-                    if (
-                        enteredPin !== sheetPinStr &&
-                        enteredPin !== sheetPinStr.slice(-4) &&
-                        !(sheetPinDigits.length >= 4 && enteredPin.replace(/[^0-9]/g, '') === sheetPinDigits.slice(-4))
-                    ) {
-                        showError("Incorrect Security PIN. Please verify the last 4 digits of your NIC.");
+                // Fallback PIN check if Master List skipped PIN check and Marks sheet has a PIN column
+                if ((!authResult || authResult.skipped) && primaryData.pin) {
+                    if (!isPinMatch(primaryData.pin, studentPinInput)) {
+                        showError("Incorrect Password / PIN. Please check your PIN and try again.");
                         return;
                     }
                 }
 
                 populateDashboardWithData(primaryData, examData, studentIdInput, yearInput);
             } catch (err) {
-                showError("Network error while loading data. Please check your internet connection.");
+                console.error("Login Error:", err);
+                showError("Unable to load dashboard data. Please try again.");
             } finally {
                 loginBtn.disabled = false;
                 spinner.classList.add('hidden');
             }
         }
 
-        // --- ADMIN ANALYTICS DATA FETCH (TOTAL MARKS & PAPER-WISE FILTERING) ---
         async function fetchAdminAnalytics(url, prefix) {
             try {
-                let text = null;
-                const fetchUrls = [ url, 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url), 'https://corsproxy.io/?' + encodeURIComponent(url) ];
-                for (const fUrl of fetchUrls) {
-                    try { const res = await fetch(fUrl); if (res.ok) { text = await res.text(); break; } } catch(e){}
-                }
+                const text = await fetchCsvText(url);
                 if (!text) return null;
 
-                const rows = [];
-                let row = [], col = "", inQ = false;
-                for (let c of text) {
-                    if (c === '"') inQ = !inQ;
-                    else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
-                    else if (c === '\n' && !inQ) { row.push(col.trim()); if (row.join('')) rows.push(row); row = []; col = ""; }
-                    else if (c !== '\r') col += c;
-                }
-                row.push(col.trim());
-                if (row.join('')) rows.push(row);
+                const rows = parseCsvRows(text);
                 if (rows.length < 2) return null;
 
                 let headerIdx = rows.findIndex(r => r.some(c => c.toLowerCase().includes('name') || c.toLowerCase().includes('index')));
@@ -1215,7 +1150,6 @@
                 let pinCol = headers.findIndex(h => h.toLowerCase().includes('nic') || h.toLowerCase().includes('pin') || h.toLowerCase().includes('password'));
 
                 const dataRows = rows.slice(headerIdx + 1).filter(r => r[idCol] && r[idCol].trim() !== '');
-
                 const paperMeta = [];
                 let totalStudentAttendanceCount = 0;
                 let totalPossibleAttendanceCount = 0;
@@ -1251,29 +1185,17 @@
                     paperMeta.forEach(meta => {
                         const val = r[meta.colIndex] ? r[meta.colIndex].trim().replace(/(^"|"$)/g, '') : '';
                         if (val !== '' && val.toUpperCase() !== 'AB' && !isNaN(val)) {
-                            const score = parseFloat(val);
-                            total += score;
-                            attended++;
-                            paperScores[meta.colIndex] = score;
-                        } else {
-                            paperScores[meta.colIndex] = null;
-                        }
+                            const score = parseFloat(val); total += score; attended++; paperScores[meta.colIndex] = score;
+                        } else { paperScores[meta.colIndex] = null; }
                     });
                     return {
                         id: r[idCol].trim().replace(/(^"|"$)/g, '').toUpperCase(),
                         name: r[nameCol] ? r[nameCol].trim().replace(/(^"|"$)/g, '') : "Student",
-                        total: parseFloat(total.toFixed(1)),
-                        attended: attended,
-                        scores: paperScores
+                        total: parseFloat(total.toFixed(1)), attended: attended, scores: paperScores
                     };
                 });
 
-                return {
-                    totalStudents: dataRows.length,
-                    attendanceRate: totalPossibleAttendanceCount > 0 ? Math.round((totalStudentAttendanceCount / totalPossibleAttendanceCount) * 100) : 0,
-                    allStudents: studentRankings,
-                    paperMeta: paperMeta
-                };
+                return { totalStudents: dataRows.length, attendanceRate: totalPossibleAttendanceCount > 0 ? Math.round((totalStudentAttendanceCount / totalPossibleAttendanceCount) * 100) : 0, allStudents: studentRankings, paperMeta: paperMeta };
             } catch (err) { 
                 console.error("Error in fetchAdminAnalytics:", err);
                 return null; 
@@ -1283,15 +1205,13 @@
         async function loadAdminDashboard(url, yearInput) {
             const loginBtn = document.getElementById('loginBtn');
             const spinner = document.getElementById('loadingSpinner');
-            loginBtn.disabled = true;
-            spinner.classList.remove('hidden');
+            loginBtn.disabled = true; spinner.classList.remove('hidden');
 
             try {
                 const adminData = await fetchAdminAnalytics(url, 'Chempulse');
                 if (!adminData) { showError("Failed to load admin analytics."); return; }
 
                 updateGlobalTheme('slate'); 
-
                 document.getElementById('adminDisplayYear').innerText = `${yearInput} A/L`;
                 document.getElementById('printBatchYearLabel').innerText = `${yearInput} A/L Batch`;
                 document.getElementById('adminTotalStudents').innerText = adminData.totalStudents;
@@ -1302,20 +1222,12 @@
                 const selector = document.getElementById('adminPaperSelector');
                 if (selector) {
                     selector.innerHTML = `<option value="total">Overall Total Marks (All Papers)</option>`;
-                    [...adminData.paperMeta].reverse().forEach(p => {
-                        selector.insertAdjacentHTML('beforeend', `<option value="${p.colIndex}">${p.title}</option>`);
-                    });
+                    [...adminData.paperMeta].reverse().forEach(p => { selector.insertAdjacentHTML('beforeend', `<option value="${p.colIndex}">${p.title}</option>`); });
                     const latestPaper = adminData.paperMeta[adminData.paperMeta.length - 1];
-                    if (latestPaper) {
-                        selector.value = latestPaper.colIndex;
-                        updateAdminLeaderboard(latestPaper.colIndex.toString());
-                    } else {
-                        selector.value = 'total';
-                        updateAdminLeaderboard('total');
-                    }
+                    if (latestPaper) { selector.value = latestPaper.colIndex; updateAdminLeaderboard(latestPaper.colIndex.toString()); } 
+                    else { selector.value = 'total'; updateAdminLeaderboard('total'); }
                 }
 
-                // Render Paper Attendance & Summary Table
                 const pBody = document.getElementById('adminPaperSummaryBody');
                 pBody.innerHTML = '';
                 adminData.paperMeta.forEach(p => {
@@ -1334,11 +1246,8 @@
 
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('adminDashboardView').classList.remove('hidden');
-
-                // Connect to Firebase and fetch Quizzes for this Batch
                 initQuizListener(yearInput);
 
-                // Render Bar Chart with Attendance in Tooltips
                 setTimeout(() => {
                     if (adminChart) adminChart.destroy();
                     const ctx = document.getElementById('adminChartCanvas').getContext('2d');
@@ -1347,84 +1256,49 @@
                         data: {
                             labels: adminData.paperMeta.map(p => p.title),
                             datasets: [{
-                                label: 'Batch Average',
-                                data: adminData.paperMeta.map(p => p.avg),
-                                backgroundColor: 'rgba(168, 85, 247, 0.75)',
-                                hoverBackgroundColor: 'rgba(147, 51, 234, 0.95)',
-                                borderRadius: 6
+                                label: 'Batch Average', data: adminData.paperMeta.map(p => p.avg),
+                                backgroundColor: 'rgba(168, 85, 247, 0.75)', hoverBackgroundColor: 'rgba(147, 51, 234, 0.95)', borderRadius: 6
                             }]
                         },
                         options: {
-                            responsive: true, 
-                            maintainAspectRatio: false,
+                            responsive: true, maintainAspectRatio: false,
                             plugins: { 
                                 legend: { display: false },
                                 tooltip: {
-                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                    padding: 10, 
-                                    cornerRadius: 10,
-                                    callbacks: {
-                                        afterLabel: (ctx) => {
-                                            const meta = adminData.paperMeta[ctx.dataIndex];
-                                            return meta ? `Attended: ${meta.attendedCount} / ${adminData.totalStudents} students` : '';
-                                        }
-                                    }
+                                    backgroundColor: 'rgba(15, 23, 42, 0.95)', padding: 10, cornerRadius: 10,
+                                    callbacks: { afterLabel: (ctx) => { const meta = adminData.paperMeta[ctx.dataIndex]; return meta ? `Attended: ${meta.attendedCount} / ${adminData.totalStudents} students` : ''; } }
                                 }
                             },
                             scales: { 
-                                y: { 
-                                    beginAtZero: true, 
-                                    max: 100,
-                                    grid: { color: 'rgba(226, 232, 240, 0.6)' },
-                                    ticks: { color: '#64748b' }
-                                },
-                                x: {
-                                    grid: { display: false },
-                                    ticks: { color: '#475569', maxRotation: 45, minRotation: 0, font: { size: 10 } }
-                                }
+                                y: { beginAtZero: true, max: 100, grid: { color: 'rgba(226, 232, 240, 0.6)' }, ticks: { color: '#64748b' } },
+                                x: { grid: { display: false }, ticks: { color: '#475569', maxRotation: 45, minRotation: 0, font: { size: 10 } } }
                             }
                         }
                     });
                 }, 50);
 
-            } catch(e) {
-                console.error("Admin dashboard generation error:", e);
-                showError("Error generating admin dashboard. Please try again.");
-            } finally {
-                loginBtn.disabled = false;
-                spinner.classList.add('hidden');
-            }
+            } catch(e) { console.error(e); showError("Error generating admin dashboard. Please try again."); } 
+            finally { loginBtn.disabled = false; spinner.classList.add('hidden'); }
         }
 
-        function handleAdminFilterChange() {
-            const val = document.getElementById('adminPaperSelector').value;
-            updateAdminLeaderboard(val);
-        }
+        function handleAdminFilterChange() { updateAdminLeaderboard(document.getElementById('adminPaperSelector').value); }
 
         function updateAdminLeaderboard(filterId) {
             const adminData = window.currentAdminData;
             if (!adminData) return;
             
-            let sortedStudents = [];
-            let markLabel = "";
-            let topLabel = "";
+            let sortedStudents = [], markLabel = "", topLabel = "";
             
             if (filterId === 'total') {
                 sortedStudents = [...adminData.allStudents].sort((a, b) => b.total - a.total);
-                markLabel = "Total Marks";
-                topLabel = "Overall";
+                markLabel = "Total Marks"; topLabel = "Overall";
                 document.getElementById('printBatchYearLabel').innerText = `${document.getElementById('adminDisplayYear').innerText} - Overall Total Marks`;
             } else {
                 const colIdx = parseInt(filterId);
                 const paper = adminData.paperMeta.find(p => p.colIndex === colIdx);
-                if (paper) {
-                    topLabel = paper.title;
-                    document.getElementById('printBatchYearLabel').innerText = `${document.getElementById('adminDisplayYear').innerText} - ${paper.title}`;
-                }
+                if (paper) { topLabel = paper.title; document.getElementById('printBatchYearLabel').innerText = `${document.getElementById('adminDisplayYear').innerText} - ${paper.title}`; }
                 markLabel = "Marks";
-                sortedStudents = [...adminData.allStudents]
-                    .filter(s => s.scores[colIdx] !== null)
-                    .sort((a, b) => b.scores[colIdx] - a.scores[colIdx]);
+                sortedStudents = [...adminData.allStudents].filter(s => s.scores[colIdx] !== null).sort((a, b) => b.scores[colIdx] - a.scores[colIdx]);
             }
             
             const topStudent = sortedStudents[0];
@@ -1434,12 +1308,9 @@
             if (topStudent) {
                 const topScore = filterId === 'total' ? topStudent.total : topStudent.scores[parseInt(filterId)];
                 document.getElementById('adminTopMarks').innerText = `${topScore} ${markLabel}`;
-            } else {
-                document.getElementById('adminTopMarks').innerText = "--";
-            }
+            } else { document.getElementById('adminTopMarks').innerText = "--"; }
             
             document.getElementById('adminLeaderboardScoreCol').innerText = markLabel;
-
             const tbody = document.getElementById('adminLeaderboardBody');
             tbody.innerHTML = '';
             const top20 = sortedStudents.slice(0, 20);
@@ -1452,34 +1323,15 @@
             top20.forEach((s, idx) => {
                 const safeName = (s.name || "Student").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 const safeId = (s.id || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                let rankBadge = `#${idx + 1}`, rankColor = 'text-slate-500 font-bold', textWeight = 'font-semibold text-slate-800', rowBg = 'hover:bg-slate-50';
 
-                let rankBadge = `#${idx + 1}`;
-                let rankColor = 'text-slate-500 font-bold';
-                let textWeight = 'font-semibold text-slate-800';
-                let rowBg = 'hover:bg-slate-50';
-
-                if (idx === 0) { 
-                    rankBadge = '🥇 #1';
-                    rankColor = 'text-amber-600 font-black'; 
-                    textWeight = 'font-extrabold text-amber-950'; 
-                    rowBg = 'bg-amber-50/50 hover:bg-amber-50/80';
-                } else if (idx === 1) { 
-                    rankBadge = '🥈 #2';
-                    rankColor = 'text-slate-600 font-black'; 
-                    textWeight = 'font-bold text-slate-900'; 
-                    rowBg = 'bg-slate-50/80 hover:bg-slate-100/80';
-                } else if (idx === 2) {
-                    rankBadge = '🥉 #3';
-                    rankColor = 'text-amber-700 font-black';
-                    textWeight = 'font-bold text-slate-900';
-                    rowBg = 'bg-orange-50/30 hover:bg-orange-50/60';
-                }
+                if (idx === 0) { rankBadge = '🥇 #1'; rankColor = 'text-amber-600 font-black'; textWeight = 'font-extrabold text-amber-950'; rowBg = 'bg-amber-50/50 hover:bg-amber-50/80'; } 
+                else if (idx === 1) { rankBadge = '🥈 #2'; rankColor = 'text-slate-600 font-black'; textWeight = 'font-bold text-slate-900'; rowBg = 'bg-slate-50/80 hover:bg-slate-100/80'; } 
+                else if (idx === 2) { rankBadge = '🥉 #3'; rankColor = 'text-amber-700 font-black'; textWeight = 'font-bold text-slate-900'; rowBg = 'bg-orange-50/30 hover:bg-orange-50/60'; }
                 
                 const score = filterId === 'total' ? s.total : s.scores[parseInt(filterId)];
                 let markColor = 'text-purple-700';
-                if (filterId !== 'total') {
-                    markColor = score >= 75 ? 'text-emerald-600' : (score < 40 ? 'text-rose-600' : 'text-blue-600');
-                }
+                if (filterId !== 'total') { markColor = score >= 75 ? 'text-emerald-600' : (score < 40 ? 'text-rose-600' : 'text-blue-600'); }
 
                 tbody.insertAdjacentHTML('beforeend', `
                     <tr class="${rowBg} transition-colors">
@@ -1498,7 +1350,6 @@
             const summary = currentStudentSummary;
 
             document.getElementById('statRank').className = "text-2xl sm:text-3xl font-extrabold font-mono text-slate-800 tracking-tight transition-all duration-300 mt-0.5 sm:mt-1";
-
             document.getElementById('cardLabel1').innerText = "Batch Rank";
             document.getElementById('statRank').innerText = summary.rankText;
             document.getElementById('statRankSub').innerText = summary.rankSub;
@@ -1516,8 +1367,8 @@
             document.getElementById('statHighest').innerText = summary.nextGoal;
             document.getElementById('cardSub4').innerText = summary.nextGoalSub;
 
-            document.getElementById('resetOverallBtn').classList.add('hidden');
-
+            const resetBtn = document.getElementById('resetOverallBtn');
+            if (resetBtn) resetBtn.classList.add('hidden');
             applyTierTheme(parseFloat(summary.overallAvg), null);
             highlightSelectedRow(-1);
             if (chempulseChart) chempulseChart.update();
@@ -1525,50 +1376,24 @@
         }
 
         function inspectPaper(record, index) {
-            activeRecordIndex = index;
-            highlightSelectedRow(index);
-
+            activeRecordIndex = index; highlightSelectedRow(index);
             document.getElementById('statRank').className = "text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight transition-all duration-300 truncate mt-1";
-            document.getElementById('resetOverallBtn').classList.remove('hidden');
+            const resetBtn = document.getElementById('resetOverallBtn');
+            if (resetBtn) resetBtn.classList.remove('hidden');
 
             if (record.isNotGiven) {
-                document.getElementById('cardLabel1').innerText = "Paper Status";
-                document.getElementById('statRank').innerText = "Pending";
-                document.getElementById('statRankSub').innerText = "";
-                document.getElementById('cardSub1').innerText = "Not yet conducted";
-
-                document.getElementById('cardLabel2').innerText = "Your Score";
-                document.getElementById('statAvg').innerText = "N/A";
-                document.getElementById('cardSub2').innerText = "No marks recorded";
-
-                document.getElementById('cardLabel3').innerText = "Batch Avg";
-                document.getElementById('statAttendance').innerText = "-";
-                document.getElementById('cardSub3').innerText = "Awaiting upload";
-
-                document.getElementById('cardLabel4').innerText = "Batch Top";
-                document.getElementById('statHighest').innerText = "-";
-                document.getElementById('cardSub4').innerText = "Awaiting upload";
-
+                document.getElementById('cardLabel1').innerText = "Paper Status"; document.getElementById('statRank').innerText = "Pending"; document.getElementById('statRankSub').innerText = ""; document.getElementById('cardSub1').innerText = "Not yet conducted";
+                document.getElementById('cardLabel2').innerText = "Your Score"; document.getElementById('statAvg').innerText = "N/A"; document.getElementById('cardSub2').innerText = "No marks recorded";
+                document.getElementById('cardLabel3').innerText = "Batch Avg"; document.getElementById('statAttendance').innerText = "-"; document.getElementById('cardSub3').innerText = "Awaiting upload";
+                document.getElementById('cardLabel4').innerText = "Batch Top"; document.getElementById('statHighest').innerText = "-"; document.getElementById('cardSub4').innerText = "Awaiting upload";
                 applyTierTheme(null, record);
                 return;
             }
 
-            document.getElementById('cardLabel1').innerText = "Session Status";
-            document.getElementById('statRank').innerText = record.isAbsent ? "Absent" : "Completed";
-            document.getElementById('statRankSub').innerText = "";
-            document.getElementById('cardSub1').innerText = record.isAbsent ? "Did not sit" : "Verified mark";
-
-            document.getElementById('cardLabel2').innerText = "Your Mark";
-            document.getElementById('statAvg').innerText = record.isAbsent ? "AB" : record.score;
-            document.getElementById('cardSub2').innerText = record.isAbsent ? "Missed paper" : "Out of 100";
-
-            document.getElementById('cardLabel3').innerText = "Batch Average";
-            document.getElementById('statAttendance').innerText = record.batchAvg;
-            document.getElementById('cardSub3').innerText = "Class benchmark";
-
-            document.getElementById('cardLabel4').innerText = "Batch Highest";
-            document.getElementById('statHighest').innerText = record.batchMax;
-            document.getElementById('cardSub4').innerText = "Top mark in class";
+            document.getElementById('cardLabel1').innerText = "Session Status"; document.getElementById('statRank').innerText = record.isAbsent ? "Absent" : "Completed"; document.getElementById('statRankSub').innerText = ""; document.getElementById('cardSub1').innerText = record.isAbsent ? "Did not sit" : "Verified mark";
+            document.getElementById('cardLabel2').innerText = "Your Mark"; document.getElementById('statAvg').innerText = record.isAbsent ? "AB" : record.score; document.getElementById('cardSub2').innerText = record.isAbsent ? "Missed paper" : "Out of 100";
+            document.getElementById('cardLabel3').innerText = "Batch Average"; document.getElementById('statAttendance').innerText = record.batchAvg; document.getElementById('cardSub3').innerText = "Class benchmark";
+            document.getElementById('cardLabel4').innerText = "Batch Highest"; document.getElementById('statHighest').innerText = record.batchMax; document.getElementById('cardSub4').innerText = "Top mark in class";
 
             applyTierTheme(record.score, record);
             if (chempulseChart) chempulseChart.update();
@@ -1577,9 +1402,7 @@
 
         function highlightSelectedRow(index) {
             document.querySelectorAll('#marksTableBody tr').forEach((tr, i) => {
-                tr.className = i === index
-                    ? "bg-blue-50/90 border-l-4 border-l-blue-600 transition-all font-semibold cursor-pointer"
-                    : "hover:bg-slate-50/70 transition-all cursor-pointer";
+                tr.className = i === index ? "bg-blue-50/90 border-l-4 border-l-blue-600 transition-all font-semibold cursor-pointer" : "hover:bg-slate-50/70 transition-all cursor-pointer";
             });
         }
 
@@ -1593,7 +1416,8 @@
 
             const setCardBorders = (borderColor, bgColor) => {
                 ['cardRankBox', 'cardScoreBox', 'cardAvgBox', 'cardTopBox'].forEach(id => {
-                    document.getElementById(id).className = `p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default ${borderColor} ${bgColor}`;
+                    const el = document.getElementById(id);
+                    if (el) el.className = `p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg cursor-default ${borderColor} ${bgColor}`;
                 });
             };
 
@@ -1601,66 +1425,56 @@
                 badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-500/80 text-white border border-slate-400 w-full sm:w-auto text-center";
                 badge.innerText = "Upcoming Paper";
                 dashHeader.className = "bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-slate-50 border-slate-200 text-slate-800";
-                alertIcon.innerText = "⏳";
-                alertTitle.innerText = `${record.title} — Not Yet Conducted`;
-                alertBody.innerText = "This paper has not yet been administered or marks have not been uploaded yet.";
+                if (alertBox) {
+                    alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-slate-50 border-slate-200 text-slate-800";
+                    alertIcon.innerText = "⏳"; alertTitle.innerText = `${record.title} — Not Yet Conducted`; alertBody.innerText = "This paper has not yet been administered or marks have not been uploaded yet.";
+                }
                 setCardBorders("border-slate-200/80", "bg-gradient-to-br from-slate-50 to-slate-100/50");
-                updateGlobalTheme('slate');
-                return;
+                updateGlobalTheme('slate'); return;
             }
 
             if (record && record.isAbsent) {
                 badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-500 text-white border border-amber-400 shadow-md shadow-amber-500/20 w-full sm:w-auto text-center";
                 badge.innerText = "Session Missed";
                 dashHeader.className = "bg-gradient-to-r from-amber-950 via-amber-900 to-slate-900 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-amber-50 border-amber-200 text-amber-950";
-                alertIcon.innerText = "⚠️";
-                alertTitle.innerText = `Absent for ${record.title}`;
-                alertBody.innerText = `You missed this session (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Please collect the printed paper and complete the discussion recording immediately.`;
+                if (alertBox) {
+                    alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-amber-50 border-amber-200 text-amber-950";
+                    alertIcon.innerText = "⚠️"; alertTitle.innerText = `Absent for ${record.title}`; alertBody.innerText = `You missed this session (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Please collect the printed paper and complete the discussion recording immediately.`;
+                }
                 setCardBorders("border-amber-200/80", "bg-gradient-to-br from-amber-50 to-amber-100/50");
-                updateGlobalTheme('amber');
-                return;
+                updateGlobalTheme('amber'); return;
             }
 
-            const val = parseFloat(scoreOrAvg || 0);
-            const isSinglePaper = !!record;
-            const diff = isSinglePaper ? (record.batchMax - val) : 0;
+            const val = parseFloat(scoreOrAvg || 0), isSinglePaper = !!record, diff = isSinglePaper ? (record.batchMax - val) : 0;
 
             if (val < 40 || (isSinglePaper && diff >= 40)) {
                 badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-rose-500 text-white border border-rose-400 shadow-lg shadow-rose-500/25 animate-pulse w-full sm:w-auto text-center";
                 badge.innerText = isSinglePaper ? "Needs Review • Watch Discussion" : "Immediate Action Needed";
                 dashHeader.className = "bg-gradient-to-r from-rose-950 via-rose-900 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-rose-50/90 border-rose-200 text-rose-950";
-                alertIcon.innerText = "🚨";
-                alertTitle.innerText = isSinglePaper ? `Score Alert on ${record.title} (${val} Marks)` : "Critical Performance Gap Detected";
-                alertBody.innerText = isSinglePaper
-                    ? `You scored ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Review the full paper discussion video and rewrite all missed questions.`
-                    : `Your overall average is ${val}%. Follow the indigo AI Projected Path on your graph to steadily climb toward the 75+ 'A' zone.`;
+                if (alertBox) {
+                    alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-rose-50/90 border-rose-200 text-rose-950";
+                    alertIcon.innerText = "🚨"; alertTitle.innerText = isSinglePaper ? `Score Alert on ${record.title} (${val} Marks)` : "Critical Performance Gap Detected"; alertBody.innerText = isSinglePaper ? `You scored ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Review the full paper discussion video and rewrite all missed questions.` : `Your overall average is ${val}%. Follow the indigo AI Projected Path on your graph to steadily climb toward the 75+ 'A' zone.`;
+                }
                 setCardBorders("border-rose-200/80", "bg-gradient-to-br from-rose-50 to-rose-100/50");
                 updateGlobalTheme('rose');
             } else if (val < 75) {
                 badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-blue-500 text-white border border-blue-400 shadow-md shadow-blue-500/20 w-full sm:w-auto text-center";
                 badge.innerText = isSinglePaper ? "Solid Standard" : "Steady Progress";
                 dashHeader.className = "bg-gradient-to-r from-blue-950 via-indigo-950 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-blue-50/90 border-blue-200 text-blue-950";
-                alertIcon.innerText = "📈";
-                alertTitle.innerText = isSinglePaper ? `${record.title} — Score: ${val} Marks` : "Consistent Foundation";
-                alertBody.innerText = isSinglePaper
-                    ? `Solid score of ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Refine your structured & calculation steps to break into the 75+ bracket.`
-                    : `Your overall average is ${val}%. Check your AI Next Target card above and aim for that exact step on the upcoming paper!`;
+                if (alertBox) {
+                    alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-blue-50/90 border-blue-200 text-blue-950";
+                    alertIcon.innerText = "📈"; alertTitle.innerText = isSinglePaper ? `${record.title} — Score: ${val} Marks` : "Consistent Foundation"; alertBody.innerText = isSinglePaper ? `Solid score of ${val} (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). Refine your structured & calculation steps to break into the 75+ bracket.` : `Your overall average is ${val}%. Check your AI Next Target card above and aim for that exact step on the upcoming paper!`;
+                }
                 setCardBorders("border-blue-200/80", "bg-gradient-to-br from-blue-50 to-blue-100/50");
                 updateGlobalTheme('blue');
             } else {
                 badge.className = "px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white border border-emerald-400 shadow-lg shadow-emerald-500/25 w-full sm:w-auto text-center";
                 badge.innerText = isSinglePaper ? "Elite Top Score" : "Top Tier • 'A' Standard";
                 dashHeader.className = "bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 px-4 sm:px-8 py-5 sm:py-7 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 transition-all duration-500 relative overflow-hidden";
-                alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-emerald-50/90 border-emerald-200 text-emerald-950";
-                alertIcon.innerText = "🎯";
-                alertTitle.innerText = isSinglePaper ? `Outstanding Mark on ${record.title}!` : "Excellent Consistency!";
-                alertBody.innerText = isSinglePaper
-                    ? `Exceptional score of ${val}! (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). You are performing in the elite Island/District rank zone.`
-                    : `Your overall average is ${val}%. You are firmly in the 'A' grade standard—keep maintaining your speed and accuracy!`;
+                if (alertBox) {
+                    alertBox.className = "p-3.5 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start gap-3 sm:gap-4 shadow-sm bg-emerald-50/90 border-emerald-200 text-emerald-950";
+                    alertIcon.innerText = "🎯"; alertTitle.innerText = isSinglePaper ? `Outstanding Mark on ${record.title}!` : "Excellent Consistency!"; alertBody.innerText = isSinglePaper ? `Exceptional score of ${val}! (Batch Avg: ${record.batchAvg}, Top: ${record.batchMax}). You are performing in the elite Island/District rank zone.` : `Your overall average is ${val}%. You are firmly in the 'A' grade standard—keep maintaining your speed and accuracy!`;
+                }
                 setCardBorders("border-emerald-200/80", "bg-gradient-to-br from-emerald-50 to-emerald-100/50");
                 updateGlobalTheme('emerald');
             }
@@ -1680,17 +1494,9 @@
                 } else {
                     const diff = r.batchMax - r.score;
                     let colorClass = 'text-blue-600 font-bold', dotColor = 'bg-blue-500';
-                    if (r.score >= 75) {
-                        colorClass = 'text-emerald-600 font-bold';
-                        dotColor = 'bg-emerald-500';
-                        statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Elite Hold</span>`;
-                    } else if (r.score < 40 || diff >= 40) {
-                        colorClass = 'text-rose-600 font-bold';
-                        dotColor = 'bg-rose-500';
-                        statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">Watch Video</span>`;
-                    } else {
-                        statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">Solid</span>`;
-                    }
+                    if (r.score >= 75) { colorClass = 'text-emerald-600 font-bold'; dotColor = 'bg-emerald-500'; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Elite Hold</span>`; } 
+                    else if (r.score < 40 || diff >= 40) { colorClass = 'text-rose-600 font-bold'; dotColor = 'bg-rose-500'; statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">Watch Video</span>`; } 
+                    else { statusBadge = `<span class="text-[9px] sm:text-[11px] px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">Solid</span>`; }
                     scoreDisplay = `<span class="${colorClass} font-mono text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>${r.score}</span>`;
                 }
                 const tr = document.createElement('tr');
@@ -1709,7 +1515,9 @@
         }
 
         function renderEnhancedChart(canvasId, records, labelPrefix) {
-            const ctx = document.getElementById(canvasId).getContext('2d');
+            const canvasEl = document.getElementById(canvasId);
+            if (!canvasEl) return;
+            const ctx = canvasEl.getContext('2d');
             if (canvasId === 'chempulseCanvas' && chempulseChart) chempulseChart.destroy();
             if (canvasId === 'examCanvas' && examChart) examChart.destroy();
 
@@ -1718,17 +1526,10 @@
             const studentScores = activeRecords.map(r => r.score);
             const batchAverages = activeRecords.map(r => r.batchAvg);
 
-            // AI Chart Path Calculation
-            let lastValidIdx = -1;
-            let lastValidScore = 0;
+            let lastValidIdx = -1, lastValidScore = 0;
             const validScoresArr = [];
-
             for (let i = 0; i < activeRecords.length; i++) {
-                if (!activeRecords[i].isAbsent && activeRecords[i].score !== null) {
-                    lastValidIdx = i;
-                    lastValidScore = activeRecords[i].score;
-                    validScoresArr.push(lastValidScore);
-                }
+                if (!activeRecords[i].isAbsent && activeRecords[i].score !== null) { lastValidIdx = i; lastValidScore = activeRecords[i].score; validScoresArr.push(lastValidScore); }
             }
 
             const pathToA = new Array(activeRecords.length).fill(null);
@@ -1736,31 +1537,21 @@
 
             if (lastValidIdx !== -1) {
                 pathToA[lastValidIdx] = lastValidScore;
-
                 if (lastValidScore < 75) {
                     const gap = 75 - lastValidScore;
                     let recentAvg = lastValidScore;
-                    if (validScoresArr.length >= 3) {
-                        recentAvg = (validScoresArr[validScoresArr.length - 1] + validScoresArr[validScoresArr.length - 2] + validScoresArr[validScoresArr.length - 3]) / 3;
-                    } else if (validScoresArr.length === 2) {
-                        recentAvg = (validScoresArr[validScoresArr.length - 1] + validScoresArr[validScoresArr.length - 2]) / 2;
-                    }
-                    const momentumMultiplier = lastValidScore > recentAvg ? 1.2 : 1.0;
-                    const baseJump = 12 * momentumMultiplier;
-                    const stepVal = Math.min(gap, Math.max(Math.ceil(baseJump), 6));
+                    if (validScoresArr.length >= 3) { recentAvg = (validScoresArr[validScoresArr.length - 1] + validScoresArr[validScoresArr.length - 2] + validScoresArr[validScoresArr.length - 3]) / 3; } 
+                    else if (validScoresArr.length === 2) { recentAvg = (validScoresArr[validScoresArr.length - 1] + validScoresArr[validScoresArr.length - 2]) / 2; }
+                    const stepVal = Math.min(gap, Math.max(Math.ceil(12 * (lastValidScore > recentAvg ? 1.2 : 1.0)), 6));
                     const steps = Math.ceil(gap / stepVal);
 
                     for (let i = 1; i <= steps; i++) {
                         futureLabels.push(i === steps ? "Target 'A'" : `Next +${i}`);
-                        futureStudentScores.push(null);
-                        futureBatchAverages.push(null);
+                        futureStudentScores.push(null); futureBatchAverages.push(null);
                         futurePathToA.push(i === steps ? 75 : Math.min(lastValidScore + (stepVal * i), 75));
                     }
                 } else {
-                    futureLabels.push("Maintain 'A'");
-                    futureStudentScores.push(null);
-                    futureBatchAverages.push(null);
-                    futurePathToA.push(Math.max(lastValidScore, 75));
+                    futureLabels.push("Maintain 'A'"); futureStudentScores.push(null); futureBatchAverages.push(null); futurePathToA.push(Math.max(lastValidScore, 75));
                 }
             }
 
@@ -1791,110 +1582,47 @@
 
             const activeColors = themeClasses[currentThemeColor].chartGradient;
             const gradient = ctx.createLinearGradient(0, 0, 0, 380);
-            gradient.addColorStop(0, activeColors[0]);
-            gradient.addColorStop(0.65, activeColors[1]);
-            gradient.addColorStop(1, activeColors[2]);
+            gradient.addColorStop(0, activeColors[0]); gradient.addColorStop(0.65, activeColors[1]); gradient.addColorStop(1, activeColors[2]);
 
             const aiGradient = ctx.createLinearGradient(0, 0, 0, 380);
-            aiGradient.addColorStop(0, 'rgba(99, 102, 241, 0.22)');
-            aiGradient.addColorStop(0.8, 'rgba(99, 102, 241, 0.02)');
-            aiGradient.addColorStop(1, 'rgba(99, 102, 241, 0.00)');
+            aiGradient.addColorStop(0, 'rgba(99, 102, 241, 0.22)'); aiGradient.addColorStop(0.8, 'rgba(99, 102, 241, 0.02)'); aiGradient.addColorStop(1, 'rgba(99, 102, 241, 0.00)');
 
             const premiumChartPlugin = {
                 id: 'premiumChartAesthetics',
                 beforeDatasetsDraw(chart) {
                     const { ctx, chartArea: { top, bottom, left, right }, scales: { y } } = chart;
                     ctx.save();
-
                     const y75 = y.getPixelForValue(75);
                     if (y75 >= top && y75 <= bottom) {
                         const zoneGrad = ctx.createLinearGradient(0, top, 0, y75);
-                        zoneGrad.addColorStop(0, 'rgba(16, 185, 129, 0.09)');
-                        zoneGrad.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
-                        ctx.fillStyle = zoneGrad;
-                        ctx.fillRect(left, top, right - left, y75 - top);
-
-                        ctx.beginPath();
-                        ctx.setLineDash([6, 6]);
-                        ctx.moveTo(left, y75);
-                        ctx.lineTo(right, y75);
-                        ctx.strokeStyle = 'rgba(16, 185, 129, 0.45)';
-                        ctx.lineWidth = 1.5;
-                        ctx.stroke();
-                        ctx.setLineDash([]);
-
-                        ctx.font = '700 9px "Plus Jakarta Sans", sans-serif';
-                        ctx.fillStyle = '#059669';
-                        ctx.textAlign = 'right';
-                        ctx.fillText('🎯 "A" GRADE ZONE (75+)', right - 8, y75 - 6);
+                        zoneGrad.addColorStop(0, 'rgba(16, 185, 129, 0.09)'); zoneGrad.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
+                        ctx.fillStyle = zoneGrad; ctx.fillRect(left, top, right - left, y75 - top);
+                        ctx.beginPath(); ctx.setLineDash([6, 6]); ctx.moveTo(left, y75); ctx.lineTo(right, y75); ctx.strokeStyle = 'rgba(16, 185, 129, 0.45)'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
+                        ctx.font = '700 9px "Plus Jakarta Sans", sans-serif'; ctx.fillStyle = '#059669'; ctx.textAlign = 'right'; ctx.fillText('🎯 "A" GRADE ZONE (75+)', right - 8, y75 - 6);
                     }
-
                     if (chart.tooltip?._active?.length) {
-                        const activePoint = chart.tooltip._active[0];
-                        const x = activePoint.element.x;
-                        ctx.beginPath();
-                        ctx.setLineDash([4, 4]);
-                        ctx.moveTo(x, top);
-                        ctx.lineTo(x, bottom);
-                        ctx.lineWidth = 1.5;
-                        ctx.strokeStyle = 'rgba(99, 102, 241, 0.35)';
-                        ctx.stroke();
-                        ctx.setLineDash([]);
+                        const activePoint = chart.tooltip._active[0], x = activePoint.element.x;
+                        ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.moveTo(x, top); ctx.lineTo(x, bottom); ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(99, 102, 241, 0.35)'; ctx.stroke(); ctx.setLineDash([]);
                     }
                     ctx.restore();
                 },
                 beforeDatasetDraw(chart, args) {
-                    if (args.index === 0 || args.index === 2) {
-                        const { ctx } = chart;
-                        ctx.save();
-                        ctx.shadowColor = args.index === 0 ? 'rgba(59, 130, 246, 0.45)' : 'rgba(99, 102, 241, 0.45)';
-                        ctx.shadowBlur = 14;
-                        ctx.shadowOffsetY = 6;
-                    }
+                    if (args.index === 0 || args.index === 2) { const { ctx } = chart; ctx.save(); ctx.shadowColor = args.index === 0 ? 'rgba(59, 130, 246, 0.45)' : 'rgba(99, 102, 241, 0.45)'; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6; }
                 },
-                afterDatasetDraw(chart, args) {
-                    if (args.index === 0 || args.index === 2) {
-                        chart.ctx.restore();
-                    }
-                },
+                afterDatasetDraw(chart, args) { if (args.index === 0 || args.index === 2) { chart.ctx.restore(); } },
                 afterDatasetsDraw(chart) {
-                    const { ctx } = chart;
-                    ctx.save();
-
+                    const { ctx } = chart; ctx.save();
                     const meta0 = chart.getDatasetMeta(0);
                     meta0.data.forEach((point, index) => {
                         const val = finalStudentScores[index];
                         if (val !== null && val !== undefined && !isNaN(val)) {
-                            const x = point.x;
-                            const y = point.y - 16;
-                            const text = `${val}`;
-                            ctx.font = '700 10px "JetBrains Mono", monospace';
-                            const textWidth = ctx.measureText(text).width;
-                            const padX = 6;
-                            const boxW = textWidth + padX * 2;
-                            const boxH = 16;
-
-                            const r = activeRecords[index];
-                            const pillColor = r ? getScoreTierColor(r.score, r.batchMax) : '#3b82f6';
-
-                            ctx.fillStyle = '#ffffff';
-                            ctx.shadowColor = 'rgba(15, 23, 42, 0.12)';
-                            ctx.shadowBlur = 6;
-                            ctx.shadowOffsetY = 2;
-                            ctx.beginPath();
-                            ctx.roundRect(x - boxW / 2, y - boxH / 2, boxW, boxH, 6);
-                            ctx.fill();
-
-                            ctx.shadowBlur = 0;
-                            ctx.shadowOffsetY = 0;
-                            ctx.strokeStyle = pillColor;
-                            ctx.lineWidth = 1.5;
-                            ctx.stroke();
-
-                            ctx.fillStyle = '#0f172a';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.fillText(text, x, y + 0.5);
+                            const x = point.x, y = point.y - 16, text = `${val}`;
+                            ctx.font = '700 10px "JetBrains Mono", monospace'; const boxW = ctx.measureText(text).width + 12, boxH = 16;
+                            const r = activeRecords[index], pillColor = r ? getScoreTierColor(r.score, r.batchMax) : '#3b82f6';
+                            ctx.fillStyle = '#ffffff'; ctx.shadowColor = 'rgba(15, 23, 42, 0.12)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+                            ctx.beginPath(); ctx.roundRect(x - boxW / 2, y - boxH / 2, boxW, boxH, 6); ctx.fill();
+                            ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = pillColor; ctx.lineWidth = 1.5; ctx.stroke();
+                            ctx.fillStyle = '#0f172a'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, x, y + 0.5);
                         }
                     });
 
@@ -1904,158 +1632,58 @@
                             if (index > lastValidIdx) {
                                 const val = finalPathToA[index];
                                 if (val !== null && val !== undefined) {
-                                    const x = point.x;
-                                    const y = point.y - 16;
-                                    const text = `🎯${val}`;
-                                    ctx.font = '700 9.5px "JetBrains Mono", monospace';
-                                    const textWidth = ctx.measureText(text).width;
-                                    const boxW = textWidth + 10;
-                                    const boxH = 16;
-
-                                    ctx.fillStyle = '#eef2ff';
-                                    ctx.beginPath();
-                                    ctx.roundRect(x - boxW / 2, y - boxH / 2, boxW, boxH, 6);
-                                    ctx.fill();
-
-                                    ctx.strokeStyle = '#6366f1';
-                                    ctx.lineWidth = 1.2;
-                                    ctx.stroke();
-
-                                    ctx.fillStyle = '#4338ca';
-                                    ctx.textAlign = 'center';
-                                    ctx.textBaseline = 'middle';
-                                    ctx.fillText(text, x, y + 0.5);
+                                    const x = point.x, y = point.y - 16, text = `🎯${val}`;
+                                    ctx.font = '700 9.5px "JetBrains Mono", monospace'; const boxW = ctx.measureText(text).width + 10, boxH = 16;
+                                    ctx.fillStyle = '#eef2ff'; ctx.beginPath(); ctx.roundRect(x - boxW / 2, y - boxH / 2, boxW, boxH, 6); ctx.fill();
+                                    ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 1.2; ctx.stroke();
+                                    ctx.fillStyle = '#4338ca'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, x, y + 0.5);
                                 }
                             }
                         });
                     }
-
                     ctx.restore();
                 }
             };
 
             const chartInstance = new Chart(ctx, {
-                type: 'line',
-                plugins: [premiumChartPlugin],
+                type: 'line', plugins: [premiumChartPlugin],
                 data: {
                     labels: finalLabels,
                     datasets: [
                         {
-                            label: 'Your Mark',
-                            data: finalStudentScores,
-                            borderColor: '#3b82f6',
-                            segment: {
-                                borderColor: ctx => {
-                                    const p0 = activeRecords[ctx.p0DataIndex], p1 = activeRecords[ctx.p1DataIndex];
-                                    if (!p0 || !p1 || p0.score === null || p1.score === null) return '#94a3b8';
-                                    return getScoreTierColor((p0.score + p1.score) / 2, Math.max(p0.batchMax, p1.batchMax));
-                                }
-                            },
-                            backgroundColor: gradient,
-                            borderWidth: 3.5,
-                            tension: 0.42,
-                            fill: true,
-                            pointBackgroundColor: finalPointBgColors,
-                            pointBorderColor: finalPointBorderColors,
-                            pointBorderWidth: 3,
-                            pointRadius: finalPointRadii,
-                            pointHoverRadius: 10,
-                            pointHoverBorderWidth: 3.5,
-                            spanGaps: true
+                            label: 'Your Mark', data: finalStudentScores, borderColor: '#3b82f6',
+                            segment: { borderColor: ctx => { const p0 = activeRecords[ctx.p0DataIndex], p1 = activeRecords[ctx.p1DataIndex]; if (!p0 || !p1 || p0.score === null || p1.score === null) return '#94a3b8'; return getScoreTierColor((p0.score + p1.score) / 2, Math.max(p0.batchMax, p1.batchMax)); } },
+                            backgroundColor: gradient, borderWidth: 3.5, tension: 0.42, fill: true, pointBackgroundColor: finalPointBgColors, pointBorderColor: finalPointBorderColors, pointBorderWidth: 3, pointRadius: finalPointRadii, pointHoverRadius: 10, pointHoverBorderWidth: 3.5, spanGaps: true
                         },
                         {
-                            label: 'Batch Average',
-                            data: finalBatchAverages,
-                            borderColor: '#94a3b8',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 3,
-                            pointBackgroundColor: '#cbd5e1',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 1.5,
-                            pointHoverRadius: 6,
-                            fill: false,
-                            tension: 0.35,
-                            hidden: !showAverageLine
+                            label: 'Batch Average', data: finalBatchAverages, borderColor: '#94a3b8', borderWidth: 2, borderDash: [5, 5], pointRadius: 3, pointBackgroundColor: '#cbd5e1', pointBorderColor: '#ffffff', pointBorderWidth: 1.5, pointHoverRadius: 6, fill: false, tension: 0.35, hidden: !showAverageLine
                         },
                         {
-                            label: 'AI Projected Path',
-                            data: finalPathToA,
-                            borderColor: '#6366f1',
-                            backgroundColor: aiGradient,
-                            borderWidth: 3,
-                            borderDash: [6, 5],
-                            pointBackgroundColor: '#6366f1',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2.5,
-                            pointRadius: ctx => ctx.dataIndex > lastValidIdx ? 6 : 0,
-                            pointHoverRadius: 9,
-                            fill: true,
-                            tension: 0.35
+                            label: 'AI Projected Path', data: finalPathToA, borderColor: '#6366f1', backgroundColor: aiGradient, borderWidth: 3, borderDash: [6, 5], pointBackgroundColor: '#6366f1', pointBorderColor: '#ffffff', pointBorderWidth: 2.5, pointRadius: ctx => ctx.dataIndex > lastValidIdx ? 6 : 0, pointHoverRadius: 9, fill: true, tension: 0.35
                         }
                     ]
                 },
                 options: {
-                    layout: {
-                        padding: { top: 26, right: 16, left: 4, bottom: 4 }
-                    },
-                    animation: { duration: 1000, easing: 'easeOutQuart' },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
+                    layout: { padding: { top: 26, right: 16, left: 4, bottom: 4 } }, animation: { duration: 1000, easing: 'easeOutQuart' }, responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
                     onClick: (event, elements) => {
                         if (elements.length > 0) {
-                            const clickedIdx = elements[0].index;
-                            if (clickedIdx >= activeRecords.length) return;
+                            const clickedIdx = elements[0].index; if (clickedIdx >= activeRecords.length) return;
                             const targetRecord = activeRecords[clickedIdx];
                             const masterIdx = currentAllRecords.findIndex(r => r.title === targetRecord.title && r.type === targetRecord.type);
                             inspectPaper(targetRecord, masterIdx);
-                        } else {
-                            showOverallAnalytics();
-                        }
+                        } else { showOverallAnalytics(); }
                     },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                            titleFont: { family: '"Plus Jakarta Sans", sans-serif', size: 13, weight: '800' },
-                            bodyFont: { family: '"JetBrains Mono", monospace', size: 11.5, weight: '600' },
-                            padding: 12,
-                            cornerRadius: 12,
-                            borderColor: 'rgba(255, 255, 255, 0.12)',
-                            borderWidth: 1,
-                            displayColors: true,
-                            boxPadding: 6,
-                            filter: tooltipItem => {
-                                if (tooltipItem.datasetIndex === 2 && tooltipItem.dataIndex <= lastValidIdx) return false;
-                                return true;
-                            },
-                            callbacks: {
-                                label: context => {
-                                    if (context.datasetIndex === 2) return ` ✨ AI Step Target: ${context.raw} marks`;
-                                    if (context.raw === null) return ` ${context.dataset.label}: Absent`;
-                                    return ` ${context.dataset.label}: ${context.raw} marks`;
-                                }
-                            }
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)', titleFont: { family: '"Plus Jakarta Sans", sans-serif', size: 13, weight: '800' }, bodyFont: { family: '"JetBrains Mono", monospace', size: 11.5, weight: '600' }, padding: 12, cornerRadius: 12, borderColor: 'rgba(255, 255, 255, 0.12)', borderWidth: 1, displayColors: true, boxPadding: 6,
+                            filter: tooltipItem => { if (tooltipItem.datasetIndex === 2 && tooltipItem.dataIndex <= lastValidIdx) return false; return true; },
+                            callbacks: { label: context => { if (context.datasetIndex === 2) return ` ✨ AI Step Target: ${context.raw} marks`; if (context.raw === null) return ` ${context.dataset.label}: Absent`; return ` ${context.dataset.label}: ${context.raw} marks`; } }
                         }
                     },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            border: { display: false },
-                            grid: { color: 'rgba(226, 232, 240, 0.6)', drawTicks: false },
-                            ticks: {
-                                stepSize: 25,
-                                padding: 8,
-                                color: '#64748b',
-                                font: { family: '"Plus Jakarta Sans", sans-serif', size: 10, weight: '600' }
-                            }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#475569', font: { family: '"Plus Jakarta Sans", sans-serif', size: 10, weight: '600' } }
-                        }
+                        y: { beginAtZero: true, max: 100, border: { display: false }, grid: { color: 'rgba(226, 232, 240, 0.6)', drawTicks: false }, ticks: { stepSize: 25, padding: 8, color: '#64748b', font: { family: '"Plus Jakarta Sans", sans-serif', size: 10, weight: '600' } } },
+                        x: { grid: { display: false }, ticks: { color: '#475569', font: { family: '"Plus Jakarta Sans", sans-serif', size: 10, weight: '600' } } }
                     }
                 }
             });
@@ -2065,38 +1693,45 @@
         }
 
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.id === 'tab-' + tabId) tab.classList.add('active');
-            });
-
-            const activeClasses = themeClasses[currentThemeColor].tabActive;
-            const inactiveClasses = ['bg-slate-100', 'text-slate-600', 'hover:bg-slate-200'];
-
+            document.querySelectorAll('.tab-content').forEach(tab => { tab.classList.remove('active'); if (tab.id === 'tab-' + tabId) tab.classList.add('active'); });
+            const activeClasses = themeClasses[currentThemeColor].tabActive, inactiveClasses = ['bg-slate-100', 'text-slate-600', 'hover:bg-slate-200'];
             ['chempulse', 'exams', 'table', 'leaderboard', 'quizzes'].forEach(t => {
                 const btn = document.getElementById('tabBtn-' + t);
                 if (!btn) return;
                 btn.classList.remove(...allTabClasses, ...inactiveClasses);
-                if (t === tabId) btn.classList.add(...activeClasses);
-                else btn.classList.add(...inactiveClasses);
+                if (t === tabId) btn.classList.add(...activeClasses); else btn.classList.add(...inactiveClasses);
             });
         }
+
+        window.switchAdminTab = function(tab) {
+            const aView = document.getElementById('adminView-analytics');
+            const qView = document.getElementById('adminView-quizzes');
+            const aBtn = document.getElementById('adminTabBtn-analytics');
+            const qBtn = document.getElementById('adminTabBtn-quizzes');
+            if (!aView || !qView || !aBtn || !qBtn) return;
+
+            if (tab === 'analytics') {
+                aView.classList.remove('hidden');
+                qView.classList.add('hidden');
+                aBtn.className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-purple-600 text-white shadow-md w-1/2 sm:w-auto";
+                qBtn.className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-300 hover:text-white w-1/2 sm:w-auto";
+            } else {
+                aView.classList.add('hidden');
+                qView.classList.remove('hidden');
+                aBtn.className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-300 hover:text-white w-1/2 sm:w-auto";
+                qBtn.className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-purple-600 text-white shadow-md w-1/2 sm:w-auto";
+            }
+        };
 
         function toggleAverageLine() {
             showAverageLine = !showAverageLine;
             document.querySelectorAll('.avg-toggle-text').forEach(el => el.innerText = showAverageLine ? "Hide Avg Line" : "Show Avg Line");
             document.querySelectorAll('.avg-toggle-icon').forEach(el => el.innerText = showAverageLine ? "👁️" : "🙈");
-
-            [chempulseChart, examChart].forEach(chart => {
-                if (chart && chart.data.datasets.length > 1) {
-                    chart.data.datasets[1].hidden = !showAverageLine;
-                    chart.update();
-                }
-            });
+            [chempulseChart, examChart].forEach(chart => { if (chart && chart.data.datasets.length > 1) { chart.data.datasets[1].hidden = !showAverageLine; chart.update(); } });
         }
 
         function logout() {
-            if (currentQuizUnsubscribe) { currentQuizUnsubscribe(); currentQuizUnsubscribe = null; }
+            if (currentQuizUnsubscribe) { try { currentQuizUnsubscribe(); } catch (e) {} currentQuizUnsubscribe = null; }
             document.getElementById('dashboardView').classList.add('hidden');
             document.getElementById('adminDashboardView').classList.add('hidden');
             document.getElementById('loginView').classList.remove('hidden');
@@ -2108,63 +1743,31 @@
             switchAdminTab('analytics');
         }
 
-        // ---- FIREBASE QUIZ SYSTEM LOGIC & CUSTOM MODAL ----
-        let activeQuizYear = '2028';
-        let pendingModalCallback = null;
+        let activeQuizYear = '2028', pendingModalCallback = null;
 
         function setCloudBadge(text, colorType) {
-            const badge = document.getElementById('cloudSyncBadge');
-            if (!badge) return;
-            badge.innerText = text;
-            if (colorType === 'emerald') {
-                badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200";
-            } else if (colorType === 'amber') {
-                badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200";
-            } else {
-                badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200";
-            }
+            const badge = document.getElementById('cloudSyncBadge'); if (!badge) return; badge.innerText = text;
+            if (colorType === 'emerald') { badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200"; } 
+            else if (colorType === 'amber') { badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200"; } 
+            else { badge.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200"; }
         }
 
         function initQuizListener(year) {
             activeQuizYear = String(year || '2028').trim();
-            if (currentQuizUnsubscribe) {
-                try { currentQuizUnsubscribe(); } catch (e) {}
-                currentQuizUnsubscribe = null;
-            }
-
-            renderStudentQuizzes();
-            renderAdminQuizzes();
-
-            if (!window.firebaseRTDB && !window.firebaseDB) {
-                setTimeout(() => initQuizListener(activeQuizYear), 300);
-                return;
-            }
-
+            if (currentQuizUnsubscribe) { try { currentQuizUnsubscribe(); } catch (e) {} currentQuizUnsubscribe = null; }
+            renderStudentQuizzes(); renderAdminQuizzes();
+            if (!window.firebaseRTDB && !window.firebaseDB) { setTimeout(() => initQuizListener(activeQuizYear), 300); return; }
             if (window.firebaseRTDB) {
                 try {
                     const quizRef = window.firebaseRef(window.firebaseRTDB, 'quizzes/batch_' + activeQuizYear);
                     currentQuizUnsubscribe = window.firebaseOnValue(quizRef, (snapshot) => {
                         const data = snapshot.val();
-                        if (data && Array.isArray(data.units)) {
-                            globalQuizData = data.units;
-                        } else if (Array.isArray(data)) {
-                            globalQuizData = data;
-                        } else {
-                            globalQuizData = [];
-                        }
-                        setCloudBadge('☁️ Live Synced (RTDB)', 'emerald');
-                        renderStudentQuizzes();
-                        renderAdminQuizzes();
-                    }, (err) => {
-                        console.warn("RTDB read fallback to Firestore:", err.message);
-                        connectFirestoreFallback(activeQuizYear);
-                    });
+                        if (data && Array.isArray(data.units)) { globalQuizData = data.units; } else if (Array.isArray(data)) { globalQuizData = data; } else { globalQuizData = []; }
+                        setCloudBadge('☁️ Live Synced (RTDB)', 'emerald'); renderStudentQuizzes(); renderAdminQuizzes();
+                    }, (err) => { console.warn("RTDB read fallback:", err.message); connectFirestoreFallback(activeQuizYear); });
                     return;
-                } catch (e) {
-                    console.warn("RTDB init error:", e);
-                }
+                } catch (e) { console.warn("RTDB init error:", e); }
             }
-
             connectFirestoreFallback(activeQuizYear);
         }
 
@@ -2173,212 +1776,101 @@
             try {
                 const docRef = window.firebaseDoc(window.firebaseDB, 'quizzes', 'batch_' + year);
                 currentQuizUnsubscribe = window.firebaseOnSnapshot(docRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        globalQuizData = docSnap.data().units || [];
-                    } else {
-                        globalQuizData = [];
-                    }
-                    setCloudBadge('☁️ Live Synced (Firestore)', 'emerald');
-                    renderStudentQuizzes();
-                    renderAdminQuizzes();
-                }, (error) => {
-                    console.warn("Firestore listener restricted:", error.message);
-                    setCloudBadge('⚡ Instant Mode (Check Firebase Rules)', 'amber');
-                    renderStudentQuizzes();
-                    renderAdminQuizzes();
-                });
-            } catch (e) {
-                console.warn(e);
-            }
+                    if (docSnap.exists()) { globalQuizData = docSnap.data().units || []; } else { globalQuizData = []; }
+                    setCloudBadge('☁️ Live Synced (Firestore)', 'emerald'); renderStudentQuizzes(); renderAdminQuizzes();
+                }, (error) => { console.warn("Firestore listener restricted:", error.message); setCloudBadge('⚡ Instant Mode (Check Firebase Rules)', 'amber'); renderStudentQuizzes(); renderAdminQuizzes(); });
+            } catch (e) { console.warn(e); }
         }
 
         async function syncQuizzesToFirebase() {
             setCloudBadge('⏳ Saving to Cloud...', 'indigo');
-            const cleanUnits = globalQuizData.map(u => ({
-                title: u.title || 'Untitled Unit',
-                topics: (u.topics || []).map(t => ({
-                    title: t.title || 'Untitled Topic',
-                    links: (t.links || []).map(l => ({
-                        title: l.title || 'Quiz Link',
-                        url: l.url || '#'
-                    }))
-                }))
-            }));
-
+            const cleanUnits = globalQuizData.map(u => ({ title: u.title || 'Untitled Unit', topics: (u.topics || []).map(t => ({ title: t.title || 'Untitled Topic', links: (t.links || []).map(l => ({ title: l.title || 'Quiz Link', url: l.url || '#' })) })) }));
             let saved = false;
-
             if (window.firebaseRTDB) {
-                try {
-                    const quizRef = window.firebaseRef(window.firebaseRTDB, 'quizzes/batch_' + activeQuizYear);
-                    await window.firebaseSet(quizRef, { units: cleanUnits, updatedAt: Date.now() });
-                    saved = true;
-                    setCloudBadge('☁️ Saved to Firebase', 'emerald');
-                } catch (rtdbErr) {
-                    console.warn("RTDB Save Error:", rtdbErr.message);
-                }
+                try { const quizRef = window.firebaseRef(window.firebaseRTDB, 'quizzes/batch_' + activeQuizYear); await window.firebaseSet(quizRef, { units: cleanUnits, updatedAt: Date.now() }); saved = true; setCloudBadge('☁️ Saved to Firebase', 'emerald'); } catch (rtdbErr) { console.warn("RTDB Save Error:", rtdbErr.message); }
             }
-
             if (!saved && window.firebaseDB) {
-                try {
-                    const docRef = window.firebaseDoc(window.firebaseDB, 'quizzes', 'batch_' + activeQuizYear);
-                    await window.firebaseSetDoc(docRef, { units: cleanUnits, updatedAt: Date.now() });
-                    saved = true;
-                    setCloudBadge('☁️ Saved to Firestore', 'emerald');
-                } catch (fsErr) {
-                    console.warn("Firestore Save Error:", fsErr.message);
-                }
+                try { const docRef = window.firebaseDoc(window.firebaseDB, 'quizzes', 'batch_' + activeQuizYear); await window.firebaseSetDoc(docRef, { units: cleanUnits, updatedAt: Date.now() }); saved = true; setCloudBadge('☁️ Saved to Firestore', 'emerald'); } catch (fsErr) { console.warn("Firestore Save Error:", fsErr.message); }
             }
-
-            if (!saved) {
-                setCloudBadge('⚠️ Saved on Screen (Set Firebase Rules to true)', 'amber');
-            }
+            if (!saved) { setCloudBadge('⚠️ Saved locally (Check Firebase Rules)', 'amber'); }
         }
 
         function openQuizModal(config) {
             const modal = document.getElementById('quizActionModal');
-            const titleEl = document.getElementById('quizModalTitle');
-            const descEl = document.getElementById('quizModalDesc');
-            const fieldsContainer = document.getElementById('quizModalFields');
-            const label1 = document.getElementById('quizModalLabel1');
-            const input1 = document.getElementById('quizModalInput1');
-            const field2 = document.getElementById('quizModalField2');
-            const input2 = document.getElementById('quizModalInput2');
-            const errBox = document.getElementById('quizModalError');
+            document.getElementById('quizModalError').classList.add('hidden');
+            document.getElementById('quizModalTitle').innerText = config.title;
+            document.getElementById('quizModalDesc').innerText = config.desc || '';
             const submitBtn = document.getElementById('quizModalSubmitBtn');
 
-            errBox.classList.add('hidden');
-            titleEl.innerText = config.title;
-            descEl.innerText = config.desc || '';
-
             if (config.mode === 'confirm') {
-                fieldsContainer.classList.add('hidden');
-                submitBtn.innerText = config.submitText || 'Delete';
-                submitBtn.className = "px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-rose-500/20 transition-all";
+                document.getElementById('quizModalFields').classList.add('hidden');
+                submitBtn.innerText = config.submitText || 'Delete'; submitBtn.className = "px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-rose-500/20 transition-all";
             } else {
-                fieldsContainer.classList.remove('hidden');
-                label1.innerText = config.label1 || 'Title';
-                input1.placeholder = config.placeholder1 || '';
-                input1.value = '';
-                if (config.showSecondField) {
-                    field2.classList.remove('hidden');
-                    input2.placeholder = config.placeholder2 || 'https://...';
-                    input2.value = '';
-                } else {
-                    field2.classList.add('hidden');
-                }
-                submitBtn.innerText = config.submitText || 'Save Now';
-                submitBtn.className = "px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all";
+                document.getElementById('quizModalFields').classList.remove('hidden');
+                document.getElementById('quizModalLabel1').innerText = config.label1 || 'Title';
+                document.getElementById('quizModalInput1').placeholder = config.placeholder1 || ''; document.getElementById('quizModalInput1').value = '';
+                if (config.showSecondField) { document.getElementById('quizModalField2').classList.remove('hidden'); document.getElementById('quizModalInput2').placeholder = config.placeholder2 || 'https://...'; document.getElementById('quizModalInput2').value = ''; } 
+                else { document.getElementById('quizModalField2').classList.add('hidden'); }
+                submitBtn.innerText = config.submitText || 'Save Now'; submitBtn.className = "px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all";
             }
-
-            pendingModalCallback = config;
-            modal.classList.remove('hidden');
-            if (config.mode !== 'confirm') {
-                setTimeout(() => input1.focus(), 60);
-            }
+            pendingModalCallback = config; modal.classList.remove('hidden');
+            if (config.mode !== 'confirm') { setTimeout(() => document.getElementById('quizModalInput1').focus(), 60); }
         }
 
-        window.closeQuizModal = function() {
-            document.getElementById('quizActionModal').classList.add('hidden');
-            pendingModalCallback = null;
-        };
+        window.closeQuizModal = function() { document.getElementById('quizActionModal').classList.add('hidden'); pendingModalCallback = null; };
 
         window.handleQuizModalSubmit = function() {
             if (!pendingModalCallback) return;
-            const errBox = document.getElementById('quizModalError');
-            errBox.classList.add('hidden');
-
-            if (pendingModalCallback.mode === 'confirm') {
-                pendingModalCallback.onConfirm();
-                closeQuizModal();
-                return;
-            }
+            const errBox = document.getElementById('quizModalError'); errBox.classList.add('hidden');
+            if (pendingModalCallback.mode === 'confirm') { pendingModalCallback.onConfirm(); closeQuizModal(); return; }
 
             const val1 = document.getElementById('quizModalInput1').value.trim();
             const val2 = document.getElementById('quizModalInput2').value.trim();
 
-            if (!val1) {
-                errBox.innerText = "Please enter a title before saving.";
-                errBox.classList.remove('hidden');
-                return;
-            }
-
+            if (!val1) { errBox.innerText = "Please enter a title before saving."; errBox.classList.remove('hidden'); return; }
             if (pendingModalCallback.showSecondField) {
-                if (!val2) {
-                    errBox.innerText = "Please paste the external quiz or resource link.";
-                    errBox.classList.remove('hidden');
-                    return;
-                }
+                if (!val2) { errBox.innerText = "Please paste the external quiz or resource link."; errBox.classList.remove('hidden'); return; }
                 const formattedUrl = /^https?:\/\//i.test(val2) ? val2 : 'https://' + val2;
                 pendingModalCallback.onSubmit(val1, formattedUrl);
-            } else {
-                pendingModalCallback.onSubmit(val1);
-            }
-
+            } else { pendingModalCallback.onSubmit(val1); }
             closeQuizModal();
         };
 
         function toggleAccordion(id) {
-            const content = document.getElementById('acc-content-' + id);
-            const header = document.getElementById('acc-header-' + id);
+            const content = document.getElementById('acc-content-' + id), header = document.getElementById('acc-header-' + id);
             if (!content || !header) return;
-            if (content.classList.contains('expanded')) {
-                content.classList.remove('expanded');
-                header.classList.remove('expanded');
-            } else {
-                content.classList.add('expanded');
-                header.classList.add('expanded');
-            }
+            if (content.classList.contains('expanded')) { content.classList.remove('expanded'); header.classList.remove('expanded'); } 
+            else { content.classList.add('expanded'); header.classList.add('expanded'); }
         }
 
         function renderStudentQuizzes() {
-            const container = document.getElementById('studentQuizContainer');
-            if (!container) return;
-            
-            if (!globalQuizData || globalQuizData.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 bg-slate-50 border border-slate-200 border-dashed rounded-2xl text-slate-400 text-sm font-medium">No units or quizzes published for this batch yet. Check back soon!</div>`;
-                return;
-            }
+            const container = document.getElementById('studentQuizContainer'); if (!container) return;
+            if (!globalQuizData || globalQuizData.length === 0) { container.innerHTML = `<div class="text-center py-10 bg-slate-50 border border-slate-200 border-dashed rounded-2xl text-slate-400 text-sm font-medium">No units or quizzes published for this batch yet. Check back soon!</div>`; return; }
 
             let html = '';
             globalQuizData.forEach((unit, uIdx) => {
                 const topics = unit.topics || [];
-                html += `
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
+                html += `<div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
                         <button type="button" id="acc-header-u${uIdx}" onclick="toggleAccordion('u${uIdx}')" class="w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50/70 hover:bg-slate-100 flex justify-between items-center transition-colors text-left expanded">
                             <span class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2.5"><span class="text-indigo-500 text-lg">📁</span> ${unit.title}</span>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600">${topics.length} Subfolder${topics.length === 1 ? '' : 's'}</span>
-                                <svg class="w-5 h-5 text-slate-400 rotate-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </div>
+                            <div class="flex items-center gap-2"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600">${topics.length} Subfolder${topics.length === 1 ? '' : 's'}</span><svg class="w-5 h-5 text-slate-400 rotate-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div>
                         </button>
                         <div id="acc-content-u${uIdx}" class="accordion-content expanded bg-white">
-                            <div class="p-4 sm:p-5 pt-2 sm:pt-3 space-y-4">
-                `;
-                if (topics.length === 0) {
-                    html += `<div class="text-xs text-slate-400 italic pl-6">No subfolders inside this unit yet.</div>`;
-                } else {
+                            <div class="p-4 sm:p-5 pt-2 sm:pt-3 space-y-4">`;
+                if (topics.length === 0) { html += `<div class="text-xs text-slate-400 italic pl-6">No subfolders inside this unit yet.</div>`; } 
+                else {
                     topics.forEach((topic) => {
                         const links = topic.links || [];
-                        html += `
-                            <div class="pl-3 sm:pl-4 border-l-2 border-indigo-200">
+                        html += `<div class="pl-3 sm:pl-4 border-l-2 border-indigo-200">
                                 <h4 class="font-bold text-slate-700 text-xs sm:text-sm mb-2.5 flex items-center gap-1.5"><span class="text-amber-500">📂</span> ${topic.title}</h4>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pl-4">
-                        `;
-                        if (links.length === 0) {
-                            html += `<span class="text-xs text-slate-400 italic">No quiz cards added yet.</span>`;
-                        } else {
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pl-4">`;
+                        if (links.length === 0) { html += `<span class="text-xs text-slate-400 italic">No quiz cards added yet.</span>`; } 
+                        else {
                             links.forEach((link) => {
-                                html += `
-                                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/60 hover:shadow-sm transition-all group">
-                                        <div class="flex items-center gap-2.5 overflow-hidden">
-                                            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors text-sm shadow-xs">📝</span>
-                                            <div class="overflow-hidden">
-                                                <p class="text-xs sm:text-sm font-bold text-slate-700 group-hover:text-indigo-700 truncate">${link.title}</p>
-                                                <p class="text-[10px] text-slate-400 truncate">Click to open quiz ↗</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                `;
+                                html += `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/60 hover:shadow-sm transition-all group">
+                                        <div class="flex items-center gap-2.5 overflow-hidden"><span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors text-sm shadow-xs">📝</span>
+                                            <div class="overflow-hidden"><p class="text-xs sm:text-sm font-bold text-slate-700 group-hover:text-indigo-700 truncate">${link.title}</p><p class="text-[10px] text-slate-400 truncate">Click to open quiz ↗</p></div>
+                                        </div></a>`;
                             });
                         }
                         html += `</div></div>`;
@@ -2390,25 +1882,13 @@
         }
 
         function renderAdminQuizzes() {
-            const container = document.getElementById('adminQuizContainer');
-            if (!container) return;
-            
-            if (!globalQuizData || globalQuizData.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 px-4 bg-slate-50 border-2 border-slate-200 border-dashed rounded-3xl">
-                        <div class="text-3xl mb-2">📁</div>
-                        <p class="text-slate-700 text-sm font-bold">No Unit Folders Created Yet</p>
-                        <p class="text-slate-400 text-xs mt-1 mb-4">Click "+ Add Unit Folder" above to create your first Chemistry Unit.</p>
-                        <button type="button" onclick="adminAddUnit()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all">+ Create First Unit</button>
-                    </div>`;
-                return;
-            }
+            const container = document.getElementById('adminQuizContainer'); if (!container) return;
+            if (!globalQuizData || globalQuizData.length === 0) { container.innerHTML = `<div class="text-center py-12 px-4 bg-slate-50 border-2 border-slate-200 border-dashed rounded-3xl"><div class="text-3xl mb-2">📁</div><p class="text-slate-700 text-sm font-bold">No Unit Folders Created Yet</p><p class="text-slate-400 text-xs mt-1 mb-4">Click "+ Add Unit Folder" above to create your first Chemistry Unit.</p><button type="button" onclick="adminAddUnit()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all">+ Create First Unit</button></div>`; return; }
 
             let html = '';
             globalQuizData.forEach((unit, uIdx) => {
                 const topics = unit.topics || [];
-                html += `
-                    <div class="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/60 shadow-sm relative">
+                html += `<div class="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/60 shadow-sm relative">
                         <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
                             <h4 class="font-extrabold text-slate-800 text-sm sm:text-base flex items-center gap-2"><span class="text-indigo-500 text-lg">📁</span> ${unit.title}</h4>
                             <div class="flex gap-2">
@@ -2416,15 +1896,12 @@
                                 <button type="button" onclick="adminDeleteUnit(${uIdx})" class="px-2.5 py-1.5 bg-white border border-slate-200 text-rose-500 hover:bg-rose-50 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer">Delete Unit</button>
                             </div>
                         </div>
-                        <div class="space-y-3 pl-2 sm:pl-6">
-                `;
-                if (topics.length === 0) {
-                    html += `<div class="text-xs text-slate-400 italic py-2">No subfolders yet. Click "+ Add Subfolder" to add a lesson or topic.</div>`;
-                } else {
+                        <div class="space-y-3 pl-2 sm:pl-6">`;
+                if (topics.length === 0) { html += `<div class="text-xs text-slate-400 italic py-2">No subfolders yet. Click "+ Add Subfolder" to add a lesson or topic.</div>`; } 
+                else {
                     topics.forEach((topic, tIdx) => {
                         const links = topic.links || [];
-                        html += `
-                            <div class="border border-slate-200 rounded-xl p-3.5 sm:p-4 bg-white shadow-2xs relative">
+                        html += `<div class="border border-slate-200 rounded-xl p-3.5 sm:p-4 bg-white shadow-2xs relative">
                                 <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
                                     <h5 class="font-bold text-slate-700 text-xs sm:text-sm flex items-center gap-1.5"><span class="text-amber-500">📂</span> ${topic.title}</h5>
                                     <div class="flex gap-2">
@@ -2432,23 +1909,14 @@
                                         <button type="button" onclick="adminDeleteTopic(${uIdx}, ${tIdx})" class="px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-[11px] font-bold transition-all cursor-pointer">Delete</button>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                        `;
-                        if (links.length === 0) {
-                            html += `<div class="text-[11px] text-slate-400 italic col-span-full">No quiz cards inside this subfolder yet.</div>`;
-                        } else {
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">`;
+                        if (links.length === 0) { html += `<div class="text-[11px] text-slate-400 italic col-span-full">No quiz cards inside this subfolder yet.</div>`; } 
+                        else {
                             links.forEach((link, lIdx) => {
-                                html += `
-                                    <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 group hover:border-indigo-300 transition-all">
-                                        <div class="flex items-center gap-2 overflow-hidden pr-2">
-                                            <span class="text-sm">📝</span>
-                                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-slate-700 hover:text-indigo-600 truncate">${link.title}</a>
-                                        </div>
-                                        <button type="button" onclick="adminDeleteLink(${uIdx}, ${tIdx}, ${lIdx})" class="text-rose-400 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition-colors" title="Remove Card">
-                                            ✕
-                                        </button>
-                                    </div>
-                                `;
+                                html += `<div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 group hover:border-indigo-300 transition-all">
+                                        <div class="flex items-center gap-2 overflow-hidden pr-2"><span class="text-sm">📝</span><a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-slate-700 hover:text-indigo-600 truncate">${link.title}</a></div>
+                                        <button type="button" onclick="adminDeleteLink(${uIdx}, ${tIdx}, ${lIdx})" class="text-rose-400 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition-colors" title="Remove Card">✕</button>
+                                    </div>`;
                             });
                         }
                         html += `</div></div>`;
@@ -2460,116 +1928,21 @@
         }
 
         window.adminAddUnit = function() {
-            openQuizModal({
-                mode: 'input',
-                title: 'Create New Unit Folder',
-                desc: 'Add a main Chemistry unit folder (e.g., Unit 01 - Atomic Structure).',
-                label1: 'Unit Folder Name',
-                placeholder1: 'e.g., Unit 01 - Atomic Structure',
-                showSecondField: false,
-                submitText: 'Create Unit',
-                onSubmit: (title) => {
-                    globalQuizData.push({ title: title, topics: [] });
-                    renderAdminQuizzes();
-                    renderStudentQuizzes();
-                    syncQuizzesToFirebase();
-                }
-            });
+            openQuizModal({ mode: 'input', title: 'Create New Unit Folder', desc: 'Add a main Chemistry unit folder (e.g., Unit 01 - Atomic Structure).', label1: 'Unit Folder Name', placeholder1: 'e.g., Unit 01 - Atomic Structure', showSecondField: false, submitText: 'Create Unit', onSubmit: (title) => { globalQuizData.push({ title: title, topics: [] }); renderAdminQuizzes(); renderStudentQuizzes(); syncQuizzesToFirebase(); } });
         };
-
         window.adminAddTopic = function(uIdx) {
-            const unitName = globalQuizData[uIdx]?.title || 'Unit';
-            openQuizModal({
-                mode: 'input',
-                title: 'Add Subfolder',
-                desc: `Create a subfolder inside "${unitName}".`,
-                label1: 'Subfolder / Topic Name',
-                placeholder1: 'e.g., Electromagnetic Radiation & Quantum Numbers',
-                showSecondField: false,
-                submitText: 'Create Subfolder',
-                onSubmit: (title) => {
-                    if (!globalQuizData[uIdx].topics) globalQuizData[uIdx].topics = [];
-                    globalQuizData[uIdx].topics.push({ title: title, links: [] });
-                    renderAdminQuizzes();
-                    renderStudentQuizzes();
-                    syncQuizzesToFirebase();
-                }
-            });
+            const unitName = globalQuizData[uIdx]?.title || 'Unit'; openQuizModal({ mode: 'input', title: 'Add Subfolder', desc: `Create a subfolder inside "${unitName}".`, label1: 'Subfolder / Topic Name', placeholder1: 'e.g., Electromagnetic Radiation & Quantum Numbers', showSecondField: false, submitText: 'Create Subfolder', onSubmit: (title) => { if (!globalQuizData[uIdx].topics) globalQuizData[uIdx].topics = []; globalQuizData[uIdx].topics.push({ title: title, links: [] }); renderAdminQuizzes(); renderStudentQuizzes(); syncQuizzesToFirebase(); } });
         };
-
         window.adminAddLink = function(uIdx, tIdx) {
-            const topicName = globalQuizData[uIdx]?.topics?.[tIdx]?.title || 'Subfolder';
-            openQuizModal({
-                mode: 'input',
-                title: 'Add External Quiz Card',
-                desc: `Add a clickable quiz or resource card inside "${topicName}".`,
-                label1: 'Card Title',
-                placeholder1: 'e.g., Paper 01 - MCQ Quiz (Google Form)',
-                showSecondField: true,
-                placeholder2: 'https://forms.gle/...',
-                submitText: 'Add Quiz Card',
-                onSubmit: (title, url) => {
-                    if (!globalQuizData[uIdx].topics[tIdx].links) globalQuizData[uIdx].topics[tIdx].links = [];
-                    globalQuizData[uIdx].topics[tIdx].links.push({ title: title, url: url });
-                    renderAdminQuizzes();
-                    renderStudentQuizzes();
-                    syncQuizzesToFirebase();
-                }
-            });
+            const topicName = globalQuizData[uIdx]?.topics?.[tIdx]?.title || 'Subfolder'; openQuizModal({ mode: 'input', title: 'Add External Quiz Card', desc: `Add a clickable quiz or resource card inside "${topicName}".`, label1: 'Card Title', placeholder1: 'e.g., Paper 01 - MCQ Quiz (Google Form)', showSecondField: true, placeholder2: 'https://forms.gle/...', submitText: 'Add Quiz Card', onSubmit: (title, url) => { if (!globalQuizData[uIdx].topics[tIdx].links) globalQuizData[uIdx].topics[tIdx].links = []; globalQuizData[uIdx].topics[tIdx].links.push({ title: title, url: url }); renderAdminQuizzes(); renderStudentQuizzes(); syncQuizzesToFirebase(); } });
         };
-
         window.adminDeleteUnit = function(uIdx) {
-            const unitName = globalQuizData[uIdx]?.title || 'this Unit';
-            openQuizModal({
-                mode: 'confirm',
-                title: 'Delete Unit Folder?',
-                desc: `Are you sure you want to delete "${unitName}" and all subfolders inside it?`,
-                submitText: 'Yes, Delete Unit',
-                onConfirm: () => {
-                    globalQuizData.splice(uIdx, 1);
-                    renderAdminQuizzes();
-                    renderStudentQuizzes();
-                    syncQuizzesToFirebase();
-                }
-            });
+            const unitName = globalQuizData[uIdx]?.title || 'this Unit'; openQuizModal({ mode: 'confirm', title: 'Delete Unit Folder?', desc: `Are you sure you want to delete "${unitName}" and all subfolders inside it?`, submitText: 'Yes, Delete Unit', onConfirm: () => { globalQuizData.splice(uIdx, 1); renderAdminQuizzes(); renderStudentQuizzes(); syncQuizzesToFirebase(); } });
         };
-
         window.adminDeleteTopic = function(uIdx, tIdx) {
-            const topicName = globalQuizData[uIdx]?.topics?.[tIdx]?.title || 'this Subfolder';
-            openQuizModal({
-                mode: 'confirm',
-                title: 'Delete Subfolder?',
-                desc: `Are you sure you want to delete "${topicName}" and all quiz cards inside it?`,
-                submitText: 'Yes, Delete',
-                onConfirm: () => {
-                    globalQuizData[uIdx].topics.splice(tIdx, 1);
-                    renderAdminQuizzes();
-                    renderStudentQuizzes();
-                    syncQuizzesToFirebase();
-                }
-            });
+            const topicName = globalQuizData[uIdx]?.topics?.[tIdx]?.title || 'this Subfolder'; openQuizModal({ mode: 'confirm', title: 'Delete Subfolder?', desc: `Are you sure you want to delete "${topicName}" and all quiz cards inside it?`, submitText: 'Yes, Delete', onConfirm: () => { globalQuizData[uIdx].topics.splice(tIdx, 1); renderAdminQuizzes(); renderStudentQuizzes(); syncQuizzesToFirebase(); } });
         };
-
-        window.adminDeleteLink = function(uIdx, tIdx, lIdx) {
-            globalQuizData[uIdx].topics[tIdx].links.splice(lIdx, 1);
-            renderAdminQuizzes();
-            renderStudentQuizzes();
-            syncQuizzesToFirebase();
-        };
-
-        window.switchAdminTab = function(tab) {
-            if (tab === 'analytics') {
-                document.getElementById('adminView-analytics').classList.remove('hidden');
-                document.getElementById('adminView-quizzes').classList.add('hidden');
-                document.getElementById('adminTabBtn-analytics').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-purple-600 text-white shadow-md w-1/2 sm:w-auto";
-                document.getElementById('adminTabBtn-quizzes').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-300 hover:text-white w-1/2 sm:w-auto";
-            } else {
-                document.getElementById('adminView-analytics').classList.add('hidden');
-                document.getElementById('adminView-quizzes').classList.remove('hidden');
-                document.getElementById('adminTabBtn-analytics').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-300 hover:text-white w-1/2 sm:w-auto";
-                document.getElementById('adminTabBtn-quizzes').className = "px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-purple-600 text-white shadow-md w-1/2 sm:w-auto";
-            }
-        };
+        window.adminDeleteLink = function(uIdx, tIdx, lIdx) { globalQuizData[uIdx].topics[tIdx].links.splice(lIdx, 1); renderAdminQuizzes(); renderStudentQuizzes(); syncQuizzesToFirebase(); };
     </script>
 </body>
 </html>
